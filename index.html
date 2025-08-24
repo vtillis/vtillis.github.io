@@ -5,19 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vasileios Tillis - Resume</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Exo+2:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         :root {
             --primary-dark: #0a0a14;
-            --primary-purple: #4d0099;
-            --accent-purple: #b366ff;
-            --bright-purple: #cc33ff;
+            --primary-purple: #7022c9;
+            --accent-purple: #a45deb;
+            --bright-purple: #c87cff;
+            --neon-purple: #cc33ff;
+            --neon-blue: #3399ff;
             --text-light: #e0e0e0;
         }
         
@@ -29,10 +31,11 @@
             position: relative;
             padding-top: 60px;
             min-height: 100vh;
+            font-family: 'Exo 2', sans-serif;
         }
         
-        /* Enhanced Aurora background effect */
-        .aurora {
+        /* Cosmic Aurora background effect */
+        .cosmic-aurora {
             position: fixed;
             top: 0;
             left: 0;
@@ -43,58 +46,77 @@
             opacity: 0.9;
         }
         
-        .aurora::before, .aurora::after, .aurora .aurora-extra {
-            content: '';
+        .cosmic-layer {
             position: absolute;
-            width: 180%;
-            height: 180%;
-            border-radius: 45%;
-            background: linear-gradient(45deg, 
-                rgba(77, 0, 153, 0.8), 
-                rgba(102, 0, 204, 0.7), 
-                rgba(179, 102, 255, 0.6),
-                rgba(204, 51, 255, 0.7));
-            animation: rotate 25s linear infinite;
-            filter: blur(25px);
-            opacity: 0.6;
-            mix-blend-mode: screen;
-        }
-        
-        .aurora::after {
-            border-radius: 40%;
-            background: linear-gradient(135deg, 
-                rgba(26, 0, 51, 0.7), 
-                rgba(64, 0, 77, 0.6), 
-                rgba(102, 0, 153, 0.7),
-                rgba(128, 0, 255, 0.8));
-            animation: rotate 30s linear infinite reverse;
-            filter: blur(30px);
-            opacity: 0.5;
-        }
-        
-        .aurora .aurora-extra {
-            background: linear-gradient(90deg, 
-                rgba(51, 0, 102, 0.6), 
-                rgba(102, 0, 204, 0.7), 
-                rgba(153, 51, 255, 0.8),
-                rgba(204, 102, 255, 0.6));
-            animation: rotate 35s linear infinite;
-            filter: blur(35px);
-            opacity: 0.4;
             width: 200%;
             height: 200%;
+            border-radius: 40%;
+            opacity: 0.7;
+            filter: blur(40px);
+            mix-blend-mode: screen;
+            animation: cosmic-move 25s linear infinite;
         }
         
-        @keyframes rotate {
+        .cosmic-layer-1 {
+            background: linear-gradient(45deg, 
+                rgba(112, 34, 201, 0.9), 
+                rgba(164, 93, 235, 0.7),
+                rgba(204, 51, 255, 0.8));
+            top: -50%;
+            left: -50%;
+            animation-duration: 30s;
+        }
+        
+        .cosmic-layer-2 {
+            background: linear-gradient(135deg, 
+                rgba(51, 153, 255, 0.7), 
+                rgba(112, 34, 201, 0.8),
+                rgba(204, 51, 255, 0.6));
+            top: -30%;
+            left: -60%;
+            animation-duration: 35s;
+            animation-direction: reverse;
+        }
+        
+        .cosmic-layer-3 {
+            background: linear-gradient(90deg, 
+                rgba(51, 153, 255, 0.6), 
+                rgba(164, 93, 235, 0.8),
+                rgba(204, 51, 255, 0.7));
+            top: -70%;
+            left: -40%;
+            animation-duration: 40s;
+        }
+        
+        .cosmic-particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            opacity: 0;
+            animation: twinkle 8s infinite;
+        }
+        
+        @keyframes cosmic-move {
             0% {
-                transform: translate(-50%, -50%) rotate(0deg);
+                transform: rotate(0deg);
             }
             100% {
-                transform: translate(-50%, -50%) rotate(360deg);
+                transform: rotate(360deg);
             }
         }
         
-        /* Smaller Navigation bar */
+        @keyframes twinkle {
+            0%, 100% {
+                opacity: 0;
+                transform: translateY(0) translateX(0);
+            }
+            50% {
+                opacity: 0.6;
+                transform: translateY(-20px) translateX(20px);
+            }
+        }
+        
+        /* Navigation bar with icons */
         .navbar {
             position: fixed;
             top: 0;
@@ -104,8 +126,8 @@
             backdrop-filter: blur(15px);
             padding: 10px 0;
             z-index: 1000;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
-            border-bottom: 1px solid var(--bright-purple);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
+            border-bottom: 1px solid var(--neon-purple);
         }
         
         .nav-container {
@@ -114,30 +136,48 @@
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 12px;
             padding: 0 15px;
         }
         
         .nav-btn {
-            background: transparent;
+            background: linear-gradient(145deg, rgba(55, 15, 105, 0.7), rgba(90, 25, 170, 0.5));
             color: var(--text-light);
-            border: 1px solid var(--bright-purple);
-            padding: 8px 16px;
-            border-radius: 25px;
+            border: 1px solid var(--neon-purple);
+            padding: 10px 18px 10px 14px;
+            border-radius: 30px;
             cursor: pointer;
             transition: all 0.3s ease;
             font-size: 0.85rem;
             outline: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 0 10px rgba(204, 51, 255, 0.3), 
+                        inset 0 0 5px rgba(255, 255, 255, 0.1);
         }
         
         .nav-btn:hover {
-            background: var(--bright-purple);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(179, 102, 255, 0.5);
+            background: linear-gradient(145deg, rgba(90, 25, 170, 0.8), rgba(112, 34, 201, 0.6));
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(179, 102, 255, 0.5),
+                        0 0 20px rgba(204, 51, 255, 0.4),
+                        inset 0 0 10px rgba(255, 255, 255, 0.2);
         }
         
         .nav-btn:active {
             transform: translateY(0);
+        }
+        
+        .nav-btn i {
+            font-size: 1rem;
+            color: var(--neon-purple);
+            transition: all 0.3s ease;
+        }
+        
+        .nav-btn:hover i {
+            color: var(--neon-blue);
+            text-shadow: 0 0 8px rgba(51, 153, 255, 0.8);
         }
         
         .container {
@@ -155,9 +195,36 @@
             background: rgba(10, 10, 20, 0.85);
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
-            border: 1px solid var(--bright-purple);
+            border: 1px solid var(--neon-purple);
             animation: fadeIn 1s ease-out;
             backdrop-filter: blur(5px);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, 
+                transparent, 
+                var(--neon-purple), 
+                var(--neon-blue),
+                var(--neon-purple),
+                transparent);
+            animation: header-glow 3s linear infinite;
+        }
+        
+        @keyframes header-glow {
+            0% {
+                background-position: -1000px 0;
+            }
+            100% {
+                background-position: 1000px 0;
+            }
         }
         
         h1 {
@@ -166,7 +233,8 @@
             color: #ffffff;
             text-transform: uppercase;
             letter-spacing: 3px;
-            text-shadow: 0 2px 10px rgba(179, 102, 255, 0.7);
+            text-shadow: 0 0 10px rgba(204, 51, 255, 0.7);
+            font-family: 'Orbitron', sans-serif;
         }
         
         h2 {
@@ -206,7 +274,7 @@
             padding: 30px;
             margin-bottom: 30px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
-            border: 1px solid var(--bright-purple);
+            border: 1px solid var(--neon-purple);
             opacity: 0;
             transform: translateY(20px);
             transition: opacity 0.8s ease, transform 0.8s ease;
@@ -223,8 +291,9 @@
             font-size: 1.8rem;
             margin-bottom: 20px;
             padding-bottom: 10px;
-            border-bottom: 2px solid var(--bright-purple);
+            border-bottom: 2px solid var(--neon-purple);
             text-shadow: 0 2px 5px rgba(179, 102, 255, 0.3);
+            font-family: 'Orbitron', sans-serif;
         }
         
         .experience-item, .education-item {
@@ -233,23 +302,40 @@
             border-radius: 10px;
             background: rgba(26, 0, 51, 0.4);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-left: 3px solid var(--neon-purple);
         }
         
         .experience-item:hover, .education-item:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+            border-left: 3px solid var(--neon-blue);
         }
         
         .experience-item h4, .education-item h4 {
             color: #ffffff;
             font-size: 1.3rem;
             margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .experience-item h4 i, .education-item h4 i {
+            color: var(--neon-purple);
+            font-size: 1.1rem;
         }
         
         .date {
             color: var(--bright-purple);
             font-style: italic;
             margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .date i {
+            color: var(--neon-blue);
         }
         
         ul {
@@ -269,12 +355,13 @@
         }
         
         li:before {
-            content: "•";
-            color: var(--bright-purple);
+            content: "▸";
+            color: var(--neon-purple);
             font-weight: bold;
             display: inline-block;
             width: 1em;
             margin-left: -1em;
+            text-shadow: 0 0 5px rgba(204, 51, 255, 0.5);
         }
         
         .skills-container {
@@ -292,7 +379,14 @@
             color: #ffffff;
             margin-bottom: 15px;
             padding-bottom: 5px;
-            border-bottom: 1px solid var(--bright-purple);
+            border-bottom: 1px solid var(--neon-purple);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .skill-category h4 i {
+            color: var(--neon-purple);
         }
         
         .skill-item {
@@ -310,14 +404,16 @@
             background: #1a0033;
             border-radius: 4px;
             overflow: hidden;
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
         }
         
         .skill-level {
             height: 100%;
-            background: linear-gradient(90deg, var(--primary-purple), var(--bright-purple));
+            background: linear-gradient(90deg, var(--primary-purple), var(--neon-purple));
             border-radius: 4px;
             width: 0;
             transition: width 1.5s ease-in-out;
+            box-shadow: 0 0 10px rgba(204, 51, 255, 0.5);
         }
         
         .languages {
@@ -334,15 +430,25 @@
             border-radius: 10px;
             background: rgba(26, 0, 51, 0.4);
             transition: transform 0.3s ease;
+            border: 1px solid var(--neon-purple);
         }
         
         .language:hover {
             transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(204, 51, 255, 0.4);
         }
         
         .language h4 {
             color: #ffffff;
             margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .language h4 i {
+            color: var(--neon-purple);
         }
         
         .language p {
@@ -378,7 +484,7 @@
             width: 50px;
             height: 50px;
             border-radius: 50%;
-            background: var(--bright-purple);
+            background: var(--neon-purple);
             color: white;
             display: flex;
             align-items: center;
@@ -388,7 +494,8 @@
             visibility: hidden;
             transition: all 0.3s ease;
             z-index: 999;
-            box-shadow: 0 5px 15px rgba(179, 102, 255, 0.5);
+            box-shadow: 0 0 15px rgba(204, 51, 255, 0.5);
+            border: 1px solid var(--neon-blue);
         }
         
         .scroll-top.visible {
@@ -397,9 +504,9 @@
         }
         
         .scroll-top:hover {
-            background: var(--accent-purple);
+            background: var(--neon-blue);
             transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(179, 102, 255, 0.7);
+            box-shadow: 0 0 20px rgba(51, 153, 255, 0.7);
         }
         
         @media (max-width: 768px) {
@@ -426,7 +533,7 @@
             }
             
             .nav-btn {
-                padding: 6px 12px;
+                padding: 8px 12px;
                 font-size: 0.75rem;
             }
             
@@ -441,20 +548,44 @@
     </style>
 </head>
 <body>
-    <div class="aurora">
-        <div class="aurora-extra"></div>
+    <div class="cosmic-aurora">
+        <div class="cosmic-layer cosmic-layer-1"></div>
+        <div class="cosmic-layer cosmic-layer-2"></div>
+        <div class="cosmic-layer cosmic-layer-3"></div>
+        <!-- Generated particles will be inserted here by JavaScript -->
     </div>
     
     <!-- Navigation Bar -->
     <nav class="navbar">
         <div class="nav-container">
-            <button class="nav-btn" data-section="header">Home</button>
-            <button class="nav-btn" data-section="summary">Summary</button>
-            <button class="nav-btn" data-section="experience">Experience</button>
-            <button class="nav-btn" data-section="education">Education</button>
-            <button class="nav-btn" data-section="certifications">Certifications</button>
-            <button class="nav-btn" data-section="skills">Skills</button>
-            <button class="nav-btn" data-section="languages">Languages</button>
+            <button class="nav-btn" data-section="header">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </button>
+            <button class="nav-btn" data-section="summary">
+                <i class="fas fa-user-tie"></i>
+                <span>Summary</span>
+            </button>
+            <button class="nav-btn" data-section="experience">
+                <i class="fas fa-briefcase"></i>
+                <span>Experience</span>
+            </button>
+            <button class="nav-btn" data-section="education">
+                <i class="fas fa-graduation-cap"></i>
+                <span>Education</span>
+            </button>
+            <button class="nav-btn" data-section="certifications">
+                <i class="fas fa-certificate"></i>
+                <span>Certifications</span>
+            </button>
+            <button class="nav-btn" data-section="skills">
+                <i class="fas fa-code"></i>
+                <span>Skills</span>
+            </button>
+            <button class="nav-btn" data-section="languages">
+                <i class="fas fa-language"></i>
+                <span>Languages</span>
+            </button>
         </div>
     </nav>
     
@@ -499,8 +630,8 @@
         <section id="experience">
             <h3>Professional Experience</h3>
             <div class="experience-item">
-                <h4>Statistical Data Scientist – Pfizer</h4>
-                <div class="date">Dec 2023 – Present</div>
+                <h4><i class="fas fa-microscope"></i> Statistical Data Scientist – Pfizer</h4>
+                <div class="date"><i class="far fa-calendar-alt"></i> Dec 2023 – Present</div>
                 <ul>
                     <li>Led a team of SMEs in the transition to a new statistical reporting platform for clinical trials.</li>
                     <li>Mentored junior colleagues to full independence within a month.</li>
@@ -511,8 +642,8 @@
             </div>
             
             <div class="experience-item">
-                <h4>IT Business and Product Data Analyst – Aegean Airlines</h4>
-                <div class="date">Jul 2022 – Nov 2023</div>
+                <h4><i class="fas fa-plane"></i> IT Business and Product Data Analyst – Aegean Airlines</h4>
+                <div class="date"><i class="far fa-calendar-alt"></i> Jul 2022 – Nov 2023</div>
                 <ul>
                     <li>Designed business monitoring reports and digital solutions.</li>
                     <li>Developed automated processes and conducted data analysis with Power BI.</li>
@@ -521,8 +652,8 @@
             </div>
             
             <div class="experience-item">
-                <h4>Data Analyst – Ministry of National Defence</h4>
-                <div class="date">Jan 2018 – Oct 2018</div>
+                <h4><i class="fas fa-shield-alt"></i> Data Analyst – Ministry of National Defence</h4>
+                <div class="date"><i class="far fa-calendar-alt"></i> Jan 2018 – Oct 2018</div>
                 <ul>
                     <li>Analyzed defense data and created dashboards.</li>
                     <li>Assisted with tool development for performance analysis.</li>
@@ -530,8 +661,8 @@
             </div>
             
             <div class="experience-item">
-                <h4>Information Security Analyst (Intern) – OTE Group</h4>
-                <div class="date">Jul 2015 – Sep 2015</div>
+                <h4><i class="fas fa-lock"></i> Information Security Analyst (Intern) – OTE Group</h4>
+                <div class="date"><i class="far fa-calendar-alt"></i> Jul 2015 – Sep 2015</div>
                 <ul>
                     <li>Monitored telecom fraud systems and supported incident response.</li>
                 </ul>
@@ -541,14 +672,14 @@
         <section id="education">
             <h3>Education</h3>
             <div class="education-item">
-                <h4>MSc in Data Science – University of East London</h4>
-                <div class="date">2020 – 2021</div>
+                <h4><i class="fas fa-university"></i> MSc in Data Science – University of East London</h4>
+                <div class="date"><i class="far fa-calendar-alt"></i> 2020 – 2021</div>
                 <p>Thesis: Detection of abusive language on social networks using machine learning.</p>
             </div>
             
             <div class="education-item">
-                <h4>BSc in Science & Technology of Telecommunications – University of Peloponnese</h4>
-                <div class="date">2011 – 2017</div>
+                <h4><i class="fas fa-graduation-cap"></i> BSc in Science & Technology of Telecommunications – University of Peloponnese</h4>
+                <div class="date"><i class="far fa-calendar-alt"></i> 2011 – 2017</div>
                 <p>Thesis: Big Data Applications and Data Centers Architectures.</p>
             </div>
         </section>
@@ -556,9 +687,9 @@
         <section id="certifications">
             <h3>Certifications</h3>
             <ul>
-                <li>Google Data Analytics Professional Certificate</li>
-                <li>IBM Data Science Professional Certificate</li>
-                <li>SAS Programmer Professional Certificate</li>
+                <li><i class="fas fa-award"></i> Google Data Analytics Professional Certificate</li>
+                <li><i class="fas fa-award"></i> IBM Data Science Professional Certificate</li>
+                <li><i class="fas fa-award"></i> SAS Programmer Professional Certificate</li>
             </ul>
         </section>
         
@@ -566,7 +697,7 @@
             <h3>Skills</h3>
             <div class="skills-container">
                 <div class="skill-category">
-                    <h4>Technical Skills</h4>
+                    <h4><i class="fas fa-laptop-code"></i> Technical Skills</h4>
                     <div class="skill-item">
                         <span class="skill-name">Python</span>
                         <div class="skill-bar">
@@ -600,7 +731,7 @@
                 </div>
                 
                 <div class="skill-category">
-                    <h4>Data Science</h4>
+                    <h4><i class="fas fa-chart-line"></i> Data Science</h4>
                     <div class="skill-item">
                         <span class="skill-name">Data Cleaning</span>
                         <div class="skill-bar">
@@ -634,7 +765,7 @@
                 </div>
                 
                 <div class="skill-category">
-                    <h4>Professional Skills</h4>
+                    <h4><i class="fas fa-users"></i> Professional Skills</h4>
                     <div class="skill-item">
                         <span class="skill-name">Project Management</span>
                         <div class="skill-bar">
@@ -673,15 +804,15 @@
             <h3>Languages</h3>
             <div class="languages">
                 <div class="language">
-                    <h4>Greek</h4>
+                    <h4><i class="fas fa-flag"></i> Greek</h4>
                     <p>Native</p>
                 </div>
                 <div class="language">
-                    <h4>English</h4>
+                    <h4><i class="fas fa-flag-usa"></i> English</h4>
                     <p>Professional</p>
                 </div>
                 <div class="language">
-                    <h4>German</h4>
+                    <h4><i class="fas fa-flag"></i> German</h4>
                     <p>Elementary</p>
                 </div>
             </div>
@@ -693,6 +824,31 @@
     </div>
 
     <script>
+        // Create particles for cosmic effect
+        function createParticles() {
+            const aurora = document.querySelector('.cosmic-aurora');
+            const particleCount = 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('cosmic-particle');
+                
+                // Random properties
+                const size = Math.random() * 4 + 1;
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+                const delay = Math.random() * 8;
+                
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${posX}%`;
+                particle.style.top = `${posY}%`;
+                particle.style.animationDelay = `${delay}s`;
+                
+                aurora.appendChild(particle);
+            }
+        }
+        
         // Navigation functionality
         document.querySelectorAll('.nav-btn').forEach(button => {
             button.addEventListener('click', () => {
@@ -763,6 +919,7 @@
         
         // Initialize animations on page load
         window.addEventListener('load', () => {
+            createParticles();
             document.querySelector('header').style.animation = 'fadeIn 1s ease-out forwards';
             
             // Animate skill bars if skills section is already in view
