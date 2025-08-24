@@ -12,22 +12,45 @@
     border:2px solid #000; font-size:12px;
     width:300px; display:none; white-space:pre-wrap;
   }
+  #startOverlay {
+    position:fixed; inset:0;
+    background:rgba(0,0,0,0.6);
+    display:flex; align-items:center; justify-content:center;
+    color:#000;
+  }
+  #startCard {
+    background:#fff; border:2px solid #000; padding:20px; text-align:center;
+    box-shadow:6px 6px 0 rgba(0,0,0,0.5);
+  }
+  .btn { padding:10px 14px; border:2px solid #000; background:#fff; cursor:pointer; font-weight:bold; }
 </style>
 </head>
 <body>
 <canvas id="game" width="800" height="400"></canvas>
 <div id="infoBox"></div>
-
+<div id="startOverlay">
+  <div id="startCard">
+    <h2>Resume Game</h2>
+    <p>Hit the ? blocks to reveal CV sections.</p>
+    <p><small>Controls: ← → to move, ↑ or Space to jump</small></p>
+    <button class="btn" id="btnStart">Start</button>
+  </div>
+</div>
 <script>
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
 const infoBox = document.getElementById("infoBox");
+const overlay = document.getElementById("startOverlay");
+document.getElementById("btnStart").onclick = () => {
+  overlay.style.display="none";
+  update();
+};
 
+// player
 let mario = {x:50, y:300, w:32, h:32, dx:0, dy:0, jumping:false};
-const gravity = 0.8;
-const floor = 360;
+const gravity = 0.8, floor = 360;
 
-// Resume blocks
+// resume blocks
 let blocks = [
   {x:200,y:320,w:32,h:32,text:"👨‍💻 Experience:\nPfizer, Aegean Airlines,\nMinistry of Defence, OTE"},
   {x:400,y:320,w:32,h:32,text:"🎓 Education:\nMSc Data Science\nBSc Telecoms"},
@@ -38,16 +61,13 @@ let blocks = [
 
 function draw(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
-
-  // Ground
+  // ground
   ctx.fillStyle="#654321";
   ctx.fillRect(0,floor,canvas.width,40);
-
-  // Mario
+  // player
   ctx.fillStyle="red";
   ctx.fillRect(mario.x,mario.y,mario.w,mario.h);
-
-  // Blocks
+  // blocks
   ctx.fillStyle="orange";
   blocks.forEach(b=>{
     ctx.fillRect(b.x,b.y,b.w,b.h);
@@ -58,7 +78,6 @@ function draw(){
 function update(){
   mario.x += mario.dx;
   mario.y += mario.dy;
-
   // gravity
   if(mario.y < floor - mario.h){
     mario.dy += gravity;
@@ -67,8 +86,7 @@ function update(){
     mario.y = floor - mario.h;
     mario.jumping = false;
   }
-
-  // block collision
+  // collision
   blocks.forEach(b=>{
     if(mario.x < b.x+b.w && mario.x+mario.w > b.x &&
        mario.y < b.y+b.h && mario.y+mario.h > b.y){
@@ -76,24 +94,21 @@ function update(){
       infoBox.textContent=b.text;
     }
   });
-
   draw();
   requestAnimationFrame(update);
 }
 
+// controls
 document.addEventListener("keydown", e=>{
   if(e.key==="ArrowRight") mario.dx=3;
   if(e.key==="ArrowLeft") mario.dx=-3;
   if((e.key==="ArrowUp"||e.key===" ") && !mario.jumping){
-    mario.dy=-12;
-    mario.jumping=true;
+    mario.dy=-12; mario.jumping=true;
   }
 });
 document.addEventListener("keyup", e=>{
   if(e.key==="ArrowRight"||e.key==="ArrowLeft") mario.dx=0;
 });
-
-update();
 </script>
 </body>
 </html>
