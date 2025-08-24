@@ -17,6 +17,7 @@
             --primary-dark: #0a0a14;
             --primary-purple: #4d0099;
             --accent-purple: #b366ff;
+            --bright-purple: #cc33ff;
             --text-light: #e0e0e0;
         }
         
@@ -26,10 +27,11 @@
             line-height: 1.6;
             overflow-x: hidden;
             position: relative;
-            padding-top: 70px;
+            padding-top: 60px;
+            min-height: 100vh;
         }
         
-        /* Aurora background effect */
+        /* Enhanced Aurora background effect */
         .aurora {
             position: fixed;
             top: 0;
@@ -38,49 +40,72 @@
             height: 100%;
             z-index: -1;
             overflow: hidden;
+            opacity: 0.9;
         }
         
-        .aurora::before, .aurora::after {
+        .aurora::before, .aurora::after, .aurora .aurora-extra {
             content: '';
             position: absolute;
-            width: 150%;
-            height: 150%;
+            width: 180%;
+            height: 180%;
             border-radius: 45%;
-            background: linear-gradient(45deg, #1a0033, #330066, #4d0099, #6600cc);
-            animation: rotate 30s linear infinite;
-            opacity: 0.4;
-            filter: blur(20px);
+            background: linear-gradient(45deg, 
+                rgba(77, 0, 153, 0.8), 
+                rgba(102, 0, 204, 0.7), 
+                rgba(179, 102, 255, 0.6),
+                rgba(204, 51, 255, 0.7));
+            animation: rotate 25s linear infinite;
+            filter: blur(25px);
+            opacity: 0.6;
+            mix-blend-mode: screen;
         }
         
         .aurora::after {
             border-radius: 40%;
-            background: linear-gradient(45deg, #0d001a, #260033, #40004d, #590066);
-            animation: rotate 35s linear infinite;
-            opacity: 0.3;
+            background: linear-gradient(135deg, 
+                rgba(26, 0, 51, 0.7), 
+                rgba(64, 0, 77, 0.6), 
+                rgba(102, 0, 153, 0.7),
+                rgba(128, 0, 255, 0.8));
+            animation: rotate 30s linear infinite reverse;
             filter: blur(30px);
+            opacity: 0.5;
+        }
+        
+        .aurora .aurora-extra {
+            background: linear-gradient(90deg, 
+                rgba(51, 0, 102, 0.6), 
+                rgba(102, 0, 204, 0.7), 
+                rgba(153, 51, 255, 0.8),
+                rgba(204, 102, 255, 0.6));
+            animation: rotate 35s linear infinite;
+            filter: blur(35px);
+            opacity: 0.4;
+            width: 200%;
+            height: 200%;
         }
         
         @keyframes rotate {
             0% {
-                transform: translate(-25%, -25%) rotate(0deg);
+                transform: translate(-50%, -50%) rotate(0deg);
             }
             100% {
-                transform: translate(-25%, -25%) rotate(360deg);
+                transform: translate(-50%, -50%) rotate(360deg);
             }
         }
         
-        /* Navigation bar */
+        /* Smaller Navigation bar */
         .navbar {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            background: rgba(10, 10, 20, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 15px 0;
+            background: rgba(10, 10, 20, 0.97);
+            backdrop-filter: blur(15px);
+            padding: 10px 0;
             z-index: 1000;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
-            border-bottom: 1px solid var(--primary-purple);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+            border-bottom: 1px solid var(--bright-purple);
         }
         
         .nav-container {
@@ -89,26 +114,26 @@
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
-            gap: 15px;
-            padding: 0 20px;
+            gap: 10px;
+            padding: 0 15px;
         }
         
         .nav-btn {
             background: transparent;
             color: var(--text-light);
-            border: 1px solid var(--primary-purple);
-            padding: 10px 20px;
-            border-radius: 30px;
+            border: 1px solid var(--bright-purple);
+            padding: 8px 16px;
+            border-radius: 25px;
             cursor: pointer;
             transition: all 0.3s ease;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             outline: none;
         }
         
         .nav-btn:hover {
-            background: var(--primary-purple);
+            background: var(--bright-purple);
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(77, 0, 153, 0.4);
+            box-shadow: 0 5px 15px rgba(179, 102, 255, 0.5);
         }
         
         .nav-btn:active {
@@ -118,7 +143,7 @@
         .container {
             max-width: 1000px;
             margin: 0 auto;
-            padding: 40px 20px;
+            padding: 30px 20px;
             position: relative;
             z-index: 1;
         }
@@ -127,11 +152,12 @@
             text-align: center;
             margin-bottom: 40px;
             padding: 30px;
-            background: rgba(10, 10, 20, 0.8);
+            background: rgba(10, 10, 20, 0.85);
             border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            border: 1px solid var(--primary-purple);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+            border: 1px solid var(--bright-purple);
             animation: fadeIn 1s ease-out;
+            backdrop-filter: blur(5px);
         }
         
         h1 {
@@ -140,7 +166,7 @@
             color: #ffffff;
             text-transform: uppercase;
             letter-spacing: 3px;
-            text-shadow: 0 2px 10px rgba(179, 102, 255, 0.5);
+            text-shadow: 0 2px 10px rgba(179, 102, 255, 0.7);
         }
         
         h2 {
@@ -170,20 +196,21 @@
         }
         
         .contact-item i {
-            color: var(--accent-purple);
+            color: var(--bright-purple);
             font-size: 1.2rem;
         }
         
         section {
-            background: rgba(10, 10, 20, 0.8);
+            background: rgba(10, 10, 20, 0.85);
             border-radius: 15px;
             padding: 30px;
             margin-bottom: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            border: 1px solid var(--primary-purple);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+            border: 1px solid var(--bright-purple);
             opacity: 0;
             transform: translateY(20px);
             transition: opacity 0.8s ease, transform 0.8s ease;
+            backdrop-filter: blur(5px);
         }
         
         section.visible {
@@ -192,24 +219,25 @@
         }
         
         h3 {
-            color: var(--accent-purple);
+            color: var(--bright-purple);
             font-size: 1.8rem;
             margin-bottom: 20px;
             padding-bottom: 10px;
-            border-bottom: 2px solid var(--primary-purple);
+            border-bottom: 2px solid var(--bright-purple);
+            text-shadow: 0 2px 5px rgba(179, 102, 255, 0.3);
         }
         
         .experience-item, .education-item {
             margin-bottom: 25px;
             padding: 15px;
             border-radius: 10px;
-            background: rgba(26, 0, 51, 0.3);
+            background: rgba(26, 0, 51, 0.4);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         
         .experience-item:hover, .education-item:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
         }
         
         .experience-item h4, .education-item h4 {
@@ -219,7 +247,7 @@
         }
         
         .date {
-            color: var(--accent-purple);
+            color: var(--bright-purple);
             font-style: italic;
             margin-bottom: 10px;
         }
@@ -242,7 +270,7 @@
         
         li:before {
             content: "•";
-            color: var(--accent-purple);
+            color: var(--bright-purple);
             font-weight: bold;
             display: inline-block;
             width: 1em;
@@ -264,7 +292,7 @@
             color: #ffffff;
             margin-bottom: 15px;
             padding-bottom: 5px;
-            border-bottom: 1px solid var(--primary-purple);
+            border-bottom: 1px solid var(--bright-purple);
         }
         
         .skill-item {
@@ -286,7 +314,7 @@
         
         .skill-level {
             height: 100%;
-            background: linear-gradient(90deg, var(--primary-purple), var(--accent-purple));
+            background: linear-gradient(90deg, var(--primary-purple), var(--bright-purple));
             border-radius: 4px;
             width: 0;
             transition: width 1.5s ease-in-out;
@@ -304,7 +332,7 @@
             text-align: center;
             padding: 15px;
             border-radius: 10px;
-            background: rgba(26, 0, 51, 0.3);
+            background: rgba(26, 0, 51, 0.4);
             transition: transform 0.3s ease;
         }
         
@@ -318,14 +346,15 @@
         }
         
         .language p {
-            color: var(--accent-purple);
+            color: var(--bright-purple);
+            font-weight: bold;
         }
         
         footer {
             text-align: center;
             margin-top: 50px;
             padding: 20px;
-            color: var(--accent-purple);
+            color: var(--bright-purple);
             font-size: 0.9rem;
         }
         
@@ -349,7 +378,7 @@
             width: 50px;
             height: 50px;
             border-radius: 50%;
-            background: var(--primary-purple);
+            background: var(--bright-purple);
             color: white;
             display: flex;
             align-items: center;
@@ -359,7 +388,7 @@
             visibility: hidden;
             transition: all 0.3s ease;
             z-index: 999;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 5px 15px rgba(179, 102, 255, 0.5);
         }
         
         .scroll-top.visible {
@@ -370,6 +399,7 @@
         .scroll-top:hover {
             background: var(--accent-purple);
             transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(179, 102, 255, 0.7);
         }
         
         @media (max-width: 768px) {
@@ -392,18 +422,28 @@
             }
             
             .nav-container {
-                gap: 10px;
+                gap: 8px;
             }
             
             .nav-btn {
-                padding: 8px 15px;
-                font-size: 0.8rem;
+                padding: 6px 12px;
+                font-size: 0.75rem;
+            }
+            
+            .navbar {
+                padding: 8px 0;
+            }
+            
+            body {
+                padding-top: 55px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="aurora"></div>
+    <div class="aurora">
+        <div class="aurora-extra"></div>
+    </div>
     
     <!-- Navigation Bar -->
     <nav class="navbar">
@@ -661,7 +701,7 @@
                 
                 if (section) {
                     window.scrollTo({
-                        top: section.offsetTop - 80,
+                        top: section.offsetTop - 70,
                         behavior: 'smooth'
                     });
                 }
