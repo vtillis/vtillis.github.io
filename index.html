@@ -13,14 +13,23 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
+        :root {
+            --primary-dark: #0a0a14;
+            --primary-purple: #4d0099;
+            --accent-purple: #b366ff;
+            --text-light: #e0e0e0;
+        }
+        
         body {
-            background-color: #0a0a14;
-            color: #e0e0e0;
+            background-color: var(--primary-dark);
+            color: var(--text-light);
             line-height: 1.6;
             overflow-x: hidden;
             position: relative;
+            padding-top: 70px;
         }
         
+        /* Aurora background effect */
         .aurora {
             position: fixed;
             top: 0;
@@ -28,7 +37,6 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            opacity: 0.7;
             overflow: hidden;
         }
         
@@ -39,15 +47,17 @@
             height: 150%;
             border-radius: 45%;
             background: linear-gradient(45deg, #1a0033, #330066, #4d0099, #6600cc);
-            animation: rotate 20s linear infinite;
-            opacity: 0.3;
+            animation: rotate 30s linear infinite;
+            opacity: 0.4;
+            filter: blur(20px);
         }
         
         .aurora::after {
             border-radius: 40%;
             background: linear-gradient(45deg, #0d001a, #260033, #40004d, #590066);
-            animation: rotate 25s linear infinite;
-            opacity: 0.2;
+            animation: rotate 35s linear infinite;
+            opacity: 0.3;
+            filter: blur(30px);
         }
         
         @keyframes rotate {
@@ -57,6 +67,52 @@
             100% {
                 transform: translate(-25%, -25%) rotate(360deg);
             }
+        }
+        
+        /* Navigation bar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(10, 10, 20, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 0;
+            z-index: 1000;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+            border-bottom: 1px solid var(--primary-purple);
+        }
+        
+        .nav-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            padding: 0 20px;
+        }
+        
+        .nav-btn {
+            background: transparent;
+            color: var(--text-light);
+            border: 1px solid var(--primary-purple);
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            outline: none;
+        }
+        
+        .nav-btn:hover {
+            background: var(--primary-purple);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(77, 0, 153, 0.4);
+        }
+        
+        .nav-btn:active {
+            transform: translateY(0);
         }
         
         .container {
@@ -74,7 +130,8 @@
             background: rgba(10, 10, 20, 0.8);
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            border: 1px solid #4d0099;
+            border: 1px solid var(--primary-purple);
+            animation: fadeIn 1s ease-out;
         }
         
         h1 {
@@ -83,11 +140,12 @@
             color: #ffffff;
             text-transform: uppercase;
             letter-spacing: 3px;
+            text-shadow: 0 2px 10px rgba(179, 102, 255, 0.5);
         }
         
         h2 {
             font-size: 1.5rem;
-            color: #b366ff;
+            color: var(--accent-purple);
             margin-bottom: 20px;
             font-weight: 400;
         }
@@ -104,10 +162,15 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            transition: transform 0.3s ease;
+        }
+        
+        .contact-item:hover {
+            transform: scale(1.05);
         }
         
         .contact-item i {
-            color: #b366ff;
+            color: var(--accent-purple);
             font-size: 1.2rem;
         }
         
@@ -117,19 +180,36 @@
             padding: 30px;
             margin-bottom: 30px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            border: 1px solid #4d0099;
+            border: 1px solid var(--primary-purple);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
         
         h3 {
-            color: #b366ff;
+            color: var(--accent-purple);
             font-size: 1.8rem;
             margin-bottom: 20px;
             padding-bottom: 10px;
-            border-bottom: 2px solid #4d0099;
+            border-bottom: 2px solid var(--primary-purple);
         }
         
         .experience-item, .education-item {
             margin-bottom: 25px;
+            padding: 15px;
+            border-radius: 10px;
+            background: rgba(26, 0, 51, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .experience-item:hover, .education-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
         }
         
         .experience-item h4, .education-item h4 {
@@ -139,7 +219,7 @@
         }
         
         .date {
-            color: #b366ff;
+            color: var(--accent-purple);
             font-style: italic;
             margin-bottom: 10px;
         }
@@ -153,11 +233,16 @@
             margin-bottom: 10px;
             padding-left: 20px;
             position: relative;
+            transition: transform 0.3s ease;
+        }
+        
+        li:hover {
+            transform: translateX(5px);
         }
         
         li:before {
             content: "•";
-            color: #b366ff;
+            color: var(--accent-purple);
             font-weight: bold;
             display: inline-block;
             width: 1em;
@@ -179,7 +264,7 @@
             color: #ffffff;
             margin-bottom: 15px;
             padding-bottom: 5px;
-            border-bottom: 1px solid #4d0099;
+            border-bottom: 1px solid var(--primary-purple);
         }
         
         .skill-item {
@@ -189,7 +274,7 @@
         .skill-name {
             display: block;
             margin-bottom: 5px;
-            color: #e0e0e0;
+            color: var(--text-light);
         }
         
         .skill-bar {
@@ -201,8 +286,10 @@
         
         .skill-level {
             height: 100%;
-            background: linear-gradient(90deg, #4d0099, #b366ff);
+            background: linear-gradient(90deg, var(--primary-purple), var(--accent-purple));
             border-radius: 4px;
+            width: 0;
+            transition: width 1.5s ease-in-out;
         }
         
         .languages {
@@ -214,6 +301,15 @@
         .language {
             flex: 1;
             min-width: 150px;
+            text-align: center;
+            padding: 15px;
+            border-radius: 10px;
+            background: rgba(26, 0, 51, 0.3);
+            transition: transform 0.3s ease;
+        }
+        
+        .language:hover {
+            transform: scale(1.05);
         }
         
         .language h4 {
@@ -222,15 +318,58 @@
         }
         
         .language p {
-            color: #b366ff;
+            color: var(--accent-purple);
         }
         
         footer {
             text-align: center;
             margin-top: 50px;
             padding: 20px;
-            color: #b366ff;
+            color: var(--accent-purple);
             font-size: 0.9rem;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Scroll to top button */
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--primary-purple);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 999;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .scroll-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .scroll-top:hover {
+            background: var(--accent-purple);
+            transform: translateY(-5px);
         }
         
         @media (max-width: 768px) {
@@ -251,14 +390,41 @@
             .skills-container, .languages {
                 flex-direction: column;
             }
+            
+            .nav-container {
+                gap: 10px;
+            }
+            
+            .nav-btn {
+                padding: 8px 15px;
+                font-size: 0.8rem;
+            }
         }
     </style>
 </head>
 <body>
     <div class="aurora"></div>
     
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <button class="nav-btn" data-section="header">Home</button>
+            <button class="nav-btn" data-section="summary">Summary</button>
+            <button class="nav-btn" data-section="experience">Experience</button>
+            <button class="nav-btn" data-section="education">Education</button>
+            <button class="nav-btn" data-section="certifications">Certifications</button>
+            <button class="nav-btn" data-section="skills">Skills</button>
+            <button class="nav-btn" data-section="languages">Languages</button>
+        </div>
+    </nav>
+    
+    <!-- Scroll to top button -->
+    <div class="scroll-top" id="scrollTop">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+    
     <div class="container">
-        <header>
+        <header id="header">
             <h1>Vasileios Tillis</h1>
             <h2>Statistical Data Scientist</h2>
             <div class="contact-info">
@@ -285,12 +451,12 @@
             </div>
         </header>
         
-        <section>
+        <section id="summary">
             <h3>Professional Summary</h3>
             <p>MSc in Data Science with experience in pharmaceutical and airline industries. Proficient in Python, R, SQL, and SAS. Passionate about uncovering insights from data and mentoring colleagues. Known for independent high-quality output and team leadership.</p>
         </section>
         
-        <section>
+        <section id="experience">
             <h3>Professional Experience</h3>
             <div class="experience-item">
                 <h4>Statistical Data Scientist – Pfizer</h4>
@@ -332,7 +498,7 @@
             </div>
         </section>
         
-        <section>
+        <section id="education">
             <h3>Education</h3>
             <div class="education-item">
                 <h4>MSc in Data Science – University of East London</h4>
@@ -347,7 +513,7 @@
             </div>
         </section>
         
-        <section>
+        <section id="certifications">
             <h3>Certifications</h3>
             <ul>
                 <li>Google Data Analytics Professional Certificate</li>
@@ -356,7 +522,7 @@
             </ul>
         </section>
         
-        <section>
+        <section id="skills">
             <h3>Skills</h3>
             <div class="skills-container">
                 <div class="skill-category">
@@ -364,31 +530,31 @@
                     <div class="skill-item">
                         <span class="skill-name">Python</span>
                         <div class="skill-bar">
-                            <div class="skill-level" style="width: 95%"></div>
+                            <div class="skill-level" data-width="95%"></div>
                         </div>
                     </div>
                     <div class="skill-item">
                         <span class="skill-name">R</span>
                         <div class="skill-bar">
-                            <div class="skill-level" style="width: 90%"></div>
+                            <div class="skill-level" data-width="90%"></div>
                         </div>
                     </div>
                     <div class="skill-item">
                         <span class="skill-name">SQL</span>
                         <div class="skill-bar">
-                            <div class="skill-level" style="width: 85%"></div>
+                            <div class="skill-level" data-width="85%"></div>
                         </div>
                     </div>
                     <div class="skill-item">
                         <span class="skill-name">SAS</span>
                         <div class="skill-bar">
-                            <div class="skill-level" style="width: 80%"></div>
+                            <div class="skill-level" data-width="80%"></div>
                         </div>
                     </div>
                     <div class="skill-item">
                         <span class="skill-name">Power BI</span>
                         <div class="skill-bar">
-                            <div class="skill-level" style="width: 85%"></div>
+                            <div class="skill-level" data-width="85%"></div>
                         </div>
                     </div>
                 </div>
@@ -398,31 +564,31 @@
                     <div class="skill-item">
                         <span class="skill-name">Data Cleaning</span>
                         <div class="skill-bar">
-                            <div class="skill-level" style="width: 90%"></div>
+                            <div class="skill-level" data-width="90%"></div>
                         </div>
                     </div>
                     <div class="skill-item">
                         <span class="skill-name">Data Mining</span>
                         <div class="skill-bar">
-                            <div class="skill-level" style="width: 85%"></div>
+                            <div class="skill-level" data-width="85%"></div>
                         </div>
                     </div>
                     <div class="skill-item">
                         <span class="skill-name">Data Visualization</span>
                         <div class="skill-bar">
-                            <div class="skill-level" style="width: 90%"></div>
+                            <div class="skill-level" data-width="90%"></div>
                         </div>
                     </div>
                     <div class="skill-item">
                         <span class="skill-name">Machine Learning</span>
                         <div class="skill-bar">
-                            <div class="skill-level" style="width: 85%"></div>
+                            <div class="skill-level" data-width="85%"></div>
                         </div>
                     </div>
                     <div class="skill-item">
                         <span class="skill-name">Statistical Modeling</span>
                         <div class="skill-bar">
-                            <div class="skill-level" style="width: 90%"></div>
+                            <div class="skill-level" data-width="90%"></div>
                         </div>
                     </div>
                 </div>
@@ -432,38 +598,38 @@
                     <div class="skill-item">
                         <span class="skill-name">Project Management</span>
                         <div class="skill-bar">
-                            <div class="skill-level" style="width: 80%"></div>
+                            <div class="skill-level" data-width="80%"></div>
                         </div>
                     </div>
                     <div class="skill-item">
                         <span class="skill-name">Communication</span>
                         <div class="skill-bar">
-                            <div class="skill-level" style="width: 90%"></div>
+                            <div class="skill-level" data-width="90%"></div>
                         </div>
                     </div>
                     <div class="skill-item">
                         <span class="skill-name">Problem Solving</span>
                         <div class="skill-bar">
-                            <div class="skill-level" style="width: 95%"></div>
+                            <div class="skill-level" data-width="95%"></div>
                         </div>
                     </div>
                     <div class="skill-item">
                         <span class="skill-name">Team Leadership</span>
                         <div class="skill-bar">
-                            <div class="skill-level" style="width: 85%"></div>
+                            <div class="skill-level" data-width="85%"></div>
                         </div>
                     </div>
                     <div class="skill-item">
                         <span class="skill-name">Mentoring</span>
                         <div class="skill-bar">
-                            <div class="skill-level" style="width: 90%"></div>
+                            <div class="skill-level" data-width="90%"></div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
         
-        <section>
+        <section id="languages">
             <h3>Languages</h3>
             <div class="languages">
                 <div class="language">
@@ -485,5 +651,86 @@
             <p>© 2023 Vasileios Tillis | Resume</p>
         </footer>
     </div>
+
+    <script>
+        // Navigation functionality
+        document.querySelectorAll('.nav-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const sectionId = button.getAttribute('data-section');
+                const section = document.getElementById(sectionId);
+                
+                if (section) {
+                    window.scrollTo({
+                        top: section.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Scroll animations
+        const sections = document.querySelectorAll('section');
+        
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+        
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    
+                    // Animate skill bars when skills section is visible
+                    if (entry.target.id === 'skills') {
+                        setTimeout(animateSkillBars, 300);
+                    }
+                }
+            });
+        }, observerOptions);
+        
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+        
+        // Animate skill bars
+        function animateSkillBars() {
+            const skillLevels = document.querySelectorAll('.skill-level');
+            skillLevels.forEach(level => {
+                const width = level.getAttribute('data-width');
+                level.style.width = width;
+            });
+        }
+        
+        // Scroll to top button
+        const scrollTopButton = document.getElementById('scrollTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollTopButton.classList.add('visible');
+            } else {
+                scrollTopButton.classList.remove('visible');
+            }
+        });
+        
+        scrollTopButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Initialize animations on page load
+        window.addEventListener('load', () => {
+            document.querySelector('header').style.animation = 'fadeIn 1s ease-out forwards';
+            
+            // Animate skill bars if skills section is already in view
+            const skillsSection = document.getElementById('skills');
+            if (skillsSection.getBoundingClientRect().top < window.innerHeight) {
+                animateSkillBars();
+            }
+        });
+    </script>
 </body>
 </html>
