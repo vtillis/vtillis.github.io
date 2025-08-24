@@ -79,14 +79,6 @@
             animation-delay: -7s;
         }
         
-        .aurora-4 {
-            background: linear-gradient(45deg, var(--accent3), var(--accent2));
-            top: -30%;
-            right: -40%;
-            animation-duration: 22s;
-            animation-delay: -3s;
-        }
-        
         @keyframes aurora-move {
             0%, 100% {
                 transform: rotate(0deg) scale(1);
@@ -113,8 +105,6 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 2rem;
-            position: relative;
-            z-index: 1;
         }
         
         /* Compact Ribbon Navigation */
@@ -130,7 +120,6 @@
             justify-content: center;
             flex-wrap: wrap;
             gap: 0.3rem;
-            margin-bottom: 2rem;
         }
         
         .ribbon-btn {
@@ -167,10 +156,9 @@
         /* Header with enhanced styling */
         header {
             text-align: center;
-            padding: 2rem 1rem 2rem;
+            padding: 3rem 1rem 2rem;
             position: relative;
             overflow: hidden;
-            margin-bottom: 2rem;
         }
         
         .profile-container {
@@ -385,7 +373,6 @@
             color: var(--accent3);
             margin-bottom: 0.5rem;
             font-weight: 600;
-            display: block;
         }
         
         .company {
@@ -393,7 +380,6 @@
             color: var(--accent2);
             margin-bottom: 0.5rem;
             font-weight: 500;
-            display: block;
         }
         
         .date {
@@ -402,7 +388,6 @@
             font-style: italic;
             font-family: 'Roboto Mono', monospace;
             font-size: 0.85rem;
-            display: block;
         }
         
         ul {
@@ -594,7 +579,6 @@
         
         .back-to-top.visible {
             opacity: 1;
-            transform: translateY(0);
         }
         
         .back-to-top:hover {
@@ -671,9 +655,28 @@
                 flex-direction: column;
                 align-items: center;
             }
+        }
+        
+        /* Print styles */
+        @media print {
+            .aurora-container, .particles, .back-to-top, .theme-toggle, .btn-container, .ribbon-nav {
+                display: none;
+            }
             
-            .container {
-                padding: 1rem;
+            body {
+                background: white;
+                color: black;
+            }
+            
+            section {
+                background: white;
+                border: 1px solid #ddd;
+                box-shadow: none;
+            }
+            
+            .contact-item {
+                background: white;
+                border: 1px solid #ddd;
             }
         }
     </style>
@@ -683,7 +686,6 @@
         <div class="aurora-layer aurora-1"></div>
         <div class="aurora-layer aurora-2"></div>
         <div class="aurora-layer aurora-3"></div>
-        <div class="aurora-layer aurora-4"></div>
     </div>
     
     <div class="particles" id="particles"></div>
@@ -716,12 +718,9 @@
     <div class="container">
         <header>
             <div class="profile-container">
-                <div class="profile-img">
-                    <i class="fas fa-user"></i>
-                </div>
-            </div>
+                
             <h1>VASILEIOS TILLIS</h1>
-            <h2>Statistical Data Scientist</h2>
+            <h2>Data Scientist</h2>
             
             <div class="contact-info">
                 <div class="contact-item">
@@ -768,9 +767,9 @@
             <h3>Professional Experience</h3>
             
             <div class="experience-item">
-                <span class="job-title">Statistical Data Scientist</span>
-                <span class="company">Pfizer</span>
-                <span class="date">Dec 2023 – Present</span>
+                <div class="job-title">Statistical Data Scientist</div>
+                <div class="company">Pfizer</div>
+                <div class="date">Dec 2023 – Present</div>
                 <ul>
                     <li>Led a team of SMEs in the transition to a new statistical reporting platform for clinical trials.</li>
                     <li>Mentored junior colleagues to full independence within a month.</li>
@@ -781,9 +780,9 @@
             </div>
             
             <div class="experience-item">
-                <span class="job-title">IT Business and Product Data Analyst</span>
-                <span class="company">Aegean Airlines</span>
-                <span class="date">Jul 2022 – Nov 2023</span>
+                <div class="job-title">Product Data Analyst</div>
+                <div class="company">Aegean Airlines</div>
+                <div class="date">Jul 2022 – Nov 2023</div>
                 <ul>
                     <li>Designed business monitoring reports and digital solutions.</li>
                     <li>Developed automated processes and conducted data analysis with Power BI.</li>
@@ -792,9 +791,9 @@
             </div>
             
             <div class="experience-item">
-                <span class="job-title">Data Analyst</span>
-                <span class="company">Ministry of National Defence</span>
-                <span class="date">Jan 2018 – Oct 2018</span>
+                <div class="job-title">Data Analyst</div>
+                <div class="company">Ministry of National Defence</div>
+                <div class="date">Jan 2018 – Oct 2018</div>
                 <ul>
                     <li>Analyzed defense data and created dashboards.</li>
                     <li>Assisted with tool development for performance analysis.</li>
@@ -802,9 +801,9 @@
             </div>
             
             <div class="experience-item">
-                <span class="job-title">Information Security Analyst (Intern)</span>
-                <span class="company">OTE Group</span>
-                <span class="date">Jul 2015 – Sep 2015</span>
+                <div class="job-title">Information Security Analyst (Intern)</div>
+                <div class="company">OTE Group</div>
+                <div class="date">Jul 2015 – Sep 2015</div>
                 <ul>
                     <li>Monitored telecom fraud systems and supported incident response.</li>
                 </ul>
@@ -815,16 +814,16 @@
             <h3>Education</h3>
             
             <div class="education-item">
-                <span class="job-title">MSc in Data Science</span>
-                <span class="company">University of East London</span>
-                <span class="date">2020 – 2021</span>
+                <div class="job-title">MSc in Data Science</div>
+                <div class="company">University of East London</div>
+                <div class="date">2020 – 2021</div>
                 <p>Thesis: Detection of abusive language on social networks using machine learning.</p>
             </div>
             
             <div class="education-item">
-                <span class="job-title">BSc in Science & Technology of Telecommunications</span>
-                <span class="company">University of Peloponnese</span>
-                <span class="date">2011 – 2017</span>
+                <div class="job-title">BSc in Science & Technology of Telecommunications</div>
+                <div class="company">University of Peloponnese</div>
+                <div class="date">2011 – 2017</div>
                 <p>Thesis: Big Data Applications and Data Centers Architectures.</p>
             </div>
         </section>
@@ -1088,3 +1087,4 @@
     </script>
 </body>
 </html>
+
