@@ -1,1038 +1,886 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Vasileios Tillis | GTA Vice City Portfolio</title>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
-
-<style>
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    scroll-behavior:smooth;
-}
-
-:root{
-    --pink:#ff4fd8;
-    --purple:#9d4dff;
-    --cyan:#00f0ff;
-    --yellow:#ffe066;
-    --dark:#060612;
-    --glass:rgba(255,255,255,0.08);
-    --border:rgba(255,255,255,0.18);
-}
-
-body{
-    background:#060612;
-    color:white;
-    overflow-x:hidden;
-    font-family:'Poppins',sans-serif;
-}
-
-/* ================= BACKGROUND ================= */
-
-.bg-grid{
-    position:fixed;
-    inset:0;
-    background:
-    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-    background-size:50px 50px;
-    z-index:-5;
-    animation:gridMove 12s linear infinite;
-}
-
-@keyframes gridMove{
-    from{
-        transform:translateY(0px);
-    }
-    to{
-        transform:translateY(50px);
-    }
-}
-
-.sun{
-    position:fixed;
-    width:500px;
-    height:500px;
-    border-radius:50%;
-    background:
-    radial-gradient(circle,
-    #ffed8f 0%,
-    #ff8c42 35%,
-    #ff4fd8 70%,
-    transparent 100%);
-    top:-120px;
-    right:-100px;
-    filter:blur(25px);
-    opacity:.8;
-    animation:pulse 6s ease-in-out infinite;
-    z-index:-4;
-}
-
-@keyframes pulse{
-    0%,100%{
-        transform:scale(1);
-    }
-    50%{
-        transform:scale(1.1);
-    }
-}
-
-.palm{
-    position:fixed;
-    bottom:0;
-    font-size:250px;
-    color:rgba(255,255,255,0.04);
-    z-index:-3;
-    animation:floatPalm 6s ease-in-out infinite;
-}
-
-.palm.left{
-    left:-20px;
-}
-
-.palm.right{
-    right:-20px;
-    transform:scaleX(-1);
-}
-
-@keyframes floatPalm{
-    0%,100%{
-        transform:translateY(0px);
-    }
-    50%{
-        transform:translateY(-15px);
-    }
-}
-
-/* ================= PARTICLES ================= */
-
-.particles span{
-    position:absolute;
-    width:4px;
-    height:4px;
-    border-radius:50%;
-    background:white;
-    animation:particles 10s linear infinite;
-}
-
-@keyframes particles{
-    from{
-        transform:translateY(100vh) scale(0);
-        opacity:0;
-    }
-    20%{
-        opacity:1;
-    }
-    to{
-        transform:translateY(-10vh) scale(1);
-        opacity:0;
-    }
-}
-
-/* ================= NAVBAR ================= */
-
-nav{
-    position:fixed;
-    top:0;
-    width:100%;
-    z-index:1000;
-    backdrop-filter:blur(20px);
-    background:rgba(0,0,0,0.4);
-    border-bottom:1px solid rgba(255,255,255,0.1);
-}
-
-.nav-container{
-    max-width:1400px;
-    margin:auto;
-    padding:18px 40px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-}
-
-.logo{
-    font-size:1.8rem;
-    font-weight:800;
-    font-family:'Orbitron',sans-serif;
-    background:linear-gradient(to right,var(--pink),var(--cyan));
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
-    letter-spacing:2px;
-}
-
-.nav-links{
-    display:flex;
-    gap:25px;
-}
-
-.nav-links a{
-    text-decoration:none;
-    color:white;
-    position:relative;
-    transition:.4s;
-}
-
-.nav-links a::after{
-    content:'';
-    position:absolute;
-    left:0;
-    bottom:-6px;
-    width:0%;
-    height:2px;
-    background:linear-gradient(to right,var(--pink),var(--cyan));
-    transition:.4s;
-}
-
-.nav-links a:hover::after{
-    width:100%;
-}
-
-.nav-links a:hover{
-    color:var(--cyan);
-}
-
-/* ================= HERO ================= */
-
-.hero{
-    min-height:100vh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    text-align:center;
-    position:relative;
-    overflow:hidden;
-}
-
-.hero-content{
-    z-index:5;
-    animation:heroFade 1.5s ease;
-}
-
-@keyframes heroFade{
-    from{
-        opacity:0;
-        transform:translateY(50px);
-    }
-    to{
-        opacity:1;
-        transform:translateY(0);
-    }
-}
-
-.hero h1{
-    font-size:6rem;
-    font-family:'Orbitron',sans-serif;
-    line-height:1;
-    text-transform:uppercase;
-    background:linear-gradient(to bottom,#fff,var(--pink));
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
-    text-shadow:0 0 25px rgba(255,79,216,0.4);
-}
-
-.hero h2{
-    margin-top:20px;
-    font-size:2rem;
-    color:var(--cyan);
-    letter-spacing:6px;
-}
-
-.hero p{
-    max-width:800px;
-    margin:30px auto;
-    font-size:1.1rem;
-    line-height:1.9;
-    color:#ddd;
-}
-
-.hero-buttons{
-    display:flex;
-    justify-content:center;
-    gap:20px;
-    margin-top:40px;
-    flex-wrap:wrap;
-}
-
-.btn{
-    padding:16px 34px;
-    border-radius:50px;
-    text-decoration:none;
-    color:white;
-    position:relative;
-    overflow:hidden;
-    border:1px solid rgba(255,255,255,0.15);
-    transition:.4s;
-    backdrop-filter:blur(10px);
-}
-
-.btn-primary{
-    background:linear-gradient(to right,var(--pink),var(--purple));
-}
-
-.btn-secondary{
-    background:rgba(255,255,255,0.08);
-}
-
-.btn:hover{
-    transform:translateY(-8px) scale(1.05);
-    box-shadow:0 20px 50px rgba(255,79,216,0.35);
-}
-
-/* ================= SECTIONS ================= */
-
-section{
-    padding:120px 8%;
-    position:relative;
-}
-
-.section-title{
-    text-align:center;
-    margin-bottom:70px;
-}
-
-.section-title h3{
-    font-size:3rem;
-    font-family:'Orbitron',sans-serif;
-    background:linear-gradient(to right,var(--pink),var(--cyan));
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
-}
-
-.section-title p{
-    color:#bbb;
-    margin-top:15px;
-}
-
-/* ================= GLASS CARDS ================= */
-
-.glass-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-    gap:30px;
-}
-
-.card{
-    background:var(--glass);
-    border:1px solid var(--border);
-    border-radius:30px;
-    padding:35px;
-    position:relative;
-    overflow:hidden;
-    transition:.5s;
-    backdrop-filter:blur(20px);
-}
-
-.card::before{
-    content:'';
-    position:absolute;
-    inset:0;
-    background:linear-gradient(
-    130deg,
-    transparent,
-    rgba(255,255,255,0.1),
-    transparent);
-    transform:translateX(-100%);
-    transition:1s;
-}
-
-.card:hover::before{
-    transform:translateX(100%);
-}
-
-.card:hover{
-    transform:translateY(-12px) rotateX(5deg);
-    box-shadow:
-    0 25px 60px rgba(0,0,0,0.45),
-    0 0 30px rgba(255,79,216,0.2);
-}
-
-.card i{
-    font-size:2rem;
-    margin-bottom:20px;
-    color:var(--cyan);
-}
-
-.card h4{
-    font-size:1.5rem;
-    margin-bottom:15px;
-}
-
-.card p{
-    color:#ddd;
-    line-height:1.8;
-}
-
-/* ================= TIMELINE ================= */
-
-.timeline{
-    position:relative;
-    max-width:1200px;
-    margin:auto;
-}
-
-.timeline::before{
-    content:'';
-    position:absolute;
-    left:50%;
-    top:0;
-    width:4px;
-    height:100%;
-    background:linear-gradient(var(--pink),var(--cyan));
-    transform:translateX(-50%);
-}
-
-.timeline-item{
-    width:50%;
-    padding:30px;
-    position:relative;
-}
-
-.timeline-item:nth-child(odd){
-    left:0;
-}
-
-.timeline-item:nth-child(even){
-    left:50%;
-}
-
-.timeline-content{
-    background:rgba(255,255,255,0.08);
-    padding:30px;
-    border-radius:25px;
-    border:1px solid rgba(255,255,255,0.1);
-    backdrop-filter:blur(15px);
-    transition:.4s;
-}
-
-.timeline-content:hover{
-    transform:scale(1.03);
-    box-shadow:0 20px 40px rgba(0,0,0,0.4);
-}
-
-.timeline-content h4{
-    font-size:1.4rem;
-    margin-bottom:10px;
-}
-
-.timeline-content span{
-    color:var(--cyan);
-    display:block;
-    margin-bottom:15px;
-}
-
-.timeline-content ul{
-    padding-left:20px;
-    color:#ddd;
-    line-height:1.8;
-}
-
-/* ================= SKILLS ================= */
-
-.skills{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-    gap:40px;
-}
-
-.skill-box{
-    background:rgba(255,255,255,0.06);
-    border-radius:25px;
-    padding:35px;
-    border:1px solid rgba(255,255,255,0.1);
-}
-
-.skill{
-    margin-bottom:25px;
-}
-
-.skill span{
-    display:flex;
-    justify-content:space-between;
-    margin-bottom:10px;
-}
-
-.bar{
-    width:100%;
-    height:12px;
-    background:rgba(255,255,255,0.1);
-    border-radius:50px;
-    overflow:hidden;
-}
-
-.fill{
-    height:100%;
-    border-radius:50px;
-    background:linear-gradient(to right,var(--pink),var(--cyan));
-    animation:fillAnim 2s ease forwards;
-}
-
-@keyframes fillAnim{
-    from{
-        width:0;
-    }
-}
-
-/* ================= CONTACT ================= */
-
-.contact{
-    text-align:center;
-}
-
-.contact-box{
-    max-width:900px;
-    margin:auto;
-    background:rgba(255,255,255,0.06);
-    border-radius:35px;
-    padding:50px;
-    border:1px solid rgba(255,255,255,0.1);
-    backdrop-filter:blur(20px);
-}
-
-.contact-icons{
-    display:flex;
-    justify-content:center;
-    gap:30px;
-    flex-wrap:wrap;
-    margin-top:40px;
-}
-
-.contact-icons a{
-    width:70px;
-    height:70px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    border-radius:50%;
-    background:rgba(255,255,255,0.08);
-    color:white;
-    text-decoration:none;
-    font-size:1.5rem;
-    transition:.4s;
-    border:1px solid rgba(255,255,255,0.1);
-}
-
-.contact-icons a:hover{
-    transform:translateY(-10px) rotate(360deg);
-    background:linear-gradient(to right,var(--pink),var(--cyan));
-    box-shadow:0 15px 35px rgba(255,79,216,0.4);
-}
-
-/* ================= FLOATING TEXT ================= */
-
-.floating-text{
-    position:absolute;
-    font-size:10rem;
-    font-weight:900;
-    opacity:.03;
-    z-index:-1;
-    animation:floatText 12s ease-in-out infinite;
-}
-
-.floating-text.one{
-    top:10%;
-    left:5%;
-}
-
-.floating-text.two{
-    bottom:5%;
-    right:5%;
-}
-
-@keyframes floatText{
-    0%,100%{
-        transform:translateY(0px);
-    }
-    50%{
-        transform:translateY(-40px);
-    }
-}
-
-/* ================= FOOTER ================= */
-
-footer{
-    padding:50px 20px;
-    text-align:center;
-    border-top:1px solid rgba(255,255,255,0.08);
-    color:#999;
-}
-
-/* ================= SCROLLBAR ================= */
-
-::-webkit-scrollbar{
-    width:10px;
-}
-
-::-webkit-scrollbar-thumb{
-    background:linear-gradient(var(--pink),var(--cyan));
-    border-radius:20px;
-}
-
-::-webkit-scrollbar-track{
-    background:#050510;
-}
-
-/* ================= RESPONSIVE ================= */
-
-@media(max-width:900px){
-
-    .hero h1{
-        font-size:3rem;
-    }
-
-    .hero h2{
-        font-size:1.2rem;
-        letter-spacing:3px;
-    }
-
-    .timeline::before{
-        left:20px;
-    }
-
-    .timeline-item{
-        width:100%;
-        left:0 !important;
-        padding-left:60px;
-    }
-
-    .nav-links{
-        display:none;
-    }
-}
-
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vasileios Tillis - Resume</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary-dark: #0a0a14;
+            --primary-purple: #7022c9;
+            --accent-purple: #a45deb;
+            --bright-purple: #c87cff;
+            --neon-purple: #cc33ff;
+            --neon-blue: #3399ff;
+            --neon-green: #33ffcc;
+            --neon-pink: #ff33cc;
+            --text-light: #e0e0e0;
+        }
+        
+        body {
+            background-color: var(--primary-dark);
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+            padding-top: 40px;
+            min-height: 100vh;
+            font-family: 'Exo 2', sans-serif;
+        }
+        
+        /* Northern Lights background effect */
+        .northern-lights {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            opacity: 0.9;
+        }
+        
+        .light-band {
+            position: absolute;
+            height: 30%;
+            width: 200%;
+            opacity: 0.7;
+            filter: blur(30px);
+            mix-blend-mode: screen;
+            animation: aurora-flow 15s linear infinite;
+            border-radius: 50%;
+        }
+        
+        .light-band-1 {
+            background: linear-gradient(90deg, 
+                rgba(51, 153, 255, 0.8), 
+                rgba(112, 34, 201, 0.9),
+                rgba(204, 51, 255, 0.8));
+            top: 10%;
+            left: -100%;
+            animation-duration: 25s;
+            animation-delay: 0s;
+        }
+        
+        .light-band-2 {
+            background: linear-gradient(90deg, 
+                rgba(51, 255, 204, 0.7), 
+                rgba(51, 153, 255, 0.8),
+                rgba(204, 51, 255, 0.7));
+            top: 30%;
+            left: -80%;
+            animation-duration: 20s;
+            animation-delay: 5s;
+        }
+        
+        .light-band-3 {
+            background: linear-gradient(90deg, 
+                rgba(204, 51, 255, 0.6), 
+                rgba(255, 51, 204, 0.7),
+                rgba(51, 153, 255, 0.6));
+            top: 50%;
+            left: -120%;
+            animation-duration: 30s;
+            animation-delay: 2s;
+        }
+        
+        .light-band-4 {
+            background: linear-gradient(90deg, 
+                rgba(112, 34, 201, 0.7), 
+                rgba(51, 255, 204, 0.8),
+                rgba(112, 34, 201, 0.7));
+            top: 70%;
+            left: -90%;
+            animation-duration: 35s;
+            animation-delay: 7s;
+        }
+        
+        @keyframes aurora-flow {
+            0% {
+                transform: translateX(0) rotate(5deg);
+            }
+            100% {
+                transform: translateX(100%) rotate(5deg);
+            }
+        }
+        
+        /* Ultra-compact Navigation bar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(10, 10, 20, 0.98);
+            backdrop-filter: blur(15px);
+            padding: 5px 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+            border-bottom: 1px solid var(--neon-purple);
+        }
+        
+        .nav-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 6px;
+            padding: 0 10px;
+        }
+        
+        .nav-btn {
+            background: rgba(35, 15, 65, 0.7);
+            color: var(--text-light);
+            border: 1px solid var(--neon-purple);
+            padding: 6px 10px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.75rem;
+            outline: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            box-shadow: 0 0 8px rgba(204, 51, 255, 0.3);
+        }
+        
+        .nav-btn:hover {
+            background: rgba(70, 25, 130, 0.8);
+            transform: translateY(-2px);
+            box-shadow: 0 3px 12px rgba(179, 102, 255, 0.5),
+                        0 0 15px rgba(204, 51, 255, 0.4);
+        }
+        
+        .nav-btn:active {
+            transform: translateY(0);
+        }
+        
+        .nav-btn i {
+            font-size: 0.8rem;
+            color: var(--neon-purple);
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 25px 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 35px;
+            padding: 25px;
+            background: rgba(10, 10, 20, 0.85);
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+            border: 1px solid var(--neon-purple);
+            animation: fadeIn 1s ease-out;
+            backdrop-filter: blur(5px);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 8px;
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(204, 51, 255, 0.7);
+        }
+        
+        h2 {
+            font-size: 1.3rem;
+            color: var(--accent-purple);
+            margin-bottom: 15px;
+            font-weight: 400;
+        }
+        
+        .contact-info {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.3s ease;
+            font-size: 0.9rem;
+        }
+        
+        .contact-item:hover {
+            transform: scale(1.05);
+        }
+        
+        .contact-item i {
+            color: var(--bright-purple);
+            font-size: 1rem;
+        }
+        
+        section {
+            background: rgba(10, 10, 20, 0.85);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+            border: 1px solid var(--neon-purple);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+            backdrop-filter: blur(5px);
+        }
+        
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        h3 {
+            color: var(--bright-purple);
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--neon-purple);
+            text-shadow: 0 2px 5px rgba(179, 102, 255, 0.3);
+        }
+        
+        .experience-item, .education-item {
+            margin-bottom: 20px;
+            padding: 12px;
+            border-radius: 8px;
+            background: rgba(26, 0, 51, 0.4);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-left: 3px solid var(--neon-purple);
+        }
+        
+        .experience-item:hover, .education-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+            border-left: 3px solid var(--neon-blue);
+        }
+        
+        .experience-item h4, .education-item h4 {
+            color: #ffffff;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .experience-item h4 i, .education-item h4 i {
+            color: var(--neon-purple);
+            font-size: 1rem;
+        }
+        
+        .date {
+            color: var(--bright-purple);
+            font-style: italic;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.9rem;
+        }
+        
+        .date i {
+            color: var(--neon-blue);
+        }
+        
+        ul {
+            list-style-type: none;
+            padding-left: 8px;
+        }
+        
+        li {
+            margin-bottom: 8px;
+            padding-left: 16px;
+            position: relative;
+            transition: transform 0.3s ease;
+            font-size: 0.95rem;
+        }
+        
+        li:hover {
+            transform: translateX(3px);
+        }
+        
+        li:before {
+            content: "▸";
+            color: var(--neon-purple);
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            margin-left: -1em;
+            text-shadow: 0 0 5px rgba(204, 51, 255, 0.5);
+        }
+        
+        .skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        
+        .skill-category {
+            flex: 1;
+            min-width: 230px;
+        }
+        
+        .skill-category h4 {
+            color: #ffffff;
+            margin-bottom: 12px;
+            padding-bottom: 4px;
+            border-bottom: 1px solid var(--neon-purple);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.1rem;
+        }
+        
+        .skill-category h4 i {
+            color: var(--neon-purple);
+        }
+        
+        .skill-item {
+            margin-bottom: 8px;
+        }
+        
+        .skill-name {
+            display: block;
+            margin-bottom: 4px;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+        
+        .skill-bar {
+            height: 6px;
+            background: #1a0033;
+            border-radius: 3px;
+            overflow: hidden;
+            box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .skill-level {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-purple), var(--neon-purple));
+            border-radius: 3px;
+            width: 0;
+            transition: width 1.5s ease-in-out;
+            box-shadow: 0 0 8px rgba(204, 51, 255, 0.5);
+        }
+        
+        .languages {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .language {
+            flex: 1;
+            min-width: 140px;
+            text-align: center;
+            padding: 12px;
+            border-radius: 8px;
+            background: rgba(26, 0, 51, 0.4);
+            transition: transform 0.3s ease;
+            border: 1px solid var(--neon-purple);
+        }
+        
+        .language:hover {
+            transform: scale(1.03);
+            box-shadow: 0 0 12px rgba(204, 51, 255, 0.4);
+        }
+        
+        .language h4 {
+            color: #ffffff;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-size: 1rem;
+        }
+        
+        .language h4 i {
+            color: var(--neon-purple);
+        }
+        
+        .language p {
+            color: var(--bright-purple);
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 15px;
+            color: var(--bright-purple);
+            font-size: 0.85rem;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Scroll to top button */
+        .scroll-top {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--neon-purple);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 999;
+            box-shadow: 0 0 12px rgba(204, 51, 255, 0.5);
+            border: 1px solid var(--neon-blue);
+            font-size: 0.9rem;
+        }
+        
+        .scroll-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .scroll-top:hover {
+            background: var(--neon-blue);
+            transform: translateY(-3px);
+            box-shadow: 0 0 15px rgba(51, 153, 255, 0.7);
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.1rem;
+            }
+            
+            .contact-info {
+                flex-direction: column;
+                align-items: center;
+                gap: 8px;
+            }
+            
+            .skills-container, .languages {
+                flex-direction: column;
+            }
+            
+            .nav-container {
+                gap: 4px;
+            }
+            
+            .nav-btn {
+                padding: 5px 8px;
+                font-size: 0.7rem;
+            }
+            
+            .nav-btn i {
+                font-size: 0.7rem;
+            }
+            
+            .navbar {
+                padding: 4px 0;
+            }
+            
+            body {
+                padding-top: 35px;
+            }
+            
+            .container {
+                padding: 20px 15px;
+            }
+        }
+    </style>
 </head>
-
 <body>
-
-<div class="bg-grid"></div>
-<div class="sun"></div>
-
-<div class="palm left">
-    <i class="fa-solid fa-tree"></i>
-</div>
-
-<div class="palm right">
-    <i class="fa-solid fa-tree"></i>
-</div>
-
-<div class="particles">
-    <span style="left:10%; animation-delay:0s;"></span>
-    <span style="left:20%; animation-delay:2s;"></span>
-    <span style="left:30%; animation-delay:4s;"></span>
-    <span style="left:40%; animation-delay:6s;"></span>
-    <span style="left:50%; animation-delay:1s;"></span>
-    <span style="left:60%; animation-delay:3s;"></span>
-    <span style="left:70%; animation-delay:5s;"></span>
-    <span style="left:80%; animation-delay:7s;"></span>
-    <span style="left:90%; animation-delay:9s;"></span>
-</div>
-
-<nav>
-    <div class="nav-container">
-        <div class="logo">VTILLIS</div>
-
-        <div class="nav-links">
-            <a href="#about">About</a>
-            <a href="#experience">Experience</a>
-            <a href="#skills">Skills</a>
-            <a href="#contact">Contact</a>
-        </div>
+    <div class="northern-lights">
+        <div class="light-band light-band-1"></div>
+        <div class="light-band light-band-2"></div>
+        <div class="light-band light-band-3"></div>
+        <div class="light-band light-band-4"></div>
     </div>
-</nav>
-
-<!-- HERO -->
-
-<section class="hero">
-
-    <div class="floating-text one">VICE</div>
-    <div class="floating-text two">CITY</div>
-
-    <div class="hero-content">
-
-        <h1>VASILEIOS<br>TILLIS</h1>
-
-        <h2>DATA SCIENTIST • AI • ANALYTICS</h2>
-
-        <p>
-            GTA Vice City inspired futuristic portfolio with neon aesthetics,
-            cinematic animations, cyberpunk transitions and premium UI effects.
-            Senior Statistical Data Scientist with experience in Pfizer,
-            Aegean Airlines and advanced machine learning systems.
-        </p>
-
-        <div class="hero-buttons">
-            <a href="#experience" class="btn btn-primary">
-                Explore Experience
-            </a>
-
-            <a href="#contact" class="btn btn-secondary">
-                Contact Me
-            </a>
+    
+    <!-- Ultra-compact Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <button class="nav-btn" data-section="header">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </button>
+            <button class="nav-btn" data-section="summary">
+                <i class="fas fa-user-tie"></i>
+                <span>Summary</span>
+            </button>
+            <button class="nav-btn" data-section="experience">
+                <i class="fas fa-briefcase"></i>
+                <span>Experience</span>
+            </button>
+            <button class="nav-btn" data-section="education">
+                <i class="fas fa-graduation-cap"></i>
+                <span>Education</span>
+            </button>
+            <button class="nav-btn" data-section="certifications">
+                <i class="fas fa-certificate"></i>
+                <span>Certs</span>
+            </button>
+            <button class="nav-btn" data-section="skills">
+                <i class="fas fa-code"></i>
+                <span>Skills</span>
+            </button>
+            <button class="nav-btn" data-section="languages">
+                <i class="fas fa-language"></i>
+                <span>Languages</span>
+            </button>
         </div>
-
+    </nav>
+    
+    <!-- Scroll to top button -->
+    <div class="scroll-top" id="scrollTop">
+        <i class="fas fa-arrow-up"></i>
     </div>
-
-</section>
-
-<!-- ABOUT -->
-
-<section id="about">
-
-    <div class="section-title">
-        <h3>ABOUT ME</h3>
-        <p>Modern Vice City inspired futuristic profile</p>
-    </div>
-
-    <div class="glass-grid">
-
-        <div class="card">
-            <i class="fa-solid fa-brain"></i>
-            <h4>AI & Data Science</h4>
-            <p>
-                Specialized in machine learning, statistical modeling,
-                clinical reporting automation and advanced analytics systems.
-            </p>
-        </div>
-
-        <div class="card">
-            <i class="fa-solid fa-chart-line"></i>
-            <h4>Business Intelligence</h4>
-            <p>
-                Expert in Power BI dashboards, automation solutions,
-                SQL optimization and enterprise-level data reporting.
-            </p>
-        </div>
-
-        <div class="card">
-            <i class="fa-solid fa-rocket"></i>
-            <h4>Innovation</h4>
-            <p>
-                Passionate about futuristic technology, interactive systems,
-                premium UI experiences and high-performance solutions.
-            </p>
-        </div>
-
-    </div>
-
-</section>
-
-<!-- EXPERIENCE -->
-
-<section id="experience">
-
-    <div class="section-title">
-        <h3>EXPERIENCE</h3>
-        <p>Professional timeline with cinematic animations</p>
-    </div>
-
-    <div class="timeline">
-
-        <div class="timeline-item">
-            <div class="timeline-content">
-                <h4>Pfizer</h4>
-                <span>Senior Associate Statistical Data Scientist • 2026 - Present</span>
-
+    
+    <div class="container">
+        <header id="header">
+            <h1>Vasileios Tillis</h1>
+            <h2>Statistical Data Scientist</h2>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    <span>+30-6978303235</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <span>tillisvasileios@gmail.com</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fab fa-linkedin"></i>
+                    <span>linkedin.com/in/vasilis-tillis-858233223</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-globe"></i>
+                    <span>vtillis.github.io</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Artemida, Attica, Greece</span>
+                </div>
+            </div>
+        </header>
+        
+        <section id="summary">
+            <h3>Professional Summary</h3>
+            <p>MSc in Data Science with experience in pharmaceutical and airline industries. Proficient in Python, R, SQL, and SAS. Passionate about uncovering insights from data and mentoring colleagues. Known for independent high-quality output and team leadership.</p>
+        </section>
+        
+        <section id="experience">
+            <h3>Professional Experience</h3>
+            <div class="experience-item">
+                <h4><i class="fas fa-microscope"></i> Senior Associate Statistical Data Scientist – Pfizer</h4>
+                <div class="date"><i class="far fa-calendar-alt"></i> Jun 2026 – Present</div>
+                
+                <h4 style="margin-top: 12px;"><i class="fas fa-microscope"></i> Associate Statistical Data Scientist – Pfizer</h4>
+                <div class="date"><i class="far fa-calendar-alt"></i> Dec 2023 – May 2026</div>
+                
                 <ul>
-                    <li>Led migration to modern statistical reporting platform</li>
-                    <li>Mentored junior scientists and new hires</li>
-                    <li>Delivered high-quality SAR clinical trial reporting</li>
+                    <li>Led a team of SMEs in the transition to a new statistical reporting platform for clinical trials.</li>
+                    <li>Mentored junior colleagues to full independence and be a buddy for new hires.</li>
+                    <li>Ensured quality and continuity during team transitions.</li>
+                    <li>Contributed to a PHUSE-accepted poster on statistical validation efficiency.</li>
+                    <li>Delivered high-quality SARs independently across multiple clinical projects.</li>
                 </ul>
             </div>
-        </div>
-
-        <div class="timeline-item">
-            <div class="timeline-content">
-                <h4>Pfizer</h4>
-                <span>Associate Statistical Data Scientist • 2023 - 2026</span>
-
+            
+            <div class="experience-item">
+                <h4><i class="fas fa-plane"></i> Product Data Analyst – Aegean Airlines</h4>
+                <div class="date"><i class="far fa-calendar-alt"></i> Jul 2022 – Nov 2023</div>
                 <ul>
-                    <li>Developed clinical data solutions</li>
-                    <li>Contributed to PHUSE accepted research poster</li>
-                    <li>Maintained quality and statistical validation</li>
+                    <li>Designed business monitoring reports and digital solutions.</li>
+                    <li>Developed automated processes and conducted data analysis with Power BI.</li>
+                    <li>Collaborated with teams to meet business IT needs and improve efficiency.</li>
                 </ul>
             </div>
-        </div>
-
-        <div class="timeline-item">
-            <div class="timeline-content">
-                <h4>Aegean Airlines</h4>
-                <span>Product Data Analyst • 2022 - 2023</span>
-
+            
+            <div class="experience-item">
+                <h4><i class="fas fa-shield-alt"></i> Data Analyst – Ministry of National Defence</h4>
+                <div class="date"><i class="far fa-calendar-alt"></i> Jan 2018 – Oct 2018</div>
                 <ul>
-                    <li>Created business intelligence reports</li>
-                    <li>Automated enterprise workflows</li>
-                    <li>Built advanced Power BI dashboards</li>
+                    <li>Analyzed defense data and created dashboards.</li>
+                    <li>Assisted with tool development for performance analysis.</li>
                 </ul>
             </div>
-        </div>
-
-        <div class="timeline-item">
-            <div class="timeline-content">
-                <h4>OTE Group</h4>
-                <span>Information Security Analyst • Internship</span>
-
+            
+            <div class="experience-item">
+                <h4><i class="fas fa-lock"></i> Information Security Analyst (Intern) – OTE Group</h4>
+                <div class="date"><i class="far fa-calendar-alt"></i> Jul 2015 – Sep 2015</div>
                 <ul>
-                    <li>Telecom fraud monitoring systems</li>
-                    <li>Incident response support</li>
-                    <li>Security analytics operations</li>
+                    <li>Monitored telecom fraud systems and supported incident response.</li>
                 </ul>
             </div>
-        </div>
-
+        </section>
+        
+        <section id="education">
+            <h3>Education</h3>
+            <div class="education-item">
+                <h4><i class="fas fa-university"></i> MSc in Data Science – University of East London</h4>
+                <div class="date"><i class="far fa-calendar-alt"></i> 2020 – 2021</div>
+                <p>Thesis: Detection of abusive language on social networks using machine learning.</p>
+            </div>
+            
+            <div class="education-item">
+                <h4><i class="fas fa-graduation-cap"></i> BSc in Science & Technology of Telecommunications – University of Peloponnese</h4>
+                <div class="date"><i class="far fa-calendar-alt"></i> 2011 – 2017</div>
+                <p>Thesis: Big Data Applications and Data Centers Architectures.</p>
+            </div>
+        </section>
+        
+        <section id="certifications">
+            <h3>Certifications</h3>
+            <ul>
+                <li><i class="fas fa-award"></i> Google Data Analytics Professional Certificate</li>
+                <li><i class="fas fa-award"></i> IBM Data Science Professional Certificate</li>
+                <li><i class="fas fa-award"></i> SAS Programmer Professional Certificate</li>
+            </ul>
+        </section>
+        
+        <section id="skills">
+            <h3>Skills</h3>
+            <div class="skills-container">
+                <div class="skill-category">
+                    <h4><i class="fas fa-laptop-code"></i> Technical Skills</h4>
+                    <div class="skill-item">
+                        <span class="skill-name">Python</span>
+                        <div class="skill-bar">
+                            <div class="skill-level" data-width="95%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <span class="skill-name">R</span>
+                        <div class="skill-bar">
+                            <div class="skill-level" data-width="90%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <span class="skill-name">SQL</span>
+                        <div class="skill-bar">
+                            <div class="skill-level" data-width="90%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <span class="skill-name">SAS</span>
+                        <div class="skill-bar">
+                            <div class="skill-level" data-width="90%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <span class="skill-name">Power BI</span>
+                        <div class="skill-bar">
+                            <div class="skill-level" data-width="85%"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="skill-category">
+                    <h4><i class="fas fa-chart-line"></i> Data Science</h4>
+                    <div class="skill-item">
+                        <span class="skill-name">Data Cleaning</span>
+                        <div class="skill-bar">
+                            <div class="skill-level" data-width="90%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <span class="skill-name">Data Mining</span>
+                        <div class="skill-bar">
+                            <div class="skill-level" data-width="85%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <span class="skill-name">Data Visualization</span>
+                        <div class="skill-bar">
+                            <div class="skill-level" data-width="90%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <span class="skill-name">Machine Learning</span>
+                        <div class="skill-bar">
+                            <div class="skill-level" data-width="85%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <span class="skill-name">Statistical Modeling</span>
+                        <div class="skill-bar">
+                            <div class="skill-level" data-width="90%"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="skill-category">
+                    <h4><i class="fas fa-users"></i> Professional Skills</h4>
+                    <div class="skill-item">
+                        <span class="skill-name">Project Management</span>
+                        <div class="skill-bar">
+                            <div class="skill-level" data-width="90%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <span class="skill-name">Communication</span>
+                        <div class="skill-bar">
+                            <div class="skill-level" data-width="90%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <span class="skill-name">Problem Solving</span>
+                        <div class="skill-bar">
+                            <div class="skill-level" data-width="95%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <span class="skill-name">Team Leadership</span>
+                        <div class="skill-bar">
+                            <div class="skill-level" data-width="95%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <span class="skill-name">Mentoring</span>
+                        <div class="skill-bar">
+                            <div class="skill-level" data-width="95%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="languages">
+            <h3>Languages</h3>
+            <div class="languages">
+                <div class="language">
+                    <h4><i class="fas fa-flag"></i> Greek</h4>
+                    <p>Native</p>
+                </div>
+                <div class="language">
+                    <h4><i class="fas fa-flag-usa"></i> English</h4>
+                    <p>Professional</p>
+                </div>
+                <div class="language">
+                    <h4><i class="fas fa-flag"></i> German</h4>
+                    <p>Elementary</p>
+                </div>
+            </div>
+        </section>
+        
+        <footer>
+            <p>© 2026 Vasileios Tillis | Resume</p>
+        </footer>
     </div>
 
-</section>
-
-<!-- SKILLS -->
-
-<section id="skills">
-
-    <div class="section-title">
-        <h3>TECH STACK</h3>
-        <p>Animated futuristic skill bars</p>
-    </div>
-
-    <div class="skills">
-
-        <div class="skill-box">
-
-            <div class="skill">
-                <span>
-                    <strong>Python</strong>
-                    <strong>95%</strong>
-                </span>
-
-                <div class="bar">
-                    <div class="fill" style="width:95%;"></div>
-                </div>
-            </div>
-
-            <div class="skill">
-                <span>
-                    <strong>R</strong>
-                    <strong>90%</strong>
-                </span>
-
-                <div class="bar">
-                    <div class="fill" style="width:90%;"></div>
-                </div>
-            </div>
-
-            <div class="skill">
-                <span>
-                    <strong>SQL</strong>
-                    <strong>92%</strong>
-                </span>
-
-                <div class="bar">
-                    <div class="fill" style="width:92%;"></div>
-                </div>
-            </div>
-
-        </div>
-
-        <div class="skill-box">
-
-            <div class="skill">
-                <span>
-                    <strong>Machine Learning</strong>
-                    <strong>88%</strong>
-                </span>
-
-                <div class="bar">
-                    <div class="fill" style="width:88%;"></div>
-                </div>
-            </div>
-
-            <div class="skill">
-                <span>
-                    <strong>Power BI</strong>
-                    <strong>91%</strong>
-                </span>
-
-                <div class="bar">
-                    <div class="fill" style="width:91%;"></div>
-                </div>
-            </div>
-
-            <div class="skill">
-                <span>
-                    <strong>SAS</strong>
-                    <strong>90%</strong>
-                </span>
-
-                <div class="bar">
-                    <div class="fill" style="width:90%;"></div>
-                </div>
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-<!-- CONTACT -->
-
-<section id="contact" class="contact">
-
-    <div class="section-title">
-        <h3>CONTACT</h3>
-        <p>Let’s build something futuristic</p>
-    </div>
-
-    <div class="contact-box">
-
-        <h2 style="font-size:2.5rem; margin-bottom:20px;">
-            Get In Touch
-        </h2>
-
-        <p style="color:#ccc; line-height:1.9;">
-            Open for Data Science, AI, Statistical Programming,
-            Business Intelligence and advanced technology projects.
-        </p>
-
-        <div class="contact-icons">
-
-            <a href="#">
-                <i class="fa-solid fa-envelope"></i>
-            </a>
-
-            <a href="#">
-                <i class="fa-brands fa-linkedin-in"></i>
-            </a>
-
-            <a href="#">
-                <i class="fa-brands fa-github"></i>
-            </a>
-
-            <a href="#">
-                <i class="fa-solid fa-globe"></i>
-            </a>
-
-        </div>
-
-    </div>
-
-</section>
-
-<footer>
-    © 2026 Vasileios Tillis • GTA Vice City Inspired Futuristic Portfolio
-</footer>
-
-<script>
-
-/* ================= SCROLL REVEAL ================= */
-
-const observer = new IntersectionObserver((entries)=>{
-    entries.forEach((entry)=>{
-        if(entry.isIntersecting){
-            entry.target.animate([
-                {
-                    opacity:0,
-                    transform:'translateY(80px)'
-                },
-                {
-                    opacity:1,
-                    transform:'translateY(0px)'
+    <script>
+        // Navigation functionality
+        document.querySelectorAll('.nav-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const sectionId = button.getAttribute('data-section');
+                const section = document.getElementById(sectionId);
+                
+                if (section) {
+                    window.scrollTo({
+                        top: section.offsetTop - 45,
+                        behavior: 'smooth'
+                    });
                 }
-            ],{
-                duration:1000,
-                fill:'forwards',
-                easing:'ease'
+            });
+        });
+        
+        // Scroll animations
+        const sections = document.querySelectorAll('section');
+        
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+        
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    
+                    // Animate skill bars when skills section is visible
+                    if (entry.target.id === 'skills') {
+                        setTimeout(animateSkillBars, 300);
+                    }
+                }
+            });
+        }, observerOptions);
+        
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+        
+        // Animate skill bars
+        function animateSkillBars() {
+            const skillLevels = document.querySelectorAll('.skill-level');
+            skillLevels.forEach(level => {
+                const width = level.getAttribute('data-width');
+                level.style.width = width;
             });
         }
-    });
-});
-
-document.querySelectorAll('.card,.timeline-item,.skill-box,.contact-box')
-.forEach((el)=>{
-    observer.observe(el);
-});
-
-/* ================= CURSOR GLOW ================= */
-
-const glow = document.createElement('div');
-
-glow.style.position='fixed';
-glow.style.width='250px';
-glow.style.height='250px';
-glow.style.borderRadius='50%';
-glow.style.pointerEvents='none';
-glow.style.background='radial-gradient(circle, rgba(255,79,216,0.18), transparent)';
-glow.style.zIndex='9999';
-glow.style.transform='translate(-50%,-50%)';
-
-document.body.appendChild(glow);
-
-document.addEventListener('mousemove',(e)=>{
-    glow.style.left=e.clientX+'px';
-    glow.style.top=e.clientY+'px';
-});
-
-/* ================= PARALLAX ================= */
-
-window.addEventListener('scroll',()=>{
-
-    const scrollY = window.scrollY;
-
-    document.querySelector('.sun').style.transform =
-    `translateY(${scrollY * 0.15}px)`;
-
-});
-
-/* ================= NAVBAR EFFECT ================= */
-
-window.addEventListener('scroll',()=>{
-
-    const nav = document.querySelector('nav');
-
-    if(window.scrollY > 50){
-        nav.style.background='rgba(0,0,0,0.75)';
-        nav.style.boxShadow='0 10px 30px rgba(0,0,0,0.4)';
-    }else{
-        nav.style.background='rgba(0,0,0,0.4)';
-        nav.style.boxShadow='none';
-    }
-
-});
-
-/* ================= TYPEWRITER ================= */
-
-const subtitle = document.querySelector('.hero h2');
-
-const text = "DATA SCIENTIST • AI • ANALYTICS";
-
-let index = 0;
-
-subtitle.innerHTML = "";
-
-function typeWriter(){
-
-    if(index < text.length){
-
-        subtitle.innerHTML += text.charAt(index);
-
-        index++;
-
-        setTimeout(typeWriter,70);
-    }
-}
-
-typeWriter();
-
-</script>
-
+        
+        // Scroll to top button
+        const scrollTopButton = document.getElementById('scrollTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollTopButton.classList.add('visible');
+            } else {
+                scrollTopButton.classList.remove('visible');
+            }
+        });
+        
+        scrollTopButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Initialize animations on page load
+        window.addEventListener('load', () => {
+            document.querySelector('header').style.animation = 'fadeIn 1s ease-out forwards';
+            
+            // Animate skill bars if skills section is already in view
+            const skillsSection = document.getElementById('skills');
+            if (skillsSection.getBoundingClientRect().top < window.innerHeight) {
+                animateSkillBars();
+            }
+        });
+    </script>
 </body>
 </html>
