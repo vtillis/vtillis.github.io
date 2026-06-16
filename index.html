@@ -3,590 +3,510 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vasileios Tillis - Premium Resume</title>
+    <title>Vasileios Tillis - NFSU2 Tuner Profile</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Street Racing & Tech Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* === BASE & CSS VARIABLES === */
+        /* === NFSU2 THEME VARIABLES === */
         :root {
-            --bg-dark: #05050a;
-            --surface: rgba(18, 18, 28, 0.6);
-            --surface-hover: rgba(28, 28, 45, 0.8);
-            --primary-purple: #7022c9;
-            --bright-purple: #c87cff;
-            --neon-purple: #cc33ff;
-            --neon-blue: #3399ff;
-            --text-main: #f0f0f5;
-            --text-muted: #a0a0b5;
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --glow-spread: 0 0 20px rgba(204, 51, 255, 0.4);
+            --bg-deep: #030304;
+            --nfs-green: #39ff14;
+            --nfs-cyan: #00e5ff;
+            --nfs-blue: #0055ff;
+            --nfs-panel: rgba(5, 10, 15, 0.85);
+            --text-main: #e0f8ff;
+            --text-muted: #8ab4f8;
+            --scanline: rgba(0, 229, 255, 0.03);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
+
         body {
-            background-color: var(--bg-dark);
+            background-color: var(--bg-deep);
             color: var(--text-main);
-            font-family: 'Exo 2', sans-serif;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.1rem;
             line-height: 1.6;
             overflow-x: hidden;
-            cursor: none; /* Custom cursor */
             scroll-behavior: smooth;
         }
 
+        /* === CARBON FIBER & TECH BACKGROUND === */
+        .carbon-bg {
+            position: fixed; inset: 0; z-index: -3;
+            background:
+                radial-gradient(black 15%, transparent 16%) 0 0,
+                radial-gradient(black 15%, transparent 16%) 8px 8px,
+                radial-gradient(rgba(255,255,255,.05) 15%, transparent 20%) 0 1px,
+                radial-gradient(rgba(255,255,255,.05) 15%, transparent 20%) 8px 9px;
+            background-color: #0a0a0c;
+            background-size: 16px 16px;
+        }
+
+        /* === SPEED LINES === */
+        .speed-lines {
+            position: fixed; inset: 0; z-index: -2;
+            background: linear-gradient(90deg, transparent 0%, var(--scanline) 50%, transparent 100%);
+            background-size: 200% 100%;
+            animation: speed 0.5s linear infinite;
+            opacity: 0.3; pointer-events: none;
+        }
+        @keyframes speed { 0% { background-position: 100% 0; } 100% { background-position: -100% 0; } }
+
+        /* === CRT SCANLINES === */
+        .scanlines {
+            position: fixed; inset: 0; z-index: 9999;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 4px, 3px 100%;
+            pointer-events: none; opacity: 0.6;
+        }
+
         /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: var(--bg-dark); }
-        ::-webkit-scrollbar-thumb { background: var(--primary-purple); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--neon-purple); }
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: var(--bg-deep); border-left: 1px solid #111; }
+        ::-webkit-scrollbar-thumb { background: var(--nfs-cyan); transform: skewX(-10deg); }
+        ::-webkit-scrollbar-thumb:hover { background: var(--nfs-green); }
 
-        /* === PRELOADER === */
+        /* === PRELOADER: TACHOMETER === */
         #preloader {
-            position: fixed; inset: 0;
-            background: var(--bg-dark);
-            z-index: 9999;
-            display: flex; justify-content: center; align-items: center;
-            transition: opacity 0.6s ease, visibility 0.6s;
+            position: fixed; inset: 0; background: var(--bg-deep);
+            z-index: 10000; display: flex; flex-direction: column; justify-content: center; align-items: center;
+            transition: opacity 0.5s ease;
         }
-        .loader-ring {
-            width: 60px; height: 60px;
-            border: 3px solid transparent;
-            border-top-color: var(--neon-purple);
-            border-right-color: var(--neon-blue);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
+        .loading-text {
+            font-family: 'Orbitron', sans-serif; font-style: italic; font-size: 2rem;
+            color: var(--nfs-green); letter-spacing: 5px; margin-bottom: 20px;
+            text-shadow: 0 0 10px var(--nfs-green); animation: flicker 0.1s infinite;
         }
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-        /* === CUSTOM CURSOR === */
-        .cursor-dot, .cursor-outline {
-            position: fixed; top: 0; left: 0;
-            transform: translate(-50%, -50%);
-            border-radius: 50%; z-index: 10000;
-            pointer-events: none;
+        .rpm-bar-container {
+            width: 300px; height: 20px; background: #111; border: 2px solid var(--nfs-cyan);
+            transform: skewX(-30deg); padding: 2px;
         }
-        .cursor-dot {
-            width: 8px; height: 8px;
-            background-color: var(--neon-blue);
-            box-shadow: 0 0 10px var(--neon-blue);
-        }
-        .cursor-outline {
-            width: 40px; height: 40px;
-            border: 1px solid var(--neon-purple);
-            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        .rpm-bar {
+            height: 100%; background: var(--nfs-green); width: 0%;
+            box-shadow: 0 0 15px var(--nfs-green); transition: width 1s ease-in-out;
         }
 
-        /* === DYNAMIC MESH BACKGROUND === */
-        .bg-mesh {
-            position: fixed; inset: 0; z-index: -1;
-            background: 
-                radial-gradient(circle at 15% 50%, rgba(112, 34, 201, 0.15), transparent 50%),
-                radial-gradient(circle at 85% 30%, rgba(51, 153, 255, 0.15), transparent 50%),
-                radial-gradient(circle at 50% 80%, rgba(204, 51, 255, 0.1), transparent 50%);
-            filter: blur(40px);
-            animation: breathe 10s ease-in-out infinite alternate;
-        }
-        .noise-overlay {
-            position: fixed; inset: 0; z-index: -1; opacity: 0.03;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-        }
-        @keyframes breathe {
-            0% { transform: scale(1); opacity: 0.8; }
-            100% { transform: scale(1.05); opacity: 1; }
-        }
-
-        /* === ULTRA-MODERN NAVBAR === */
+        /* === DASHBOARD NAVBAR === */
         .navbar {
-            position: fixed; top: 20px; left: 50%;
-            transform: translateX(-50%);
-            background: rgba(10, 10, 15, 0.6);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            padding: 8px 15px; border-radius: 50px;
-            z-index: 1000;
-            border: 1px solid var(--glass-border);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
-            transition: all 0.3s ease;
+            position: fixed; top: 0; left: 0; width: 100%;
+            background: linear-gradient(180deg, rgba(0,0,0,0.9) 0%, transparent 100%);
+            border-bottom: 2px solid var(--nfs-cyan);
+            box-shadow: 0 5px 20px rgba(0, 229, 255, 0.2);
+            padding: 15px 0; z-index: 1000; display: flex; justify-content: center;
         }
-        .nav-container { display: flex; gap: 5px; }
+        .nav-container { display: flex; gap: 15px; }
         .nav-btn {
-            background: transparent; color: var(--text-muted);
-            border: none; padding: 8px 16px;
-            border-radius: 30px; cursor: pointer;
-            font-family: inherit; font-size: 0.85rem; font-weight: 500;
-            display: flex; align-items: center; gap: 8px;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative; overflow: hidden;
+            background: rgba(0,0,0,0.6); color: var(--nfs-cyan);
+            border: 1px solid var(--nfs-cyan); padding: 8px 20px;
+            font-family: 'Orbitron', sans-serif; font-size: 0.85rem; font-weight: 700;
+            text-transform: uppercase; cursor: pointer; transform: skewX(-15deg);
+            transition: all 0.2s; position: relative; overflow: hidden;
         }
-        .nav-btn i { font-size: 0.9rem; transition: color 0.3s; }
-        .nav-btn::before {
-            content: ''; position: absolute; inset: 0;
-            background: linear-gradient(90deg, var(--primary-purple), var(--neon-blue));
-            opacity: 0; transition: opacity 0.3s; z-index: -1;
-            border-radius: 30px;
+        .nav-btn > span { display: block; transform: skewX(15deg); } /* Un-skew text */
+        .nav-btn:hover, .nav-btn.active {
+            background: var(--nfs-cyan); color: #000;
+            box-shadow: 0 0 15px var(--nfs-cyan);
         }
-        .nav-btn:hover, .nav-btn.active { color: #fff; transform: translateY(-2px); }
-        .nav-btn:hover::before, .nav-btn.active::before { opacity: 1; }
-        .nav-btn:hover i, .nav-btn.active i { color: #fff; }
+        .nav-btn:hover > span, .nav-btn.active > span { color: #000; text-shadow: none; }
 
-        /* === LAYOUT & CONTAINERS === */
-        .container {
-            max-width: 1000px; margin: 0 auto;
-            padding: 100px 20px 40px; position: relative; z-index: 1;
-        }
+        /* === MAIN LAYOUT === */
+        .container { max-width: 1050px; margin: 0 auto; padding: 120px 20px 60px; position: relative; z-index: 1; }
 
-        /* === HERO HEADER === */
+        /* === HERO SECTION: DRIVER PROFILE === */
         header {
-            text-align: center; margin-bottom: 50px; padding: 50px 30px;
-            background: var(--surface); backdrop-filter: blur(12px);
-            border-radius: 24px; border: 1px solid var(--glass-border);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-            position: relative; overflow: hidden;
-            transform-style: preserve-3d;
+            text-align: center; margin-bottom: 60px; position: relative;
         }
-        .header-glow {
-            position: absolute; top: -50px; left: 50%; transform: translateX(-50%);
-            width: 200px; height: 100px;
-            background: var(--neon-purple); filter: blur(70px); opacity: 0.5;
+        .neon-title {
+            font-family: 'Orbitron', sans-serif; font-size: 4.5rem; font-weight: 900;
+            font-style: italic; text-transform: uppercase; line-height: 1;
+            color: #fff; text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px var(--nfs-green), 0 0 40px var(--nfs-green), 0 0 80px var(--nfs-green);
+            margin-bottom: 5px; transform: skewX(-10deg);
         }
-        h1 {
-            font-size: 3.5rem; font-weight: 800; letter-spacing: -1px;
-            background: linear-gradient(to right, #fff, var(--neon-blue), var(--neon-purple));
-            -webkit-background-clip: text; color: transparent;
-            margin-bottom: 10px; transform: translateZ(30px);
-        }
-        h2 {
-            font-size: 1.5rem; color: var(--bright-purple);
-            font-weight: 400; margin-bottom: 25px; height: 35px; /* For typing effect */
-            transform: translateZ(20px);
-        }
-        .typewriter::after {
-            content: '|'; animation: blink 1s step-end infinite;
-        }
-        @keyframes blink { 50% { opacity: 0; } }
-        
-        .contact-info {
-            display: flex; flex-wrap: wrap; justify-content: center; gap: 20px;
-            transform: translateZ(10px);
-        }
-        .contact-item {
-            display: flex; align-items: center; gap: 10px;
-            font-size: 0.95rem; color: var(--text-muted);
-            padding: 8px 16px; background: rgba(255,255,255,0.03);
-            border-radius: 20px; border: 1px solid rgba(255,255,255,0.05);
-            transition: all 0.3s ease; text-decoration: none;
-        }
-        .contact-item:hover {
-            background: rgba(255,255,255,0.1); color: #fff;
-            border-color: var(--neon-blue); box-shadow: 0 0 15px rgba(51, 153, 255, 0.3);
-            transform: translateY(-3px);
-        }
-        .contact-item i { color: var(--neon-blue); }
-
-        /* === SECTIONS === */
-        section {
-            background: var(--surface); backdrop-filter: blur(12px);
-            border-radius: 20px; padding: 35px; margin-bottom: 30px;
-            border: 1px solid var(--glass-border);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-            opacity: 0; transform: translateY(40px);
-            transition: opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), 
-                        transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
-        }
-        section.visible { opacity: 1; transform: translateY(0); }
-        
-        h3 {
-            font-size: 1.8rem; font-weight: 700; margin-bottom: 25px;
-            display: inline-block; position: relative;
-            background: linear-gradient(135deg, #fff, var(--bright-purple));
-            -webkit-background-clip: text; color: transparent;
-        }
-        h3::after {
-            content: ''; position: absolute; left: 0; bottom: -8px;
-            width: 40px; height: 3px; border-radius: 2px;
-            background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
-            transition: width 0.4s ease;
-        }
-        section:hover h3::after { width: 100%; }
-
-        /* === MOUSE TRACKING GLOW CARDS === */
-        .glass-card {
-            background: rgba(20, 20, 30, 0.4);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 12px; padding: 25px; margin-bottom: 20px;
-            position: relative; overflow: hidden;
-            transition: transform 0.3s ease, border-color 0.3s;
-        }
-        /* The glowing mouse effect */
-        .glass-card::before {
-            content: ''; position: absolute;
-            top: var(--mouse-y, -100px); left: var(--mouse-x, -100px);
-            width: 400px; height: 400px;
-            background: radial-gradient(circle, rgba(204, 51, 255, 0.15) 0%, transparent 60%);
-            transform: translate(-50%, -50%);
-            opacity: 0; pointer-events: none; transition: opacity 0.3s ease; z-index: 0;
-        }
-        .glass-card:hover::before { opacity: 1; }
-        .glass-card:hover { border-color: rgba(204, 51, 255, 0.3); transform: translateY(-3px); }
-        .glass-card > * { position: relative; z-index: 1; }
-
-        /* === EXPERIENCE / TIMELINE === */
-        .exp-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; flex-wrap: wrap; gap: 10px;}
-        .exp-title { font-size: 1.25rem; font-weight: 600; color: #fff; display: flex; align-items: center; gap: 10px; }
-        .exp-title i { color: var(--neon-blue); font-size: 1.1rem; }
-        .exp-date { 
-            font-size: 0.9rem; color: var(--neon-purple); font-weight: 500;
-            background: rgba(204, 51, 255, 0.1); padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(204, 51, 255, 0.2);
+        .neon-subtitle {
+            font-family: 'Orbitron', sans-serif; font-size: 1.8rem; font-weight: 700;
+            color: var(--nfs-cyan); text-transform: uppercase; letter-spacing: 4px;
+            text-shadow: 0 0 10px var(--nfs-cyan); border-bottom: 3px solid var(--nfs-cyan);
+            display: inline-block; padding-bottom: 5px; margin-bottom: 30px;
+            animation: pulse-border 2s infinite;
         }
         
-        .timeline-sub-role {
-            border-left: 2px dashed var(--neon-purple);
-            margin-left: 20px; padding-left: 20px; margin-top: 15px; margin-bottom: 15px;
-            position: relative;
+        .hud-stats {
+            display: flex; flex-wrap: wrap; justify-content: center; gap: 15px;
         }
-        .timeline-sub-role::before {
-            content: ''; position: absolute; left: -6px; top: 5px;
-            width: 10px; height: 10px; border-radius: 50%;
-            background: var(--neon-blue); box-shadow: 0 0 10px var(--neon-blue);
+        .hud-item {
+            background: rgba(0,0,0,0.7); border: 1px solid #333;
+            border-left: 3px solid var(--nfs-green);
+            padding: 10px 20px; font-family: 'Orbitron', sans-serif; font-size: 0.9rem;
+            color: var(--text-main); display: flex; align-items: center; gap: 10px;
+            transform: skewX(-15deg); transition: all 0.3s; text-decoration: none;
         }
-
-        ul.styled-list { list-style: none; padding-left: 5px; }
-        ul.styled-list li {
-            margin-bottom: 10px; padding-left: 25px; position: relative;
-            color: var(--text-muted); transition: color 0.3s, transform 0.3s;
-        }
-        ul.styled-list li:hover { color: var(--text-main); transform: translateX(5px); }
-        ul.styled-list li::before {
-            content: "▹"; position: absolute; left: 0; top: -2px;
-            color: var(--neon-purple); font-size: 1.2rem; font-weight: bold;
+        .hud-item > * { transform: skewX(15deg); }
+        .hud-item i { color: var(--nfs-green); font-size: 1.2rem; }
+        .hud-item:hover {
+            border-color: var(--nfs-cyan); background: rgba(0, 229, 255, 0.1);
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
         }
 
-        /* === SKILLS BARS (ANIMATED) === */
-        .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
-        .skill-group h4 { margin-bottom: 15px; display: flex; align-items: center; gap: 10px; font-size: 1.1rem; color: #fff;}
-        .skill-group h4 i { color: var(--neon-blue); }
-        .skill-item { margin-bottom: 15px; }
-        .skill-info { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 0.9rem; font-weight: 500; }
-        .skill-track {
-            width: 100%; height: 6px; background: rgba(0,0,0,0.5);
-            border-radius: 10px; overflow: hidden; box-shadow: inset 0 1px 3px rgba(0,0,0,0.8);
+        /* === SECTIONS & PANELS === */
+        section { margin-bottom: 50px; opacity: 0; transform: translateX(-50px); transition: all 0.6s ease-out; }
+        section.visible { opacity: 1; transform: translateX(0); }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif; font-size: 2rem; font-style: italic; text-transform: uppercase;
+            color: #fff; text-shadow: 0 0 8px var(--nfs-cyan); margin-bottom: 30px;
+            display: flex; align-items: center; gap: 15px; border-bottom: 1px solid #333; padding-bottom: 10px;
         }
-        .skill-fill {
-            height: 100%; width: 0; border-radius: 10px;
-            background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
-            box-shadow: 0 0 10px var(--neon-purple);
-            transition: width 1.5s cubic-bezier(0.1, 0.5, 0.2, 1);
-            position: relative;
-        }
-        .skill-fill::after {
-            content: ''; position: absolute; right: 0; top: 0; bottom: 0; width: 10px;
-            background: #fff; filter: blur(3px); opacity: 0.5;
+        .section-title::before {
+            content: '//'; color: var(--nfs-green); font-weight: 900; text-shadow: 0 0 10px var(--nfs-green);
         }
 
-        /* === LANGUAGES GRID === */
-        .lang-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; }
-        .lang-card { text-align: center; }
-        .lang-card h4 { font-size: 1.2rem; margin-bottom: 5px; color: #fff; }
-        .lang-card p { color: var(--bright-purple); font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;}
+        /* === TUNER CARDS (EXPERIENCE/EDU) === */
+        .tuner-card {
+            background: linear-gradient(90deg, rgba(0, 229, 255, 0.05), rgba(0,0,0,0.8));
+            border: 1px solid #222; border-left: 4px solid var(--nfs-cyan);
+            padding: 25px 30px; margin-bottom: 25px; position: relative;
+            transform: skewX(-5deg); transition: all 0.3s;
+        }
+        .tuner-card > * { transform: skewX(5deg); }
+        .tuner-card:hover {
+            border-left-color: var(--nfs-green); background: linear-gradient(90deg, rgba(57, 255, 20, 0.1), rgba(0,0,0,0.9));
+            box-shadow: -5px 0 20px rgba(57, 255, 20, 0.3); transform: skewX(-5deg) translateX(10px);
+        }
 
-        /* === FOOTER & FAB === */
-        footer { text-align: center; padding: 30px; margin-top: 20px; color: var(--text-muted); font-size: 0.9rem; }
+        .role-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-bottom: 15px; border-bottom: 1px dashed #444; padding-bottom: 10px; }
+        .role-title { font-family: 'Orbitron', sans-serif; font-size: 1.4rem; color: #fff; text-transform: uppercase; text-shadow: 0 0 5px rgba(255,255,255,0.5); }
+        .role-title i { color: var(--nfs-green); margin-right: 10px; }
+        .role-date {
+            font-family: 'Orbitron', sans-serif; background: var(--nfs-cyan); color: #000;
+            padding: 4px 12px; font-weight: 900; font-size: 0.9rem;
+            box-shadow: 0 0 10px var(--nfs-cyan);
+        }
         
-        .scroll-top {
-            position: fixed; bottom: 30px; right: 30px;
-            width: 50px; height: 50px; border-radius: 50%;
-            background: rgba(20,20,30,0.8); backdrop-filter: blur(10px);
-            border: 1px solid var(--neon-purple); color: #fff;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.2rem; cursor: pointer; z-index: 999;
-            opacity: 0; visibility: hidden; transform: translateY(20px);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        .sub-role {
+            margin-left: 20px; padding-left: 20px; border-left: 2px solid var(--nfs-green);
+            margin-bottom: 15px; position: relative;
         }
-        .scroll-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
-        .scroll-top:hover { background: var(--neon-purple); box-shadow: var(--glow-spread); transform: translateY(-5px) scale(1.1); }
+        .sub-role .role-date { background: transparent; color: var(--nfs-green); border: 1px solid var(--nfs-green); box-shadow: none; }
+
+        .tech-list { list-style: none; }
+        .tech-list li { margin-bottom: 10px; padding-left: 25px; position: relative; font-size: 1.15rem; color: var(--text-muted); }
+        .tech-list li::before {
+            content: ">>"; position: absolute; left: 0; font-family: 'Orbitron', sans-serif;
+            color: var(--nfs-cyan); font-weight: bold; font-size: 0.9rem; top: 4px;
+        }
+        .tech-list li:hover { color: #fff; text-shadow: 0 0 8px rgba(255,255,255,0.5); }
+
+        /* === SKILLS / PERFORMANCE TUNING === */
+        .tuning-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; }
+        .tuning-category h4 { font-family: 'Orbitron', sans-serif; color: var(--nfs-green); font-size: 1.2rem; margin-bottom: 20px; text-transform: uppercase; border-bottom: 1px solid #333; padding-bottom: 5px; }
+        
+        .nos-item { margin-bottom: 18px; }
+        .nos-label { display: flex; justify-content: space-between; font-family: 'Orbitron', sans-serif; font-size: 0.9rem; color: #fff; margin-bottom: 5px; text-transform: uppercase; }
+        .nos-bar-bg { width: 100%; height: 16px; background: #111; border: 1px solid #333; transform: skewX(-20deg); padding: 2px; }
+        .nos-fill {
+            height: 100%; width: 0; background: linear-gradient(90deg, var(--nfs-blue), var(--nfs-cyan));
+            box-shadow: 0 0 10px var(--nfs-cyan); position: relative; transition: width 1.5s cubic-bezier(0.1, 0.5, 0.2, 1);
+        }
+        /* Top-tier skills get the Green NOS glow */
+        .nos-fill.max-nos { background: linear-gradient(90deg, #1f7a0b, var(--nfs-green)); box-shadow: 0 0 15px var(--nfs-green); }
+
+        /* === UNLOCKED UPGRADES (CERTS) === */
+        .upgrade-grid { display: flex; flex-wrap: wrap; gap: 15px; }
+        .upgrade-badge {
+            background: rgba(0,0,0,0.8); border: 1px solid var(--nfs-green);
+            color: #fff; padding: 12px 20px; font-family: 'Orbitron', sans-serif; font-size: 0.95rem; text-transform: uppercase;
+            transform: skewX(-15deg); display: flex; align-items: center; gap: 10px;
+            box-shadow: inset 0 0 10px rgba(57, 255, 20, 0.1); transition: all 0.3s;
+        }
+        .upgrade-badge > * { transform: skewX(15deg); }
+        .upgrade-badge:hover { background: var(--nfs-green); color: #000; box-shadow: 0 0 20px var(--nfs-green); cursor: crosshair; }
+        .upgrade-badge i { color: var(--nfs-cyan); font-size: 1.2rem; }
+        .upgrade-badge:hover i { color: #000; }
+
+        /* === FOOTER === */
+        footer { text-align: center; border-top: 1px solid #333; padding: 30px; margin-top: 50px; font-family: 'Orbitron', sans-serif; color: #555; text-transform: uppercase; letter-spacing: 2px; }
+
+        /* === ANIMATIONS === */
+        @keyframes pulse-border { 0% { border-color: var(--nfs-cyan); box-shadow: 0 1px 10px var(--nfs-cyan); } 50% { border-color: transparent; box-shadow: none; } 100% { border-color: var(--nfs-cyan); box-shadow: 0 1px 10px var(--nfs-cyan); } }
+        @keyframes flicker { 0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; } 20%, 24%, 55% { opacity: 0.2; text-shadow: none; } }
 
         /* === RESPONSIVE === */
         @media (max-width: 768px) {
-            .navbar { width: 95%; padding: 5px; top: 10px; }
-            .nav-container { flex-wrap: wrap; justify-content: center; }
-            .nav-btn { padding: 6px 10px; font-size: 0.75rem; }
-            h1 { font-size: 2.2rem; }
-            section { padding: 20px; }
-            .cursor-dot, .cursor-outline { display: none; } /* Disable custom cursor on mobile */
-            body { cursor: auto; }
-            .exp-header { flex-direction: column; }
+            .neon-title { font-size: 2.5rem; }
+            .neon-subtitle { font-size: 1.2rem; }
+            .hud-item { width: 100%; justify-content: center; }
+            .role-header { flex-direction: column; align-items: flex-start; gap: 10px; }
+            .tuner-card { padding: 15px; transform: none; border-left-width: 2px; }
+            .tuner-card > * { transform: none; }
+            .navbar { overflow-x: auto; justify-content: flex-start; padding-left: 10px; }
+            .nav-btn { transform: none; }
+            .nav-btn > span { transform: none; }
         }
     </style>
 </head>
 <body>
-    <div id="preloader"><div class="loader-ring"></div></div>
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="loading-text">TUNING SYSTEM...</div>
+        <div class="rpm-bar-container"><div class="rpm-bar" id="rpmBar"></div></div>
+    </div>
 
-    <div class="cursor-dot" id="cursor-dot"></div>
-    <div class="cursor-outline" id="cursor-outline"></div>
+    <!-- Background Layers -->
+    <div class="carbon-bg"></div>
+    <div class="speed-lines"></div>
+    <div class="scanlines"></div>
 
-    <div class="bg-mesh"></div>
-    <div class="noise-overlay"></div>
-    
+    <!-- Dashboard Navbar -->
     <nav class="navbar">
         <div class="nav-container">
-            <button class="nav-btn active" data-section="header"><i class="fas fa-home"></i> <span>Home</span></button>
-            <button class="nav-btn" data-section="summary"><i class="fas fa-user-tie"></i> <span>Summary</span></button>
-            <button class="nav-btn" data-section="experience"><i class="fas fa-briefcase"></i> <span>Experience</span></button>
-            <button class="nav-btn" data-section="education"><i class="fas fa-graduation-cap"></i> <span>Education</span></button>
-            <button class="nav-btn" data-section="skills"><i class="fas fa-code"></i> <span>Skills</span></button>
+            <button class="nav-btn active" data-section="header"><span>DRIVER</span></button>
+            <button class="nav-btn" data-section="summary"><span>SPECS</span></button>
+            <button class="nav-btn" data-section="experience"><span>CAREER</span></button>
+            <button class="nav-btn" data-section="skills"><span>TUNING</span></button>
+            <button class="nav-btn" data-section="education"><span>UPGRADES</span></button>
         </div>
     </nav>
-    
-    <div class="scroll-top" id="scrollTop"><i class="fas fa-arrow-up"></i></div>
-    
+
     <div class="container">
-        <header id="header" class="tilt-card">
-            <div class="header-glow"></div>
-            <h1>Vasileios Tillis</h1>
-            <h2><span id="typed-text" class="typewriter"></span></h2>
-            <div class="contact-info">
-                <a href="tel:+306978303235" class="contact-item"><i class="fas fa-phone"></i> +30-6978303235</a>
-                <a href="mailto:tillisvasileios@gmail.com" class="contact-item"><i class="fas fa-envelope"></i> tillisvasileios@gmail.com</a>
-                <a href="https://linkedin.com/in/vasilis-tillis-858233223" target="_blank" class="contact-item"><i class="fab fa-linkedin"></i> LinkedIn</a>
-                <a href="https://vtillis.github.io" target="_blank" class="contact-item"><i class="fas fa-globe"></i> vtillis.github.io</a>
-                <span class="contact-item"><i class="fas fa-map-marker-alt"></i> Artemida, Attica, Greece</span>
+        <!-- DRIVER PROFILE HEADER -->
+        <header id="header">
+            <h1 class="neon-title">Vasileios Tillis</h1>
+            <h2 class="neon-subtitle">Statistical Data Scientist</h2>
+            
+            <div class="hud-stats">
+                <a href="tel:+306978303235" class="hud-item"><span><i class="fas fa-phone"></i> +30-6978303235</span></a>
+                <a href="mailto:tillisvasileios@gmail.com" class="hud-item"><span><i class="fas fa-envelope"></i> tillisvasileios@gmail.com</span></a>
+                <a href="https://linkedin.com/in/vasilis-tillis-858233223" target="_blank" class="hud-item"><span><i class="fab fa-linkedin"></i> LINKEDIN_NODE</span></a>
+                <a href="https://vtillis.github.io" target="_blank" class="hud-item"><span><i class="fas fa-satellite-dish"></i> vtillis.github.io</span></a>
+                <div class="hud-item"><span><i class="fas fa-map-marker-alt"></i> ZONE: Artemida, Attica, GR</span></div>
             </div>
         </header>
-        
+
+        <!-- SPECS (SUMMARY) -->
         <section id="summary">
-            <h3>Professional Summary</h3>
-            <p style="color: var(--text-muted); font-size: 1.05rem; line-height: 1.8;">
-                MSc in Data Science with robust experience in the pharmaceutical and airline industries. 
-                Proficient in <strong style="color: #fff;">Python, R, SQL, and SAS</strong>. Passionate about uncovering insights from complex data ecosystems and acting as a technical mentor. Known for independent high-quality output, cross-functional collaboration, and dynamic team leadership.
-            </p>
+            <h3 class="section-title">ENGINE SPECS</h3>
+            <div class="tuner-card" style="border-color: #333; border-left: 4px solid var(--nfs-green);">
+                <p style="font-size: 1.2rem; color: #fff; font-family: 'Rajdhani'; line-height: 1.8;">
+                    MSc in Data Science with high-octane experience in the pharmaceutical and airline industries. 
+                    Built on a core engine of <strong style="color: var(--nfs-green); font-family: 'Orbitron';">PYTHON, R, SQL, & SAS</strong>. Passionate about extracting maximum performance from complex data telemetry and accelerating team success through technical mentorship. Known for independent execution and crossing the finish line on high-quality outputs.
+                </p>
+            </div>
         </section>
-        
+
+        <!-- CAREER MODE (EXPERIENCE) -->
         <section id="experience">
-            <h3>Professional Experience</h3>
+            <h3 class="section-title">CAREER MODE</h3>
             
-            <div class="glass-card mouse-glow">
-                <div class="exp-header">
-                    <div class="exp-title"><i class="fas fa-microscope"></i> Senior Associate Statistical Data Scientist – Pfizer</div>
-                    <div class="exp-date">Jun 2026 – Present</div>
+            <div class="tuner-card">
+                <div class="role-header">
+                    <div class="role-title"><i class="fas fa-microscope"></i> Senior Associate Statistical Data Scientist // Pfizer</div>
+                    <div class="role-date">JUN 2026 – PRESENT</div>
                 </div>
                 
-                <div class="timeline-sub-role">
-                    <div class="exp-header" style="margin-bottom: 5px;">
-                        <div class="exp-title" style="font-size: 1.05rem; color: var(--text-muted);">Associate Statistical Data Scientist</div>
-                        <div class="exp-date" style="background: rgba(51, 153, 255, 0.1); color: var(--neon-blue); border-color: rgba(51, 153, 255, 0.2);">Dec 2023 – May 2026</div>
+                <div class="sub-role">
+                    <div class="role-header" style="border: none; padding: 0; margin-bottom: 10px;">
+                        <div class="role-title" style="font-size: 1.1rem; color: var(--text-muted);"><i class="fas fa-level-up-alt"></i> Associate Statistical Data Scientist</div>
+                        <div class="role-date">DEC 2023 – MAY 2026</div>
                     </div>
                 </div>
 
-                <ul class="styled-list">
-                    <li>Led a team of SMEs in the transition to a new statistical reporting platform for clinical trials.</li>
-                    <li>Mentored junior colleagues to full independence and acted as a buddy for new hires.</li>
-                    <li>Ensured absolute quality and continuity during major team transitions.</li>
-                    <li>Contributed to a PHUSE-accepted poster on statistical validation efficiency.</li>
-                    <li>Delivered high-quality SARs independently across multiple global clinical projects.</li>
+                <ul class="tech-list">
+                    <li>Piloted a team of SMEs in the transition to a next-gen statistical reporting platform for clinical trials.</li>
+                    <li>Mentored rookie colleagues to full independence; operated as a designated buddy for new recruits.</li>
+                    <li>Ensured zero-defect quality and workflow continuity during intense team transitions.</li>
+                    <li>Engineered a PHUSE-accepted poster on maximizing statistical validation efficiency.</li>
+                    <li>Executed high-quality SARs autonomously across multiple global clinical circuits.</li>
                 </ul>
             </div>
             
-            <div class="glass-card mouse-glow">
-                <div class="exp-header">
-                    <div class="exp-title"><i class="fas fa-plane"></i> Product Data Analyst – Aegean Airlines</div>
-                    <div class="exp-date">Jul 2022 – Nov 2023</div>
+            <div class="tuner-card">
+                <div class="role-header">
+                    <div class="role-title"><i class="fas fa-plane-departure"></i> Product Data Analyst // Aegean Airlines</div>
+                    <div class="role-date">JUL 2022 – NOV 2023</div>
                 </div>
-                <ul class="styled-list">
-                    <li>Designed comprehensive business monitoring reports and scalable digital solutions.</li>
-                    <li>Developed automated operational processes and conducted deep data analysis with Power BI.</li>
-                    <li>Collaborated cross-functionally to meet business IT needs and optimize workflow efficiency.</li>
+                <ul class="tech-list">
+                    <li>Designed core business telemetry reports and scalable digital infrastructure.</li>
+                    <li>Deployed automated operational scripts and conducted heavy data mining using Power BI.</li>
+                    <li>Collaborated with pit-crews across departments to fulfill IT requirements and boost efficiency.</li>
                 </ul>
             </div>
             
-            <div class="glass-card mouse-glow">
-                <div class="exp-header">
-                    <div class="exp-title"><i class="fas fa-shield-alt"></i> Data Analyst – Ministry of National Defence</div>
-                    <div class="exp-date">Jan 2018 – Oct 2018</div>
+            <div class="tuner-card">
+                <div class="role-header">
+                    <div class="role-title"><i class="fas fa-shield-alt"></i> Data Analyst // Ministry of National Defence</div>
+                    <div class="role-date">JAN 2018 – OCT 2018</div>
                 </div>
-                <ul class="styled-list">
-                    <li>Analyzed highly sensitive defense data and architected executive dashboards.</li>
-                    <li>Assisted with the development of internal tools for operational performance analysis.</li>
+                <ul class="tech-list">
+                    <li>Decrypted and analyzed secured defense data, building executive HUD dashboards.</li>
+                    <li>Assisted in fabricating internal tooling for mission performance analysis.</li>
                 </ul>
-            </div>
-            
-            <div class="glass-card mouse-glow">
-                <div class="exp-header">
-                    <div class="exp-title"><i class="fas fa-lock"></i> Information Security Analyst (Intern) – OTE Group</div>
-                    <div class="exp-date">Jul 2015 – Sep 2015</div>
-                </div>
-                <ul class="styled-list">
-                    <li>Monitored enterprise telecom fraud systems and supported rapid incident response protocols.</li>
-                </ul>
-            </div>
-        </section>
-        
-        <section id="education">
-            <h3>Education & Certifications</h3>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
-                <div class="glass-card mouse-glow">
-                    <div class="exp-header"><div class="exp-title"><i class="fas fa-university"></i> MSc Data Science</div><div class="exp-date">2020 – 2021</div></div>
-                    <p style="color: var(--text-muted); margin-bottom: 10px;">University of East London</p>
-                    <p style="font-size: 0.9rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;"><em>Thesis: Detection of abusive language on social networks using ML.</em></p>
-                </div>
-                <div class="glass-card mouse-glow">
-                    <div class="exp-header"><div class="exp-title"><i class="fas fa-microchip"></i> BSc Telecommunications</div><div class="exp-date">2011 – 2017</div></div>
-                    <p style="color: var(--text-muted); margin-bottom: 10px;">University of Peloponnese</p>
-                    <p style="font-size: 0.9rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;"><em>Thesis: Big Data Applications and Data Centers Architectures.</em></p>
-                </div>
             </div>
 
-            <h4 style="margin: 20px 0 15px; color: #fff;"><i class="fas fa-certificate" style="color: var(--neon-purple);"></i> Professional Certifications</h4>
-            <div style="display: flex; flex-wrap: wrap; gap: 10px;">
-                <span class="exp-date" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--text-main);"><i class="fab fa-google" style="color: #4285F4;"></i> Google Data Analytics</span>
-                <span class="exp-date" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--text-main);"><i class="fas fa-server" style="color: #0530ad;"></i> IBM Data Science</span>
-                <span class="exp-date" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--text-main);"><i class="fas fa-laptop-code" style="color: var(--neon-blue);"></i> SAS Programmer</span>
+            <div class="tuner-card">
+                <div class="role-header">
+                    <div class="role-title"><i class="fas fa-network-wired"></i> Info-Sec Analyst (Intern) // OTE Group</div>
+                    <div class="role-date">JUL 2015 – SEP 2015</div>
+                </div>
+                <ul class="tech-list">
+                    <li>Monitored enterprise telecom fraud grids and triggered rapid incident response protocols.</li>
+                </ul>
             </div>
         </section>
-        
+
+        <!-- PERFORMANCE TUNING (SKILLS) -->
         <section id="skills">
-            <h3>Technical & Professional Skills</h3>
-            <div class="skills-grid">
-                <div class="skill-group glass-card mouse-glow">
-                    <h4><i class="fas fa-terminal"></i> Core Stack</h4>
-                    <div class="skill-item"><div class="skill-info"><span>Python</span><span>95%</span></div><div class="skill-track"><div class="skill-fill" data-width="95%"></div></div></div>
-                    <div class="skill-item"><div class="skill-info"><span>R</span><span>90%</span></div><div class="skill-track"><div class="skill-fill" data-width="90%"></div></div></div>
-                    <div class="skill-item"><div class="skill-info"><span>SQL</span><span>90%</span></div><div class="skill-track"><div class="skill-fill" data-width="90%"></div></div></div>
-                    <div class="skill-item"><div class="skill-info"><span>SAS</span><span>90%</span></div><div class="skill-track"><div class="skill-fill" data-width="90%"></div></div></div>
-                    <div class="skill-item"><div class="skill-info"><span>Power BI</span><span>85%</span></div><div class="skill-track"><div class="skill-fill" data-width="85%"></div></div></div>
+            <h3 class="section-title">PERFORMANCE TUNING</h3>
+            <div class="tuning-grid">
+                
+                <div class="tuning-category">
+                    <h4><i class="fas fa-cogs"></i> CORE ENGINE</h4>
+                    
+                    <div class="nos-item">
+                        <div class="nos-label"><span>PYTHON</span><span>95% (MAX NOS)</span></div>
+                        <div class="nos-bar-bg"><div class="nos-fill max-nos" data-width="95%"></div></div>
+                    </div>
+                    <div class="nos-item">
+                        <div class="nos-label"><span>R</span><span>90%</span></div>
+                        <div class="nos-bar-bg"><div class="nos-fill" data-width="90%"></div></div>
+                    </div>
+                    <div class="nos-item">
+                        <div class="nos-label"><span>SQL</span><span>90%</span></div>
+                        <div class="nos-bar-bg"><div class="nos-fill" data-width="90%"></div></div>
+                    </div>
+                    <div class="nos-item">
+                        <div class="nos-label"><span>SAS</span><span>90%</span></div>
+                        <div class="nos-bar-bg"><div class="nos-fill" data-width="90%"></div></div>
+                    </div>
+                    <div class="nos-item">
+                        <div class="nos-label"><span>POWER BI</span><span>85%</span></div>
+                        <div class="nos-bar-bg"><div class="nos-fill" data-width="85%"></div></div>
+                    </div>
+                </div>
+
+                <div class="tuning-category">
+                    <h4><i class="fas fa-chart-line"></i> AERO / DATA SCIENCE</h4>
+                    
+                    <div class="nos-item">
+                        <div class="nos-label"><span>STATISTICAL MODELING</span><span>95% (MAX NOS)</span></div>
+                        <div class="nos-bar-bg"><div class="nos-fill max-nos" data-width="95%"></div></div>
+                    </div>
+                    <div class="nos-item">
+                        <div class="nos-label"><span>DATA CLEANING / ETL</span><span>90%</span></div>
+                        <div class="nos-bar-bg"><div class="nos-fill" data-width="90%"></div></div>
+                    </div>
+                    <div class="nos-item">
+                        <div class="nos-label"><span>DATA VISUALIZATION</span><span>90%</span></div>
+                        <div class="nos-bar-bg"><div class="nos-fill" data-width="90%"></div></div>
+                    </div>
+                    <div class="nos-item">
+                        <div class="nos-label"><span>MACHINE LEARNING</span><span>85%</span></div>
+                        <div class="nos-bar-bg"><div class="nos-fill" data-width="85%"></div></div>
+                    </div>
+                </div>
+
+                <div class="tuning-category">
+                    <h4><i class="fas fa-users"></i> DRIVER SKILLS</h4>
+                    
+                    <div class="nos-item">
+                        <div class="nos-label"><span>PROBLEM SOLVING</span><span>95%</span></div>
+                        <div class="nos-bar-bg"><div class="nos-fill max-nos" data-width="95%"></div></div>
+                    </div>
+                    <div class="nos-item">
+                        <div class="nos-label"><span>TEAM LEADERSHIP</span><span>95%</span></div>
+                        <div class="nos-bar-bg"><div class="nos-fill max-nos" data-width="95%"></div></div>
+                    </div>
+                    <div class="nos-item">
+                        <div class="nos-label"><span>PROJECT MANAGEMENT</span><span>90%</span></div>
+                        <div class="nos-bar-bg"><div class="nos-fill" data-width="90%"></div></div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- UNLOCKED UPGRADES (EDUCATION & CERTS) -->
+        <section id="education">
+            <h3 class="section-title">UNLOCKED UPGRADES</h3>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px; margin-bottom: 30px;">
+                <div class="tuner-card" style="border-left-color: var(--nfs-green);">
+                    <div class="role-header">
+                        <div class="role-title">MSc Data Science</div>
+                        <div class="role-date" style="background: var(--nfs-green); color: #000; box-shadow: 0 0 10px var(--nfs-green);">2020 – 2021</div>
+                    </div>
+                    <p style="color: #fff; font-family: 'Orbitron'; font-size: 0.9rem;">UNIV. OF EAST LONDON</p>
+                    <p style="color: var(--text-muted); margin-top: 10px; border-top: 1px solid #333; padding-top: 10px;">
+                        <em>Thesis: Detection of abusive language on social networks using Machine Learning.</em>
+                    </p>
                 </div>
                 
-                <div class="skill-group glass-card mouse-glow">
-                    <h4><i class="fas fa-brain"></i> Data Science</h4>
-                    <div class="skill-item"><div class="skill-info"><span>Statistical Modeling</span><span>95%</span></div><div class="skill-track"><div class="skill-fill" data-width="95%"></div></div></div>
-                    <div class="skill-item"><div class="skill-info"><span>Data Cleaning / ETL</span><span>90%</span></div><div class="skill-track"><div class="skill-fill" data-width="90%"></div></div></div>
-                    <div class="skill-item"><div class="skill-info"><span>Data Visualization</span><span>90%</span></div><div class="skill-track"><div class="skill-fill" data-width="90%"></div></div></div>
-                    <div class="skill-item"><div class="skill-info"><span>Machine Learning</span><span>85%</span></div><div class="skill-track"><div class="skill-fill" data-width="85%"></div></div></div>
-                    <div class="skill-item"><div class="skill-info"><span>Data Mining</span><span>85%</span></div><div class="skill-track"><div class="skill-fill" data-width="85%"></div></div></div>
+                <div class="tuner-card">
+                    <div class="role-header">
+                        <div class="role-title">BSc Telecommunications</div>
+                        <div class="role-date">2011 – 2017</div>
+                    </div>
+                    <p style="color: #fff; font-family: 'Orbitron'; font-size: 0.9rem;">UNIV. OF PELOPONNESE</p>
+                    <p style="color: var(--text-muted); margin-top: 10px; border-top: 1px solid #333; padding-top: 10px;">
+                        <em>Thesis: Big Data Applications and Data Centers Architectures.</em>
+                    </p>
                 </div>
             </div>
 
-            <h4 style="margin: 25px 0 15px; color: #fff;"><i class="fas fa-globe" style="color: var(--neon-purple);"></i> Languages</h4>
-            <div class="lang-grid">
-                <div class="glass-card lang-card mouse-glow"><h4>Greek</h4><p>Native</p></div>
-                <div class="glass-card lang-card mouse-glow"><h4>English</h4><p>Professional</p></div>
-                <div class="glass-card lang-card mouse-glow"><h4>German</h4><p>Elementary</p></div>
+            <h4 style="font-family: 'Orbitron'; color: var(--nfs-cyan); margin-bottom: 15px; text-transform: uppercase;">// CERTIFICATIONS INSTALLED</h4>
+            <div class="upgrade-grid">
+                <div class="upgrade-badge"><span><i class="fab fa-google"></i> Google Data Analytics</span></div>
+                <div class="upgrade-badge"><span><i class="fas fa-microchip"></i> IBM Data Science</span></div>
+                <div class="upgrade-badge"><span><i class="fas fa-terminal"></i> SAS Programmer</span></div>
+            </div>
+
+            <h4 style="font-family: 'Orbitron'; color: var(--nfs-cyan); margin: 30px 0 15px; text-transform: uppercase;">// LOCALIZATION MODULES</h4>
+            <div class="upgrade-grid">
+                <div class="upgrade-badge" style="border-color: #555;"><span>GREEK: NATIVE</span></div>
+                <div class="upgrade-badge" style="border-color: #555;"><span>ENGLISH: PRO</span></div>
+                <div class="upgrade-badge" style="border-color: #555;"><span>GERMAN: BASIC</span></div>
             </div>
         </section>
-        
+
         <footer>
-            <p>© 2026 Vasileios Tillis | Designed with modern web technologies</p>
+            SYSTEM DATE: 2026 // VASILEIOS TILLIS // NO RULES. NO LIMITS.
         </footer>
     </div>
 
     <script>
-        // 1. Preloader removal
+        // Preloader Logic (RPM Rev up)
         window.addEventListener('load', () => {
+            const rpmBar = document.getElementById('rpmBar');
             const preloader = document.getElementById('preloader');
-            preloader.style.opacity = '0';
-            setTimeout(() => preloader.style.visibility = 'hidden', 600);
-        });
-
-        // 2. Custom Cursor Physics
-        const cursorDot = document.getElementById('cursor-dot');
-        const cursorOutline = document.getElementById('cursor-outline');
-        
-        window.addEventListener('mousemove', (e) => {
-            const posX = e.clientX;
-            const posY = e.clientY;
             
-            cursorDot.style.left = `${posX}px`;
-            cursorDot.style.top = `${posY}px`;
+            // Simulate revving engine
+            setTimeout(() => { rpmBar.style.width = '40%'; }, 200);
+            setTimeout(() => { rpmBar.style.width = '30%'; }, 500);
+            setTimeout(() => { rpmBar.style.width = '100%'; }, 800);
             
-            // Add a slight delay to the outline for smooth trailing effect
-            cursorOutline.animate({ left: `${posX}px`, top: `${posY}px` }, { duration: 500, fill: "forwards" });
+            setTimeout(() => {
+                preloader.style.opacity = '0';
+                setTimeout(() => preloader.style.display = 'none', 500);
+            }, 1200);
         });
 
-        // Add hover expanding effect on clickable elements
-        document.querySelectorAll('button, a, .glass-card').forEach(el => {
-            el.addEventListener('mouseenter', () => {
-                cursorOutline.style.width = '60px';
-                cursorOutline.style.height = '60px';
-                cursorOutline.style.backgroundColor = 'rgba(204, 51, 255, 0.1)';
-            });
-            el.addEventListener('mouseleave', () => {
-                cursorOutline.style.width = '40px';
-                cursorOutline.style.height = '40px';
-                cursorOutline.style.backgroundColor = 'transparent';
-            });
-        });
-
-        // 3. Dynamic Typing Effect for Subtitle
-        const typedTextSpan = document.getElementById("typed-text");
-        const textArray = ["Statistical Data Scientist", "Data Science Mentor", "Pfizer Analytics Lead", "Problem Solver"];
-        let textArrayIndex = 0; let charIndex = 0;
-        
-        function type() {
-            if (charIndex < textArray[textArrayIndex].length) {
-                typedTextSpan.textContent += textArray[textArrayIndex].charAt(charIndex);
-                charIndex++;
-                setTimeout(type, 80);
-            } else {
-                setTimeout(erase, 2000);
-            }
-        }
-        function erase() {
-            if (charIndex > 0) {
-                typedTextSpan.textContent = textArray[textArrayIndex].substring(0, charIndex - 1);
-                charIndex--;
-                setTimeout(erase, 40);
-            } else {
-                textArrayIndex++;
-                if (textArrayIndex >= textArray.length) textArrayIndex = 0;
-                setTimeout(type, 500);
-            }
-        }
-        document.addEventListener("DOMContentLoaded", () => setTimeout(type, 1000));
-
-        // 4. Mouse-tracking Glow Effect for Cards
-        document.querySelectorAll('.mouse-glow').forEach(card => {
-            card.addEventListener('mousemove', e => {
-                const rect = card.getBoundingClientRect();
-                card.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
-                card.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
-            });
-        });
-
-        // 5. 3D Vanilla Tilt Effect for Header
-        const tiltCard = document.querySelector('.tilt-card');
-        tiltCard.addEventListener('mousemove', (e) => {
-            const rect = tiltCard.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-            
-            const rotateX = ((y - centerY) / centerY) * -5; // Max 5deg tilt
-            const rotateY = ((x - centerX) / centerX) * 5;
-            
-            tiltCard.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
-        });
-        tiltCard.addEventListener('mouseleave', () => {
-            tiltCard.style.transform = `perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)`;
-            tiltCard.style.transition = 'transform 0.5s ease';
-        });
-        tiltCard.addEventListener('mouseenter', () => {
-            tiltCard.style.transition = 'none'; // Remove transition for instant mouse tracking
-        });
-
-        // 6. Modern Intersection Observer for Scroll Animations & Skill Bars
+        // Intersection Observer for Slide-in & Skill Bars
         const sections = document.querySelectorAll('section');
-        const observerOptions = { threshold: 0.15, rootMargin: "0px 0px -50px 0px" };
+        const observerOptions = { threshold: 0.1, rootMargin: "0px 0px -50px 0px" };
         
         const sectionObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
-                    // Animate skills if in view
+                    
+                    // Fire NOS skill bars
                     if(entry.target.id === 'skills') {
-                        document.querySelectorAll('.skill-fill').forEach(bar => {
-                            bar.style.width = bar.getAttribute('data-width');
-                        });
+                        setTimeout(() => {
+                            document.querySelectorAll('.nos-fill').forEach(bar => {
+                                bar.style.width = bar.getAttribute('data-width');
+                            });
+                        }, 300); // slight delay for impact
                     }
                 }
             });
@@ -594,45 +514,30 @@
         
         sections.forEach(sec => sectionObserver.observe(sec));
 
-        // 7. ScrollSpy & Smooth Scrolling
+        // Navigation Dashboard Logic
         const navBtns = document.querySelectorAll('.nav-btn');
-        
         navBtns.forEach(btn => {
             btn.addEventListener('click', () => {
                 const targetId = btn.getAttribute('data-section');
                 const targetSection = document.getElementById(targetId);
-                window.scrollTo({
-                    top: targetSection.offsetTop - 80, // Offset for sticky nav
-                    behavior: 'smooth'
-                });
+                window.scrollTo({ top: targetSection.offsetTop - 80, behavior: 'smooth' });
             });
         });
 
+        // Highlight active nav button on scroll
         window.addEventListener('scroll', () => {
             let current = '';
-            // Determine current section
             document.querySelectorAll('header, section').forEach(sec => {
-                const secTop = sec.offsetTop;
-                if (scrollY >= secTop - 150) {
+                if (scrollY >= sec.offsetTop - 150) {
                     current = sec.getAttribute('id');
                 }
             });
-            // Update active nav button
             navBtns.forEach(btn => {
                 btn.classList.remove('active');
                 if (btn.getAttribute('data-section') === current) {
                     btn.classList.add('active');
                 }
             });
-            
-            // FAB visibility
-            const fab = document.getElementById('scrollTop');
-            if (scrollY > 400) fab.classList.add('visible');
-            else fab.classList.remove('visible');
-        });
-
-        document.getElementById('scrollTop').addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
         });
     </script>
 </body>
