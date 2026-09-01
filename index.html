@@ -1,514 +1,2372 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Vasileios Tillis - Advanced Interactive CV</title>
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --sky: #5c94fc;
-            --ground-top: #52d94a;
-            --ground-dirt: #c84c0c;
-            --mario-red: #e80000;
-            --mario-blue: #0058f8;
-            --coin-gold: #f8d870;
-            --text-dark: #000;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta name="theme-color" content="#070b16">
+<meta name="description" content="Vasileios Tillis — Interactive Career Quest">
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            user-select: none;
-        }
+<title>Vasileios Tillis | Career Quest</title>
 
-        body, html {
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            background-color: var(--sky);
-            font-family: 'VT323', monospace;
-            color: var(--text-dark);
-            touch-action: none;
-        }
+<style>
+/* =========================================================
+   VASILEIOS TILLIS — CAREER QUEST
+   100% SELF-CONTAINED HTML
+   No external libraries / CSS / JS required
+   ========================================================= */
 
-        h1, h2, h3, h4, .retro {
-            font-family: 'Press Start 2P', cursive;
-        }
+:root{
+    --bg:#070b16;
+    --panel:#101827;
+    --panel2:#151f32;
+    --cyan:#00eaff;
+    --blue:#2878ff;
+    --purple:#9b5cff;
+    --pink:#ff3b9d;
+    --green:#42f59b;
+    --yellow:#ffe45c;
+    --orange:#ff914d;
+    --red:#ff4d67;
+    --white:#f5f8ff;
+    --muted:#8e9bb2;
+    --grid:rgba(0,234,255,.08);
+    --shadow:0 20px 60px rgba(0,0,0,.55);
+}
 
-        /* --- HUD (Heads Up Display) --- */
-        #hud {
-            position: fixed;
-            top: 0; left: 0; width: 100%;
-            padding: 15px 30px;
-            display: flex;
-            justify-content: space-between;
-            z-index: 1000;
-            color: white;
-            text-shadow: 2px 2px 0 #000;
-            font-size: 1.2rem;
-            pointer-events: none;
-        }
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
 
-        /* --- Game World --- */
-        #game-viewport {
-            position: relative;
-            width: 100vw;
-            height: 100vh;
-            overflow: hidden;
-        }
+html,body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+}
 
-        /* Parallax Layers */
-        .layer {
-            position: absolute;
-            top: 0; left: 0;
-            height: 100%;
-            will-change: transform;
-        }
+body{
+    background:var(--bg);
+    color:var(--white);
+    font-family:Arial,Helvetica,sans-serif;
+    user-select:none;
+}
 
-        #layer-clouds { width: 8000px; background: url('data:image/svg+xml;utf8,<svg width="200" height="100" xmlns="http://www.w3.org/2000/svg"><path d="M50 50 Q 60 30 80 40 Q 100 20 120 40 Q 140 30 150 50 Z" fill="white" opacity="0.8"/></svg>') repeat-x 0 10%; }
-        #layer-mountains { width: 8000px; background: url('data:image/svg+xml;utf8,<svg width="300" height="200" xmlns="http://www.w3.org/2000/svg"><polygon points="0,200 150,50 300,200" fill="%2300a800" opacity="0.5"/><polygon points="100,200 250,80 400,200" fill="%23008800" opacity="0.7"/></svg>') repeat-x 0 bottom; padding-bottom: 80px;}
-        
-        #layer-world {
-            width: 6000px; /* Total level width */
-        }
+/* =========================================================
+   START SCREEN
+   ========================================================= */
 
-        /* --- The Ground --- */
-        .ground {
-            position: absolute;
-            bottom: 0; left: 0;
-            width: 100%; height: 80px;
-            background-color: var(--ground-dirt);
-            border-top: 15px solid var(--ground-top);
-            background-image: linear-gradient(335deg, rgba(0,0,0,0.2) 15%, transparent 15%), linear-gradient(155deg, rgba(0,0,0,0.2) 15%, transparent 15%);
-            background-size: 20px 20px;
-            z-index: 10;
-        }
+#startScreen{
+    position:fixed;
+    inset:0;
+    z-index:10000;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    background:
+        radial-gradient(circle at 50% 35%,rgba(0,234,255,.12),transparent 28%),
+        radial-gradient(circle at 20% 80%,rgba(155,92,255,.15),transparent 30%),
+        linear-gradient(135deg,#050812,#0a1020 55%,#10091c);
+}
 
-        /* --- Player Sprite (CSS Art) --- */
-        #player {
-            position: absolute;
-            width: 40px; height: 50px;
-            bottom: 80px; left: 20vw;
-            z-index: 50;
-            will-change: transform;
-        }
+.start-grid{
+    position:absolute;
+    inset:-50%;
+    background-image:
+        linear-gradient(var(--grid) 1px,transparent 1px),
+        linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:50px 50px;
+    transform:perspective(500px) rotateX(60deg);
+    animation:gridMove 8s linear infinite;
+}
 
-        .mario-body {
-            width: 100%; height: 60%;
-            background: var(--mario-blue);
-            position: absolute; bottom: 0;
-            border-radius: 5px 5px 0 0;
-            border: 2px solid #000;
-        }
+@keyframes gridMove{
+    from{transform:perspective(500px) rotateX(60deg) translateY(0)}
+    to{transform:perspective(500px) rotateX(60deg) translateY(50px)}
+}
 
-        .mario-head {
-            width: 80%; height: 50%;
-            background: var(--mario-red);
-            position: absolute; top: -10%; left: 10%;
-            border-radius: 10px 10px 5px 5px;
-            border: 2px solid #000;
-        }
+.start-content{
+    position:relative;
+    text-align:center;
+    width:min(850px,92%);
+    z-index:2;
+}
 
-        .mario-head::after { /* The Cap Bill */
-            content: ''; position: absolute;
-            width: 15px; height: 5px; background: var(--mario-red);
-            right: -10px; top: 5px; border: 2px solid #000; border-left: none;
-        }
+.start-kicker{
+    color:var(--cyan);
+    font-size:.8rem;
+    font-weight:bold;
+    letter-spacing:5px;
+    margin-bottom:20px;
+    text-transform:uppercase;
+}
 
-        .walking { animation: walkCycle 0.2s infinite alternate; }
-        @keyframes walkCycle { 0% { transform: translateY(0) rotate(-5deg); } 100% { transform: translateY(-5px) rotate(5deg); } }
-        
-        .jumping { background: var(--mario-red); } /* Quick color flash on jump */
+.start-title{
+    font-size:clamp(3rem,9vw,7rem);
+    line-height:.9;
+    font-weight:900;
+    letter-spacing:-4px;
+    text-transform:uppercase;
+    text-shadow:
+        4px 4px 0 rgba(0,234,255,.18),
+        0 0 40px rgba(0,234,255,.25);
+}
 
-        /* --- Interactables --- */
-        .pipe {
-            position: absolute;
-            bottom: 80px;
-            width: 80px; height: 100px;
-            background: linear-gradient(to right, #008800, #00ff00, #008800);
-            border: 4px solid #000;
-            border-bottom: none;
-            z-index: 15;
-        }
-        .pipe::before {
-            content: ''; position: absolute;
-            top: -10px; left: -5px; width: 82px; height: 20px;
-            background: inherit; border: 4px solid #000;
-        }
+.start-title span{
+    color:var(--cyan);
+}
 
-        .coin {
-            position: absolute;
-            width: 25px; height: 35px;
-            background: var(--coin-gold);
-            border: 3px solid #000;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            box-shadow: inset -4px 0 0 rgba(0,0,0,0.2);
-            z-index: 20;
-        }
-        @keyframes spin { 0% { transform: rotateY(0deg); } 100% { transform: rotateY(360deg); } }
+.start-subtitle{
+    margin-top:22px;
+    color:var(--muted);
+    font-size:1.05rem;
+    letter-spacing:3px;
+}
 
-        .floating-score {
-            position: absolute;
-            color: white; font-family: 'Press Start 2P', cursive; font-size: 0.8rem;
-            text-shadow: 2px 2px 0 #000;
-            animation: floatUp 1s forwards;
-            pointer-events: none; z-index: 100;
-        }
-        @keyframes floatUp { 0% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; transform: translateY(-50px); } }
+.start-card{
+    margin:40px auto 0;
+    padding:25px;
+    width:min(600px,100%);
+    background:rgba(10,17,30,.8);
+    border:1px solid rgba(0,234,255,.25);
+    box-shadow:var(--shadow);
+    backdrop-filter:blur(15px);
+}
 
-        /* --- Glassmorphism UI (Resume Checkpoints) --- */
-        .cv-card {
-            position: absolute;
-            bottom: 220px;
-            width: 400px;
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 4px solid #000;
-            border-radius: 12px;
-            padding: 25px;
-            box-shadow: 10px 10px 0 rgba(0,0,0,0.3), inset 0 0 20px rgba(255,255,255,0.5);
-            opacity: 0;
-            transform: translateY(30px) scale(0.9);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            z-index: 5;
-            pointer-events: none; /* Let player jump "through" the visual card */
-        }
+.start-card p{
+    color:#c5cfdf;
+    line-height:1.7;
+}
 
-        .cv-card.active {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
+.start-button{
+    margin-top:28px;
+    border:0;
+    background:var(--cyan);
+    color:#001018;
+    padding:18px 45px;
+    font-size:1rem;
+    font-weight:900;
+    letter-spacing:3px;
+    cursor:pointer;
+    clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px);
+    transition:.2s;
+}
 
-        .cv-card h3 { color: var(--mario-red); font-size: 1.1rem; margin-bottom: 15px; border-bottom: 2px dashed #000; padding-bottom: 10px;}
-        .cv-card p, .cv-card li { font-size: 1.3rem; margin-bottom: 10px; line-height: 1.3; }
-        .cv-card ul { padding-left: 20px; }
-        .date-badge { display: inline-block; background: #000; color: #fff; padding: 3px 8px; font-size: 1rem; border-radius: 4px; margin-bottom: 10px;}
+.start-button:hover{
+    transform:translateY(-3px) scale(1.03);
+    box-shadow:0 0 35px rgba(0,234,255,.5);
+}
 
-        /* --- Mobile Controls --- */
-        #controls {
-            position: fixed; bottom: 20px; left: 0; width: 100%;
-            display: flex; justify-content: space-between; padding: 0 30px;
-            z-index: 1000;
-        }
-        .ctrl-group { display: flex; gap: 15px; }
-        .btn {
-            width: 65px; height: 65px; background: rgba(255,255,255,0.6);
-            border: 4px solid #000; border-radius: 50%;
-            display: flex; justify-content: center; align-items: center;
-            font-size: 2rem; box-shadow: 0 4px 0 rgba(0,0,0,0.5);
-            cursor: pointer;
-        }
-        .btn:active { transform: translateY(4px); box-shadow: 0 0 0 rgba(0,0,0,0.5); background: rgba(255,255,255,0.9); }
+.start-hint{
+    margin-top:20px;
+    color:#65728a;
+    font-size:.75rem;
+}
 
-        #instructions {
-            position: fixed; top: 60px; left: 50%; transform: translateX(-50%);
-            background: rgba(0,0,0,0.8); color: #fff; padding: 10px 20px;
-            border: 2px solid #fff; border-radius: 8px; text-align: center;
-            animation: pulse 2s infinite; z-index: 1000;
-        }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+/* =========================================================
+   GAME
+   ========================================================= */
 
-        @media (min-width: 769px) {
-            #controls { display: none; }
-            .cv-card { width: 500px; }
-        }
-    </style>
+#game{
+    position:fixed;
+    inset:0;
+    display:none;
+    background:#070b16;
+}
+
+#world{
+    position:absolute;
+    left:0;
+    top:0;
+    width:3000px;
+    height:1800px;
+    background:
+        linear-gradient(rgba(255,255,255,.015) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(255,255,255,.015) 1px,transparent 1px),
+        #09101c;
+    background-size:50px 50px;
+    transition:transform .08s linear;
+}
+
+/* Decorative terrain */
+
+.world-glow{
+    position:absolute;
+    border-radius:50%;
+    filter:blur(70px);
+    pointer-events:none;
+}
+
+.glow1{
+    width:700px;
+    height:700px;
+    left:400px;
+    top:250px;
+    background:rgba(0,234,255,.05);
+}
+
+.glow2{
+    width:700px;
+    height:700px;
+    left:1800px;
+    top:700px;
+    background:rgba(155,92,255,.06);
+}
+
+.road{
+    position:absolute;
+    background:#111b2b;
+    border:1px solid rgba(255,255,255,.04);
+}
+
+.road.horizontal{
+    height:100px;
+    left:0;
+    right:0;
+}
+
+.road.vertical{
+    width:100px;
+    top:0;
+    bottom:0;
+}
+
+.road.h1{top:600px}
+.road.h2{top:1250px}
+.road.v1{left:900px}
+.road.v2{left:2100px}
+
+.road::after{
+    content:"";
+    position:absolute;
+    opacity:.3;
+}
+
+.road.horizontal::after{
+    left:0;
+    right:0;
+    top:48px;
+    height:2px;
+    background:repeating-linear-gradient(
+        90deg,
+        transparent 0 35px,
+        #d7deea 35px 65px
+    );
+}
+
+.road.vertical::after{
+    top:0;
+    bottom:0;
+    left:48px;
+    width:2px;
+    background:repeating-linear-gradient(
+        0deg,
+        transparent 0 35px,
+        #d7deea 35px 65px
+    );
+}
+
+/* =========================================================
+   HUD
+   ========================================================= */
+
+#hud{
+    position:fixed;
+    z-index:500;
+    top:0;
+    left:0;
+    right:0;
+    height:75px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:12px 22px;
+    background:rgba(5,9,17,.88);
+    border-bottom:1px solid rgba(0,234,255,.2);
+    backdrop-filter:blur(15px);
+}
+
+.hud-name{
+    font-size:.8rem;
+    font-weight:900;
+    letter-spacing:2px;
+    color:var(--cyan);
+}
+
+.hud-title{
+    color:#8794aa;
+    font-size:.68rem;
+    margin-top:4px;
+}
+
+.hud-right{
+    display:flex;
+    gap:12px;
+    align-items:center;
+}
+
+.stat{
+    min-width:110px;
+}
+
+.stat-label{
+    font-size:.6rem;
+    color:#718097;
+    letter-spacing:1px;
+}
+
+.stat-value{
+    font-size:.8rem;
+    font-weight:bold;
+    margin-top:4px;
+}
+
+.xp-bar{
+    width:110px;
+    height:5px;
+    background:#1a2435;
+    margin-top:5px;
+}
+
+.xp-fill{
+    height:100%;
+    width:0%;
+    background:linear-gradient(90deg,var(--cyan),var(--purple));
+    transition:.4s;
+}
+
+/* =========================================================
+   PLAYER
+   ========================================================= */
+
+#player{
+    position:absolute;
+    width:52px;
+    height:70px;
+    z-index:100;
+}
+
+.player-shadow{
+    position:absolute;
+    width:48px;
+    height:13px;
+    left:2px;
+    bottom:0;
+    background:rgba(0,0,0,.5);
+    border-radius:50%;
+}
+
+.player-body{
+    position:absolute;
+    left:8px;
+    top:15px;
+    width:36px;
+    height:42px;
+    background:linear-gradient(135deg,var(--cyan),#2360ff);
+    border:2px solid white;
+    clip-path:polygon(50% 0,100% 22%,88% 100%,12% 100%,0 22%);
+    box-shadow:0 0 25px rgba(0,234,255,.4);
+}
+
+.player-head{
+    position:absolute;
+    width:22px;
+    height:22px;
+    left:15px;
+    top:2px;
+    border-radius:50%;
+    background:#e0a77d;
+    border:2px solid #fff;
+    z-index:2;
+}
+
+.player-head::after{
+    content:"";
+    position:absolute;
+    width:24px;
+    height:9px;
+    left:-3px;
+    top:-2px;
+    background:#172238;
+    border-radius:10px 10px 3px 3px;
+}
+
+.player-label{
+    position:absolute;
+    top:-22px;
+    left:50%;
+    transform:translateX(-50%);
+    font-size:9px;
+    white-space:nowrap;
+    color:#fff;
+    font-weight:bold;
+}
+
+/* =========================================================
+   LOCATIONS
+   ========================================================= */
+
+.location{
+    position:absolute;
+    width:250px;
+    min-height:170px;
+    padding:20px;
+    background:rgba(10,17,29,.9);
+    border:1px solid rgba(0,234,255,.2);
+    box-shadow:0 15px 50px rgba(0,0,0,.35);
+}
+
+.location.current{
+    border-color:rgba(0,234,255,.6);
+    box-shadow:
+        0 0 40px rgba(0,234,255,.08),
+        0 15px 50px rgba(0,0,0,.4);
+}
+
+.location-number{
+    color:var(--cyan);
+    font-size:.65rem;
+    letter-spacing:3px;
+    font-weight:bold;
+}
+
+.location-icon{
+    font-size:2rem;
+    margin:10px 0;
+}
+
+.location h2{
+    font-size:1.05rem;
+    margin-bottom:5px;
+}
+
+.location-role{
+    font-size:.7rem;
+    color:var(--cyan);
+    margin-bottom:10px;
+}
+
+.location-date{
+    font-size:.65rem;
+    color:#7e8ca2;
+}
+
+.location-hint{
+    margin-top:14px;
+    color:#8c9bb0;
+    font-size:.65rem;
+}
+
+.location-hint b{
+    color:var(--yellow);
+}
+
+.loc-ote{
+    left:250px;
+    top:250px;
+}
+
+.loc-defence{
+    left:1120px;
+    top:300px;
+}
+
+.loc-aegean{
+    left:2250px;
+    top:400px;
+}
+
+.loc-pfizer{
+    left:1280px;
+    top:1050px;
+    width:330px;
+    min-height:220px;
+}
+
+.loc-education{
+    left:450px;
+    top:1050px;
+}
+
+.loc-skills{
+    left:2100px;
+    top:1050px;
+}
+
+.loc-achievements{
+    left:2300px;
+    top:1400px;
+}
+
+.loc-contact{
+    left:1000px;
+    top:1450px;
+}
+
+/* =========================================================
+   INTERACTION INDICATORS
+   ========================================================= */
+
+.interact{
+    position:absolute;
+    bottom:-34px;
+    left:50%;
+    transform:translateX(-50%);
+    padding:7px 12px;
+    background:var(--yellow);
+    color:#17120a;
+    font-size:.65rem;
+    font-weight:900;
+    white-space:nowrap;
+    opacity:0;
+    transition:.2s;
+}
+
+.location.near .interact{
+    opacity:1;
+}
+
+/* =========================================================
+   MINIMAP
+   ========================================================= */
+
+#minimap{
+    position:fixed;
+    right:20px;
+    bottom:20px;
+    width:190px;
+    height:115px;
+    z-index:500;
+    background:rgba(5,9,17,.9);
+    border:1px solid rgba(0,234,255,.3);
+    padding:8px;
+    backdrop-filter:blur(10px);
+}
+
+.map-inner{
+    position:relative;
+    width:100%;
+    height:100%;
+    background:
+        linear-gradient(rgba(0,234,255,.04) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(0,234,255,.04) 1px,transparent 1px);
+    background-size:20px 20px;
+}
+
+.map-dot{
+    position:absolute;
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    transform:translate(-50%,-50%);
+}
+
+.map-dot.player{
+    background:#fff;
+    box-shadow:0 0 10px #fff;
+    z-index:3;
+}
+
+.map-dot.place{
+    background:var(--cyan);
+}
+
+/* =========================================================
+   MODAL
+   ========================================================= */
+
+#modal{
+    position:fixed;
+    inset:0;
+    z-index:2000;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    background:rgba(0,0,0,.7);
+    backdrop-filter:blur(8px);
+    padding:20px;
+}
+
+.modal-box{
+    width:min(800px,100%);
+    max-height:85vh;
+    overflow:auto;
+    background:#0b1220;
+    border:1px solid rgba(0,234,255,.4);
+    box-shadow:0 30px 100px rgba(0,0,0,.7);
+}
+
+.modal-header{
+    padding:22px 25px;
+    border-bottom:1px solid rgba(255,255,255,.08);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.modal-header h2{
+    font-size:1.2rem;
+}
+
+.modal-close{
+    background:none;
+    border:1px solid #39465b;
+    color:#fff;
+    width:34px;
+    height:34px;
+    cursor:pointer;
+}
+
+.modal-content{
+    padding:25px;
+}
+
+.modal-content p{
+    color:#b6c0d0;
+    line-height:1.7;
+    margin-bottom:20px;
+}
+
+.modal-content h3{
+    color:var(--cyan);
+    font-size:.75rem;
+    letter-spacing:2px;
+    margin:25px 0 12px;
+}
+
+.modal-list{
+    list-style:none;
+}
+
+.modal-list li{
+    position:relative;
+    padding:12px 12px 12px 28px;
+    margin-bottom:7px;
+    background:#111b2c;
+    color:#c7d0df;
+    font-size:.85rem;
+    line-height:1.5;
+}
+
+.modal-list li::before{
+    content:"›";
+    position:absolute;
+    left:12px;
+    color:var(--cyan);
+    font-weight:bold;
+}
+
+.tag-container{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+}
+
+.tag{
+    padding:7px 10px;
+    background:#131f33;
+    border:1px solid rgba(0,234,255,.2);
+    color:#b9c6d9;
+    font-size:.7rem;
+}
+
+/* =========================================================
+   SKILL BARS
+   ========================================================= */
+
+.skill{
+    margin-bottom:17px;
+}
+
+.skill-top{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:7px;
+    font-size:.75rem;
+}
+
+.skill-top span:last-child{
+    color:var(--cyan);
+}
+
+.skill-track{
+    height:7px;
+    background:#172235;
+}
+
+.skill-fill{
+    height:100%;
+    width:0;
+    background:linear-gradient(90deg,var(--cyan),var(--purple));
+    transition:1s cubic-bezier(.2,.8,.2,1);
+}
+
+/* =========================================================
+   ACHIEVEMENTS
+   ========================================================= */
+
+.achievement-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+}
+
+.achievement{
+    padding:18px;
+    background:#101a2b;
+    border:1px solid rgba(255,255,255,.05);
+}
+
+.achievement.unlocked{
+    border-color:rgba(66,245,155,.4);
+}
+
+.achievement-icon{
+    font-size:1.8rem;
+    margin-bottom:10px;
+}
+
+.achievement h4{
+    font-size:.8rem;
+    margin-bottom:5px;
+}
+
+.achievement p{
+    font-size:.65rem;
+    color:#718098;
+    margin:0;
+}
+
+/* =========================================================
+   CONTROLS
+   ========================================================= */
+
+#controls{
+    position:fixed;
+    left:20px;
+    bottom:20px;
+    z-index:600;
+    display:none;
+}
+
+.control-pad{
+    width:145px;
+    height:145px;
+    position:relative;
+}
+
+.control{
+    position:absolute;
+    width:45px;
+    height:45px;
+    border:1px solid rgba(0,234,255,.4);
+    background:rgba(10,17,29,.85);
+    color:var(--cyan);
+    font-weight:bold;
+    font-size:18px;
+}
+
+.control:active{
+    background:var(--cyan);
+    color:#000;
+}
+
+.up{left:50px;top:0}
+.left{left:0;top:50px}
+.down{left:50px;top:50px}
+.right{left:100px;top:50px}
+
+/* =========================================================
+   TOAST
+   ========================================================= */
+
+#toast{
+    position:fixed;
+    left:50%;
+    top:95px;
+    transform:translateX(-50%) translateY(-20px);
+    z-index:3000;
+    padding:12px 20px;
+    background:#101a2b;
+    border:1px solid rgba(0,234,255,.4);
+    color:#fff;
+    font-size:.75rem;
+    font-weight:bold;
+    opacity:0;
+    pointer-events:none;
+    transition:.3s;
+}
+
+#toast.show{
+    opacity:1;
+    transform:translateX(-50%) translateY(0);
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media(max-width:800px){
+
+    #hud{
+        height:64px;
+        padding:8px 12px;
+    }
+
+    .hud-title{
+        display:none;
+    }
+
+    .stat{
+        min-width:75px;
+    }
+
+    .stat:nth-child(2){
+        display:none;
+    }
+
+    .xp-bar{
+        width:70px;
+    }
+
+    #minimap{
+        width:145px;
+        height:90px;
+        right:10px;
+        bottom:10px;
+    }
+
+    #controls{
+        display:block;
+    }
+
+    .location{
+        transform:scale(.9);
+        transform-origin:center;
+    }
+
+    .modal-box{
+        max-height:88vh;
+    }
+
+    .achievement-grid{
+        grid-template-columns:1fr;
+    }
+}
+
+@media(min-width:801px){
+    #controls{
+        display:none!important;
+    }
+}
+
+/* =========================================================
+   ACCESSIBILITY
+   ========================================================= */
+
+@media(prefers-reduced-motion:reduce){
+    *,
+    *::before,
+    *::after{
+        animation-duration:.001ms!important;
+        transition-duration:.001ms!important;
+    }
+}
+</style>
 </head>
+
 <body>
 
-    <div id="hud">
-        <div><span class="retro">SCORE </span><span id="score-display" class="retro">0000</span></div>
-        <div><span class="retro">WORLD 1-1</span></div>
-        <div><span class="retro">🪙 x<span id="coin-display">00</span></span></div>
-    </div>
+<!-- =======================================================
+     START SCREEN
+     ======================================================= -->
 
-    <div id="instructions">
-        <span class="retro" style="font-size: 0.8rem;">ARROW KEYS TO MOVE | SPACE TO JUMP</span>
-    </div>
+<div id="startScreen">
 
-    <div id="game-viewport">
-        <div id="layer-clouds" class="layer"></div>
-        <div id="layer-mountains" class="layer"></div>
-        
-        <div id="layer-world" class="layer">
-            
-            <div id="player">
-                <div class="mario-head"></div>
-                <div class="mario-body"></div>
-            </div>
+    <div class="start-grid"></div>
 
-            <div class="pipe" style="left: 600px;"></div>
-            <div class="cv-card" id="card-1" style="left: 450px;">
-                <h3>WORLD 1: PROFILE</h3>
-                <p><strong>Vasileios Tillis</strong><br>Statistical Data Scientist</p>
-                <p>MSc in Data Science with experience in pharmaceutical and airline industries. Passionate about uncovering insights from data and mentoring colleagues. Known for independent high-quality output and team leadership.</p>
-            </div>
+    <div class="start-content">
 
-            <div class="pipe" style="left: 1600px; height: 150px;"></div>
-            <div class="cv-card" id="card-2" style="left: 1450px; bottom: 270px;">
-                <h3>WORLD 2: PFIZER HQ</h3>
-                <span class="date-badge">Jun 2026 – Present</span>
-                <p><strong>Senior Assoc. Statistical Data Scientist</strong></p>
-                <ul>
-                    <li>Driving high-quality analytical delivery and statistical reporting.</li>
-                    <li>Contributed to a PHUSE-accepted presentation (Nov 2026).</li>
-                </ul>
-                <span class="date-badge" style="margin-top:10px;">Dec 2023 – May 2026</span>
-                <p><strong>Assoc. Statistical Data Scientist</strong></p>
-                <ul>
-                    <li>Led a team of SMEs in the transition to a new statistical reporting platform.</li>
-                </ul>
-            </div>
-
-            <div class="pipe" style="left: 2800px; height: 120px;"></div>
-            <div class="cv-card" id="card-3" style="left: 2650px; bottom: 240px;">
-                <h3>WORLD 3: PAST QUESTS</h3>
-                <p><strong>Product Data Analyst @ Aegean Airlines</strong></p>
-                <span class="date-badge">Jul 2022 – Nov 2023</span>
-                <p>Designed business monitoring reports and digital solutions using Power BI.</p>
-                <br>
-                <p><strong>Data Analyst @ Ministry of National Defence</strong></p>
-                <span class="date-badge">Jan 2018 – Oct 2018</span>
-                <p>Analyzed defense data and created specialized performance dashboards.</p>
-            </div>
-
-            <div class="pipe" style="left: 4000px;"></div>
-            <div class="cv-card" id="card-4" style="left: 3850px;">
-                <h3>WORLD 4: ACADEMY & SKILLS</h3>
-                <p>🎓 <strong>MSc in Data Science</strong> (UEL, 2020-2021)</p>
-                <p>🎓 <strong>BSc Telecoms</strong> (UOP, 2011-2017)</p>
-                <hr style="margin: 10px 0; border: 1px dashed #000;">
-                <p><strong>Code:</strong> Python (95%), R (90%), SQL (90%), SAS (90%)</p>
-                <p><strong>Power-Ups:</strong> Google Data Analytics Cert, IBM Data Science Cert, SAS Programmer Cert.</p>
-            </div>
-
-            <div class="pipe" style="left: 5200px; height: 300px; width: 40px;"></div>
-            <div style="position:absolute; left:5140px; bottom: 400px; width: 200px; text-align:center; font-family:'Press Start 2P'; line-height: 1.5;">
-                LEVEL COMPLETE!<br><br>Let's Connect:<br>tillisvasileios@gmail.com
-            </div>
-
-            <div class="ground"></div>
+        <div class="start-kicker">
+            Interactive Resume // v2026
         </div>
+
+        <div class="start-title">
+            CAREER<br>
+            <span>QUEST</span>
+        </div>
+
+        <div class="start-subtitle">
+            VASILEIOS TILLIS
+            <br>
+            STATISTICAL DATA SCIENTIST
+        </div>
+
+        <div class="start-card">
+
+            <p>
+                Welcome to my interactive career world.
+                Explore my professional journey, discover
+                my skills, inspect my achievements and see
+                where the next level could take me.
+            </p>
+
+            <button class="start-button" id="startButton">
+                ▶ PRESS START
+            </button>
+
+            <div class="start-hint">
+                DESKTOP: WASD / ARROW KEYS + E
+                <br>
+                MOBILE: ON-SCREEN CONTROLS
+            </div>
+
+        </div>
+
     </div>
+
+</div>
+
+
+<!-- =======================================================
+     GAME
+     ======================================================= -->
+
+<div id="game">
+
+    <!-- HUD -->
+
+    <div id="hud">
+
+        <div>
+            <div class="hud-name">
+                VASILEIOS TILLIS
+            </div>
+
+            <div class="hud-title">
+                STATISTICAL DATA SCIENTIST
+            </div>
+        </div>
+
+        <div class="hud-right">
+
+            <div class="stat">
+                <div class="stat-label">
+                    LEVEL
+                </div>
+
+                <div class="stat-value" id="level">
+                    01
+                </div>
+            </div>
+
+            <div class="stat">
+                <div class="stat-label">
+                    XP
+                </div>
+
+                <div class="xp-bar">
+                    <div class="xp-fill" id="xpFill"></div>
+                </div>
+            </div>
+
+            <div class="stat">
+                <div class="stat-label">
+                    ACHIEVEMENTS
+                </div>
+
+                <div class="stat-value" id="achievementCount">
+                    0 / 8
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- WORLD -->
+
+    <div id="world">
+
+        <div class="world-glow glow1"></div>
+        <div class="world-glow glow2"></div>
+
+        <!-- ROADS -->
+
+        <div class="road horizontal h1"></div>
+        <div class="road horizontal h2"></div>
+        <div class="road vertical v1"></div>
+        <div class="road vertical v2"></div>
+
+
+        <!-- =================================================
+             CAREER LOCATIONS
+             ================================================= -->
+
+        <div
+            class="location loc-ote"
+            data-id="ote"
+            data-x="375"
+            data-y="335"
+        >
+
+            <div class="location-number">
+                LEVEL 01
+            </div>
+
+            <div class="location-icon">
+                📡
+            </div>
+
+            <h2>
+                OTE GROUP
+            </h2>
+
+            <div class="location-role">
+                INFORMATION SECURITY ANALYST — INTERN
+            </div>
+
+            <div class="location-date">
+                JUL 2015 — SEP 2015
+            </div>
+
+            <div class="location-hint">
+                <b>E</b> INTERACT
+            </div>
+
+            <div class="interact">
+                PRESS E TO ENTER
+            </div>
+
+        </div>
+
+
+        <div
+            class="location loc-defence"
+            data-id="defence"
+            data-x="1245"
+            data-y="385"
+        >
+
+            <div class="location-number">
+                LEVEL 02
+            </div>
+
+            <div class="location-icon">
+                🛡️
+            </div>
+
+            <h2>
+                MINISTRY OF NATIONAL DEFENCE
+            </h2>
+
+            <div class="location-role">
+                DATA ANALYST
+            </div>
+
+            <div class="location-date">
+                JAN 2018 — OCT 2018
+            </div>
+
+            <div class="location-hint">
+                <b>E</b> INTERACT
+            </div>
+
+            <div class="interact">
+                PRESS E TO ENTER
+            </div>
+
+        </div>
+
+
+        <div
+            class="location loc-aegean"
+            data-id="aegean"
+            data-x="2375"
+            data-y="485"
+        >
+
+            <div class="location-number">
+                LEVEL 03
+            </div>
+
+            <div class="location-icon">
+                ✈️
+            </div>
+
+            <h2>
+                AEGEAN AIRLINES
+            </h2>
+
+            <div class="location-role">
+                PRODUCT DATA ANALYST
+            </div>
+
+            <div class="location-date">
+                JUL 2022 — NOV 2023
+            </div>
+
+            <div class="location-hint">
+                <b>E</b> INTERACT
+            </div>
+
+            <div class="interact">
+                PRESS E TO ENTER
+            </div>
+
+        </div>
+
+
+        <div
+            class="location loc-pfizer current"
+            data-id="pfizer"
+            data-x="1445"
+            data-y="1160"
+        >
+
+            <div class="location-number">
+                LEVEL 04 // CURRENT
+            </div>
+
+            <div class="location-icon">
+                🧬
+            </div>
+
+            <h2>
+                PFIZER
+            </h2>
+
+            <div class="location-role">
+                SENIOR ASSOCIATE STATISTICAL DATA SCIENTIST
+            </div>
+
+            <div class="location-date">
+                JUN 2026 — PRESENT
+            </div>
+
+            <div class="location-hint">
+                <b>E</b> INTERACT
+            </div>
+
+            <div class="interact">
+                PRESS E TO ENTER
+            </div>
+
+        </div>
+
+
+        <!-- EDUCATION -->
+
+        <div
+            class="location loc-education"
+            data-id="education"
+            data-x="575"
+            data-y="1135"
+        >
+
+            <div class="location-number">
+                KNOWLEDGE HUB
+            </div>
+
+            <div class="location-icon">
+                🎓
+            </div>
+
+            <h2>
+                EDUCATION
+            </h2>
+
+            <div class="location-role">
+                MSc + BSc
+            </div>
+
+            <div class="location-hint">
+                <b>E</b> EXPLORE
+            </div>
+
+            <div class="interact">
+                PRESS E TO EXPLORE
+            </div>
+
+        </div>
+
+
+        <!-- SKILLS -->
+
+        <div
+            class="location loc-skills"
+            data-id="skills"
+            data-x="2225"
+            data-y="1135"
+        >
+
+            <div class="location-number">
+                TECH LAB
+            </div>
+
+            <div class="location-icon">
+                ⚙️
+            </div>
+
+            <h2>
+                SKILL FORGE
+            </h2>
+
+            <div class="location-role">
+                DATA • CODE • LEADERSHIP
+            </div>
+
+            <div class="location-hint">
+                <b>E</b> VIEW SKILLS
+            </div>
+
+            <div class="interact">
+                PRESS E TO OPEN
+            </div>
+
+        </div>
+
+
+        <!-- ACHIEVEMENTS -->
+
+        <div
+            class="location loc-achievements"
+            data-id="achievements"
+            data-x="2425"
+            data-y="1485"
+        >
+
+            <div class="location-number">
+                ACHIEVEMENT VAULT
+            </div>
+
+            <div class="location-icon">
+                🏆
+            </div>
+
+            <h2>
+                ACHIEVEMENTS
+            </h2>
+
+            <div class="location-role">
+                PROFESSIONAL MILESTONES
+            </div>
+
+            <div class="location-hint">
+                <b>E</b> OPEN VAULT
+            </div>
+
+            <div class="interact">
+                PRESS E TO OPEN
+            </div>
+
+        </div>
+
+
+        <!-- CONTACT -->
+
+        <div
+            class="location loc-contact"
+            data-id="contact"
+            data-x="1125"
+            data-y="1535"
+        >
+
+            <div class="location-number">
+                FINAL BOSS
+            </div>
+
+            <div class="location-icon">
+                🚀
+            </div>
+
+            <h2>
+                WHAT'S NEXT?
+            </h2>
+
+            <div class="location-role">
+                THE NEXT LEVEL IS WAITING
+            </div>
+
+            <div class="location-hint">
+                <b>E</b> DISCOVER
+            </div>
+
+            <div class="interact">
+                PRESS E TO ENTER
+            </div>
+
+        </div>
+
+
+        <!-- PLAYER -->
+
+        <div id="player">
+
+            <div class="player-label">
+                VASILEIOS
+            </div>
+
+            <div class="player-head"></div>
+
+            <div class="player-body"></div>
+
+            <div class="player-shadow"></div>
+
+        </div>
+
+    </div>
+
+
+    <!-- MINIMAP -->
+
+    <div id="minimap">
+
+        <div class="map-inner">
+
+            <div class="map-dot place" style="left:12%;top:20%"></div>
+            <div class="map-dot place" style="left:41%;top:24%"></div>
+            <div class="map-dot place" style="left:79%;top:31%"></div>
+            <div class="map-dot place" style="left:48%;top:65%"></div>
+            <div class="map-dot place" style="left:20%;top:63%"></div>
+            <div class="map-dot place" style="left:74%;top:64%"></div>
+            <div class="map-dot place" style="left:82%;top:84%"></div>
+            <div class="map-dot place" style="left:38%;top:87%"></div>
+
+            <div
+                class="map-dot player"
+                id="mapPlayer"
+                style="left:50%;top:50%"
+            ></div>
+
+        </div>
+
+    </div>
+
+
+    <!-- MOBILE CONTROLS -->
 
     <div id="controls">
-        <div class="ctrl-group">
-            <div class="btn" id="btn-left">◀</div>
-            <div class="btn" id="btn-right">▶</div>
+
+        <div class="control-pad">
+
+            <button class="control up" data-key="ArrowUp">▲</button>
+            <button class="control left" data-key="ArrowLeft">◀</button>
+            <button class="control down" data-key="ArrowDown">▼</button>
+            <button class="control right" data-key="ArrowRight">▶</button>
+
         </div>
-        <div class="btn" id="btn-jump">▲</div>
+
     </div>
 
-    <script>
-        // --- Game Engine Variables ---
-        const playerEl = document.getElementById('player');
-        const worldLayer = document.getElementById('layer-world');
-        const mountainsLayer = document.getElementById('layer-mountains');
-        const cloudsLayer = document.getElementById('layer-clouds');
-        
-        // Physics variables
-        let player = {
-            x: 150,           // Starts slightly inset
-            y: 0,             // 0 is ground level
-            vx: 0,
-            vy: 0,
-            width: 40,
-            height: 50,
-            speed: 8,         // Horizontal speed
-            jumpPower: 16,    // Jump strength
-            gravity: 0.8,     // Downward force
-            grounded: true,
-            facingRight: true
-        };
+</div>
 
-        let cameraX = 0;
-        let score = 0;
-        let coins = 0;
-        let keys = { left: false, right: false, up: false };
 
-        // Constants
-        const LEVEL_WIDTH = 6000;
-        const SCREEN_OFFSET = window.innerWidth * 0.2; // Keep player 20% from left of screen
+<!-- =======================================================
+     MODAL
+     ======================================================= -->
 
-        // --- Coin Generation ---
-        const coinPositions = [
-            {x: 400, y: 100}, {x: 450, y: 150}, {x: 500, y: 100}, // Arc before pipe 1
-            {x: 1300, y: 0}, {x: 1350, y: 0}, {x: 1400, y: 0},   // Ground coins
-            {x: 2500, y: 150}, {x: 2550, y: 150}, {x: 2600, y: 150}, // Floating coins
-            {x: 3700, y: 0}, {x: 3750, y: 50}, {x: 3800, y: 100},
-            {x: 4800, y: 0}, {x: 4900, y: 0}, {x: 5000, y: 0}
-        ];
+<div id="modal">
 
-        let activeCoins = [];
+    <div class="modal-box">
 
-        function initCoins() {
-            coinPositions.forEach((pos, index) => {
-                const coinEl = document.createElement('div');
-                coinEl.className = 'coin';
-                coinEl.style.left = `${pos.x}px`;
-                coinEl.style.bottom = `${pos.y + 80}px`; // +80 for ground height
-                worldLayer.appendChild(coinEl);
-                
-                activeCoins.push({
-                    el: coinEl,
-                    x: pos.x,
-                    y: pos.y,
-                    width: 25,
-                    height: 35,
-                    collected: false
-                });
-            });
+        <div class="modal-header">
+
+            <h2 id="modalTitle">
+                Career Quest
+            </h2>
+
+            <button class="modal-close" id="modalClose">
+                ✕
+            </button>
+
+        </div>
+
+        <div class="modal-content" id="modalContent"></div>
+
+    </div>
+
+</div>
+
+
+<div id="toast"></div>
+
+
+<script>
+/* =========================================================
+   CAREER QUEST ENGINE
+   ========================================================= */
+
+const player = document.getElementById("player");
+const world = document.getElementById("world");
+const game = document.getElementById("game");
+const startScreen = document.getElementById("startScreen");
+
+const modal = document.getElementById("modal");
+const modalTitle = document.getElementById("modalTitle");
+const modalContent = document.getElementById("modalContent");
+const modalClose = document.getElementById("modalClose");
+
+const toast = document.getElementById("toast");
+
+const xpFill = document.getElementById("xpFill");
+const levelDisplay = document.getElementById("level");
+const achievementCount = document.getElementById("achievementCount");
+const mapPlayer = document.getElementById("mapPlayer");
+
+
+/* =========================================================
+   PLAYER STATE
+   ========================================================= */
+
+let playerX = 1420;
+let playerY = 800;
+
+let speed = 5;
+
+let keys = {};
+
+let currentLocation = null;
+
+let xp = 0;
+let level = 1;
+
+let achievements = new Set();
+
+
+/* =========================================================
+   CAREER DATA
+   ========================================================= */
+
+const career = {
+
+    ote: {
+        title:"OTE Group",
+        subtitle:"Information Security Analyst — Intern",
+        xp:100,
+        html:`
+            <p>
+                My first professional step into the world of
+                technology, analytics and information security.
+            </p>
+
+            <h3>RESPONSIBILITIES</h3>
+
+            <ul class="modal-list">
+                <li>
+                    Monitored telecom fraud systems.
+                </li>
+                <li>
+                    Supported incident response activities.
+                </li>
+                <li>
+                    Worked with operational security data.
+                </li>
+            </ul>
+
+            <h3>LEVEL UNLOCKED</h3>
+
+            <div class="tag-container">
+                <div class="tag">Information Security</div>
+                <div class="tag">Telecom</div>
+                <div class="tag">Incident Response</div>
+                <div class="tag">Data Analysis</div>
+            </div>
+        `
+    },
+
+    defence: {
+        title:"Ministry of National Defence",
+        subtitle:"Data Analyst",
+        xp:150,
+        html:`
+            <p>
+                A role focused on analytical thinking,
+                dashboards and performance analysis.
+            </p>
+
+            <h3>RESPONSIBILITIES</h3>
+
+            <ul class="modal-list">
+                <li>
+                    Analyzed defense-related datasets.
+                </li>
+                <li>
+                    Created dashboards for performance analysis.
+                </li>
+                <li>
+                    Assisted with analytical tool development.
+                </li>
+            </ul>
+
+            <h3>SKILLS DEVELOPED</h3>
+
+            <div class="tag-container">
+                <div class="tag">Data Analysis</div>
+                <div class="tag">Dashboards</div>
+                <div class="tag">Performance Analytics</div>
+                <div class="tag">Problem Solving</div>
+            </div>
+        `
+    },
+
+    aegean: {
+        title:"Aegean Airlines",
+        subtitle:"Product Data Analyst",
+        xp:200,
+        html:`
+            <p>
+                The transition from pure analytics into
+                business-facing data solutions.
+            </p>
+
+            <h3>RESPONSIBILITIES</h3>
+
+            <ul class="modal-list">
+                <li>
+                    Designed business monitoring reports.
+                </li>
+                <li>
+                    Developed automated analytical processes.
+                </li>
+                <li>
+                    Created Power BI solutions.
+                </li>
+                <li>
+                    Collaborated with business and IT teams.
+                </li>
+            </ul>
+
+            <h3>TECHNOLOGIES</h3>
+
+            <div class="tag-container">
+                <div class="tag">Power BI</div>
+                <div class="tag">Data Automation</div>
+                <div class="tag">Business Analytics</div>
+                <div class="tag">Data Visualization</div>
+            </div>
+        `
+    },
+
+    pfizer: {
+        title:"Pfizer",
+        subtitle:"Senior Associate Statistical Data Scientist",
+        xp:400,
+        html:`
+            <p>
+                <strong style="color:#00eaff">
+                    CURRENT POSITION
+                </strong>
+                <br><br>
+
+                My current chapter combines statistical data
+                science, pharmaceutical analytics, automation,
+                leadership and mentoring within a clinical
+                development environment.
+            </p>
+
+            <h3>2026 — PRESENT</h3>
+
+            <ul class="modal-list">
+                <li>
+                    Promoted to Senior Associate Statistical
+                    Data Scientist.
+                </li>
+
+                <li>
+                    Support statistical data science activities
+                    within a pharmaceutical / clinical
+                    development environment.
+                </li>
+
+                <li>
+                    Drive high-quality analytical delivery and
+                    contribute to cross-functional reporting
+                    and process improvement.
+                </li>
+            </ul>
+
+            <h3>2023 — 2026</h3>
+
+            <ul class="modal-list">
+                <li>
+                    Led a team of SMEs during the transition
+                    to a new statistical reporting platform
+                    for clinical trials.
+                </li>
+
+                <li>
+                    Mentored junior colleagues toward
+                    independent delivery.
+                </li>
+
+                <li>
+                    Acted as buddy for new hires.
+                </li>
+
+                <li>
+                    Ensured quality and continuity during
+                    team transitions.
+                </li>
+
+                <li>
+                    Delivered ARs and IBs independently
+                    across multiple clinical projects.
+                </li>
+            </ul>
+
+            <h3>SCIENTIFIC CONTRIBUTIONS</h3>
+
+            <ul class="modal-list">
+                <li>
+                    PHUSE-accepted poster on statistical
+                    validation efficiency.
+                </li>
+
+                <li>
+                    Contribution to PHUSE presentation work.
+                </li>
+            </ul>
+
+            <h3>CORE DOMAIN</h3>
+
+            <div class="tag-container">
+                <div class="tag">Clinical Development</div>
+                <div class="tag">Statistical Programming</div>
+                <div class="tag">SAS</div>
+                <div class="tag">R</div>
+                <div class="tag">Python</div>
+                <div class="tag">SQL</div>
+                <div class="tag">Validation</div>
+                <div class="tag">Leadership</div>
+            </div>
+        `
+    },
+
+    education: {
+        title:"Education Hub",
+        subtitle:"Academic Background",
+        xp:150,
+        html:`
+            <h3>MSc — DATA SCIENCE</h3>
+
+            <p>
+                University of East London
+                <br>
+                2020 — 2021
+            </p>
+
+            <p>
+                <strong style="color:#00eaff">
+                    Thesis:
+                </strong>
+                Algorithmic identification of toxic language
+                patterns within distributed networks using
+                Natural Language Processing architectures.
+            </p>
+
+            <h3>BSc — SCIENCE & TECHNOLOGY OF TELECOMMUNICATIONS</h3>
+
+            <p>
+                University of Peloponnese
+                <br>
+                2011 — 2017
+            </p>
+
+            <p>
+                <strong style="color:#00eaff">
+                    Thesis:
+                </strong>
+                High-volume data systems architectures
+                and cloud computing infrastructure topologies.
+            </p>
+
+            <h3>PROFESSIONAL CERTIFICATIONS</h3>
+
+            <div class="tag-container">
+                <div class="tag">Google Data Analytics</div>
+                <div class="tag">IBM Data Science</div>
+                <div class="tag">SAS Programmer</div>
+            </div>
+        `
+    },
+
+    skills: {
+        title:"Skill Forge",
+        subtitle:"Technical & Leadership Arsenal",
+        xp:150,
+        html:`
+            <p>
+                The tools and capabilities I use to turn
+                complex data into useful decisions.
+            </p>
+
+            <h3>PROGRAMMING</h3>
+
+            <div class="skill">
+                <div class="skill-top">
+                    <span>Python</span>
+                    <span>95%</span>
+                </div>
+                <div class="skill-track">
+                    <div class="skill-fill" data-width="95%"></div>
+                </div>
+            </div>
+
+            <div class="skill">
+                <div class="skill-top">
+                    <span>R</span>
+                    <span>90%</span>
+                </div>
+                <div class="skill-track">
+                    <div class="skill-fill" data-width="90%"></div>
+                </div>
+            </div>
+
+            <div class="skill">
+                <div class="skill-top">
+                    <span>SQL</span>
+                    <span>90%</span>
+                </div>
+                <div class="skill-track">
+                    <div class="skill-fill" data-width="90%"></div>
+                </div>
+            </div>
+
+            <div class="skill">
+                <div class="skill-top">
+                    <span>SAS</span>
+                    <span>90%</span>
+                </div>
+                <div class="skill-track">
+                    <div class="skill-fill" data-width="90%"></div>
+                </div>
+            </div>
+
+            <h3>ANALYTICS</h3>
+
+            <div class="skill">
+                <div class="skill-top">
+                    <span>Statistical Modeling</span>
+                    <span>90%</span>
+                </div>
+                <div class="skill-track">
+                    <div class="skill-fill" data-width="90%"></div>
+                </div>
+            </div>
+
+            <div class="skill">
+                <div class="skill-top">
+                    <span>Machine Learning</span>
+                    <span>85%</span>
+                </div>
+                <div class="skill-track">
+                    <div class="skill-fill" data-width="85%"></div>
+                </div>
+            </div>
+
+            <div class="skill">
+                <div class="skill-top">
+                    <span>Data Visualization</span>
+                    <span>90%</span>
+                </div>
+                <div class="skill-track">
+                    <div class="skill-fill" data-width="90%"></div>
+                </div>
+            </div>
+
+            <h3>LEADERSHIP</h3>
+
+            <div class="skill">
+                <div class="skill-top">
+                    <span>Team Leadership</span>
+                    <span>95%</span>
+                </div>
+                <div class="skill-track">
+                    <div class="skill-fill" data-width="95%"></div>
+                </div>
+            </div>
+
+            <div class="skill">
+                <div class="skill-top">
+                    <span>Technical Mentoring</span>
+                    <span>95%</span>
+                </div>
+                <div class="skill-track">
+                    <div class="skill-fill" data-width="95%"></div>
+                </div>
+            </div>
+        `
+    },
+
+    achievements: {
+        title:"Achievement Vault",
+        subtitle:"Professional Milestones",
+        xp:250,
+        html:`
+            <div class="achievement-grid">
+
+                <div class="achievement unlocked">
+                    <div class="achievement-icon">⬆️</div>
+                    <h4>LEVEL UP</h4>
+                    <p>
+                        Promoted to Senior Associate
+                        Statistical Data Scientist.
+                    </p>
+                </div>
+
+                <div class="achievement unlocked">
+                    <div class="achievement-icon">🧬</div>
+                    <h4>PHARMA UNLOCKED</h4>
+                    <p>
+                        Built experience in a global
+                        pharmaceutical environment.
+                    </p>
+                </div>
+
+                <div class="achievement unlocked">
+                    <div class="achievement-icon">👥</div>
+                    <h4>TEAM LEADER</h4>
+                    <p>
+                        Led SMEs through a major
+                        reporting platform transition.
+                    </p>
+                </div>
+
+                <div class="achievement unlocked">
+                    <div class="achievement-icon">🎓</div>
+                    <h4>MENTOR</h4>
+                    <p>
+                        Mentored colleagues toward
+                        independent delivery.
+                    </p>
+                </div>
+
+                <div class="achievement unlocked">
+                    <div class="achievement-icon">📊</div>
+                    <h4>DATA BUILDER</h4>
+                    <p>
+                        Experience across Python, R,
+                        SQL, SAS and Power BI.
+                    </p>
+                </div>
+
+                <div class="achievement unlocked">
+                    <div class="achievement-icon">🏆</div>
+                    <h4>PHUSE</h4>
+                    <p>
+                        Contributed to accepted
+                        scientific work.
+                    </p>
+                </div>
+
+                <div class="achievement unlocked">
+                    <div class="achievement-icon">✈️</div>
+                    <h4>BUSINESS ANALYTICS</h4>
+                    <p>
+                        Applied analytics within
+                        aviation.
+                    </p>
+                </div>
+
+                <div class="achievement unlocked">
+                    <div class="achievement-icon">🚀</div>
+                    <h4>NEXT LEVEL</h4>
+                    <p>
+                        Ready for the next challenge.
+                    </p>
+                </div>
+
+            </div>
+        `
+    },
+
+    contact: {
+        title:"Final Boss — What's Next?",
+        subtitle:"Let's build the next level",
+        xp:300,
+        html:`
+            <p>
+                Every career has a next level.
+            </p>
+
+            <p>
+                I'm particularly interested in opportunities
+                where statistical data science, advanced
+                analytics, technology and leadership intersect
+                within the pharmaceutical / life sciences space.
+            </p>
+
+            <h3>CONTACT</h3>
+
+            <div class="tag-container">
+                <div class="tag">
+                    📧 tillisvasileios@gmail.com
+                </div>
+
+                <div class="tag">
+                    🔗 linkedin.com/in/vasilis-tillis-858233223
+                </div>
+
+                <div class="tag">
+                    🌐 vtillis.github.io
+                </div>
+            </div>
+
+            <h3>CAREER OBJECTIVE</h3>
+
+            <p>
+                Continue progressing from technical excellence
+                toward larger-scale ownership, strategic
+                analytics and leadership.
+            </p>
+
+            <div style="
+                margin-top:25px;
+                padding:20px;
+                background:#101d30;
+                border-left:3px solid #00eaff;
+            ">
+                <strong style="color:#00eaff">
+                    NEXT MISSION
+                </strong>
+
+                <br><br>
+
+                Transform complex data into decisions
+                that matter.
+            </div>
+        `
+    }
+
+};
+
+
+/* =========================================================
+   START GAME
+   ========================================================= */
+
+document.getElementById("startButton").addEventListener("click",()=>{
+
+    startScreen.style.display="none";
+    game.style.display="block";
+
+    showToast("CAREER QUEST STARTED — Explore the world");
+
+    updateCamera();
+
+});
+
+
+/* =========================================================
+   KEYBOARD
+   ========================================================= */
+
+window.addEventListener("keydown",(e)=>{
+
+    keys[e.key.toLowerCase()] = true;
+
+    if([
+        "ArrowUp",
+        "ArrowDown",
+        "ArrowLeft",
+        "ArrowRight",
+        " "
+    ].includes(e.key)){
+        e.preventDefault();
+    }
+
+    if(e.key.toLowerCase()==="e"){
+        interact();
+    }
+
+    if(e.key==="Escape"){
+        closeModal();
+    }
+
+});
+
+
+window.addEventListener("keyup",(e)=>{
+    keys[e.key.toLowerCase()] = false;
+});
+
+
+/* =========================================================
+   MOBILE CONTROLS
+   ========================================================= */
+
+document.querySelectorAll(".control").forEach(button=>{
+
+    const key=button.dataset.key.toLowerCase();
+
+    const start=(e)=>{
+        e.preventDefault();
+        keys[key]=true;
+    };
+
+    const stop=(e)=>{
+        e.preventDefault();
+        keys[key]=false;
+    };
+
+    button.addEventListener("touchstart",start,{passive:false});
+    button.addEventListener("touchend",stop,{passive:false});
+    button.addEventListener("mousedown",start);
+    button.addEventListener("mouseup",stop);
+    button.addEventListener("mouseleave",stop);
+
+});
+
+
+/* =========================================================
+   MOVEMENT
+   ========================================================= */
+
+function updatePlayer(){
+
+    let dx=0;
+    let dy=0;
+
+    if(keys["w"] || keys["arrowup"]){
+        dy-=speed;
+    }
+
+    if(keys["s"] || keys["arrowdown"]){
+        dy+=speed;
+    }
+
+    if(keys["a"] || keys["arrowleft"]){
+        dx-=speed;
+    }
+
+    if(keys["d"] || keys["arrowright"]){
+        dx+=speed;
+    }
+
+    if(dx!==0 && dy!==0){
+        dx*=.707;
+        dy*=.707;
+    }
+
+    playerX+=dx;
+    playerY+=dy;
+
+    playerX=Math.max(30,Math.min(2940,playerX));
+    playerY=Math.max(110,Math.min(1710,playerY));
+
+    player.style.left=playerX+"px";
+    player.style.top=playerY+"px";
+
+    updateCamera();
+    checkLocations();
+    updateMinimap();
+
+}
+
+
+/* =========================================================
+   CAMERA
+   ========================================================= */
+
+function updateCamera(){
+
+    const screenW=window.innerWidth;
+    const screenH=window.innerHeight;
+
+    let cameraX=playerX-screenW/2;
+    let cameraY=playerY-screenH/2;
+
+    cameraX=Math.max(0,Math.min(3000-screenW,cameraX));
+    cameraY=Math.max(0,Math.min(1800-screenH,cameraY));
+
+    world.style.transform=
+        `translate(${-cameraX}px,${-cameraY}px)`;
+
+}
+
+
+/* =========================================================
+   LOCATION DETECTION
+   ========================================================= */
+
+function checkLocations(){
+
+    let nearest=null;
+    let nearestDistance=Infinity;
+
+    document.querySelectorAll(".location").forEach(location=>{
+
+        const x=parseFloat(location.dataset.x);
+        const y=parseFloat(location.dataset.y);
+
+        const distance=Math.hypot(
+            playerX-x,
+            playerY-y
+        );
+
+        if(distance<190){
+
+            location.classList.add("near");
+
+        }else{
+
+            location.classList.remove("near");
+
         }
-        initCoins();
 
-        // --- Input Handling ---
-        window.addEventListener('keydown', (e) => {
-            if (e.code === 'ArrowRight') keys.right = true;
-            if (e.code === 'ArrowLeft') keys.left = true;
-            if (e.code === 'Space' || e.code === 'ArrowUp') { keys.up = true; e.preventDefault(); }
+        if(distance<nearestDistance){
+
+            nearestDistance=distance;
+            nearest=location;
+
+        }
+
+    });
+
+    if(nearestDistance<190){
+
+        currentLocation=nearest.dataset.id;
+
+    }else{
+
+        currentLocation=null;
+
+    }
+
+}
+
+
+/* =========================================================
+   INTERACTION
+   ========================================================= */
+
+function interact(){
+
+    if(!currentLocation){
+
+        showToast("Move closer to a location to interact.");
+
+        return;
+
+    }
+
+    const data=career[currentLocation];
+
+    if(!data) return;
+
+    addXP(data.xp);
+
+    unlockAchievement(currentLocation);
+
+    openModal(
+        data.title,
+        data.subtitle,
+        data.html
+    );
+
+}
+
+
+/* =========================================================
+   MODAL
+   ========================================================= */
+
+function openModal(title,subtitle,html){
+
+    modalTitle.innerHTML=
+        title+
+        `<div style="
+            font-size:.65rem;
+            color:#00eaff;
+            margin-top:6px;
+            letter-spacing:1px;
+        ">${subtitle}</div>`;
+
+    modalContent.innerHTML=html;
+
+    modal.style.display="flex";
+
+    setTimeout(()=>{
+
+        document.querySelectorAll(".skill-fill")
+        .forEach(fill=>{
+            fill.style.width=
+                fill.dataset.width;
         });
 
-        window.addEventListener('keyup', (e) => {
-            if (e.code === 'ArrowRight') keys.right = false;
-            if (e.code === 'ArrowLeft') keys.left = false;
-            if (e.code === 'Space' || e.code === 'ArrowUp') keys.up = false;
-        });
+    },100);
 
-        // Mobile Controls
-        const bindTouch = (id, key) => {
-            const el = document.getElementById(id);
-            el.addEventListener('touchstart', (e) => { e.preventDefault(); keys[key] = true; });
-            el.addEventListener('touchend', (e) => { e.preventDefault(); keys[key] = false; });
-        };
-        bindTouch('btn-left', 'left');
-        bindTouch('btn-right', 'right');
-        bindTouch('btn-jump', 'up');
+}
 
-        // Hide instructions on first input
-        window.addEventListener('keydown', hideInstructions, {once:true});
-        window.addEventListener('touchstart', hideInstructions, {once:true});
-        function hideInstructions() { document.getElementById('instructions').style.display = 'none'; }
 
-        // --- Collision Detection (AABB) ---
-        function checkCollision(rect1, rect2) {
-            return (
-                rect1.x < rect2.x + rect2.width &&
-                rect1.x + rect1.width > rect2.x &&
-                rect1.y < rect2.y + rect2.height &&
-                rect1.y + rect1.height > rect2.y
-            );
-        }
+function closeModal(){
 
-        // --- Main Game Loop ---
-        function update() {
-            // 1. Horizontal Movement
-            if (keys.right) {
-                player.vx = player.speed;
-                player.facingRight = true;
-                if(player.grounded) playerEl.classList.add('walking');
-            } else if (keys.left) {
-                player.vx = -player.speed;
-                player.facingRight = false;
-                if(player.grounded) playerEl.classList.add('walking');
-            } else {
-                player.vx = 0;
-                playerEl.classList.remove('walking');
-            }
+    modal.style.display="none";
 
-            // Apply X velocity
-            player.x += player.vx;
-            
-            // World Bounds
-            if (player.x < 0) player.x = 0;
-            if (player.x > LEVEL_WIDTH - player.width) player.x = LEVEL_WIDTH - player.width;
+}
 
-            // 2. Vertical Movement (Jumping & Gravity)
-            if (keys.up && player.grounded) {
-                player.vy = player.jumpPower;
-                player.grounded = false;
-                playerEl.classList.remove('walking');
-                playerEl.children[1].classList.add('jumping'); // Mario body flash
-            }
 
-            if (!player.grounded) {
-                player.y += player.vy;
-                player.vy -= player.gravity; // Apply gravity (pulls down)
+modalClose.addEventListener("click",closeModal);
 
-                // Floor Collision
-                if (player.y <= 0) {
-                    player.y = 0;
-                    player.grounded = true;
-                    player.vy = 0;
-                    playerEl.children[1].classList.remove('jumping');
-                }
-            }
+modal.addEventListener("click",(e)=>{
 
-            // 3. Collect Coins
-            activeCoins.forEach(coin => {
-                if (!coin.collected) {
-                    if (checkCollision(player, coin)) {
-                        coin.collected = true;
-                        coin.el.style.display = 'none'; // Hide coin
-                        
-                        // Update Score
-                        coins++;
-                        score += 100;
-                        document.getElementById('coin-display').innerText = coins.toString().padStart(2, '0');
-                        document.getElementById('score-display').innerText = score.toString().padStart(4, '0');
+    if(e.target===modal){
+        closeModal();
+    }
 
-                        // Floating Text Animation
-                        const floatTxt = document.createElement('div');
-                        floatTxt.className = 'floating-score';
-                        floatTxt.innerText = '100';
-                        floatTxt.style.left = `${coin.x}px`;
-                        floatTxt.style.bottom = `${coin.y + 100}px`;
-                        worldLayer.appendChild(floatTxt);
-                        setTimeout(() => floatTxt.remove(), 1000);
-                    }
-                }
-            });
+});
 
-            // 4. Trigger UI Checkpoints (Proximity)
-            const checkpoints = [
-                { id: 'card-1', x: 600 },
-                { id: 'card-2', x: 1600 },
-                { id: 'card-3', x: 2800 },
-                { id: 'card-4', x: 4000 }
-            ];
 
-            checkpoints.forEach(cp => {
-                const card = document.getElementById(cp.id);
-                // Trigger if player is within 400px of the pipe
-                if (Math.abs(player.x - cp.x) < 400) {
-                    card.classList.add('active');
-                } else {
-                    card.classList.remove('active');
-                }
-            });
+/* =========================================================
+   XP SYSTEM
+   ========================================================= */
 
-            // 5. Update Camera & Parallax
-            // Keep player at SCREEN_OFFSET relative to the viewport
-            cameraX = player.x - SCREEN_OFFSET;
-            if (cameraX < 0) cameraX = 0;
-            if (cameraX > LEVEL_WIDTH - window.innerWidth) cameraX = LEVEL_WIDTH - window.innerWidth;
+function addXP(amount){
 
-            // Apply transforms (Hardware Accelerated)
-            playerEl.style.transform = `translate3d(${player.x}px, ${-player.y}px, 0) scaleX(${player.facingRight ? 1 : -1})`;
-            worldLayer.style.transform = `translate3d(${-cameraX}px, 0, 0)`;
-            
-            // Parallax layers move slower than the camera
-            mountainsLayer.style.transform = `translate3d(${-cameraX * 0.3}px, 0, 0)`;
-            cloudsLayer.style.transform = `translate3d(${-cameraX * 0.1}px, 0, 0)`;
+    xp+=amount;
 
-            requestAnimationFrame(update);
-        }
+    const previousLevel=level;
 
-        // Start Game Engine
-        requestAnimationFrame(update);
-    </script>
+    level=
+        Math.floor(xp/500)+1;
+
+    if(level>previousLevel){
+
+        showToast(
+            `LEVEL UP! You reached Level ${level}`
+        );
+
+    }
+
+    const levelXP=xp%500;
+
+    const percentage=
+        Math.min(100,(levelXP/500)*100);
+
+    xpFill.style.width=percentage+"%";
+
+    levelDisplay.textContent=
+        String(level).padStart(2,"0");
+
+}
+
+
+/* =========================================================
+   ACHIEVEMENTS
+   ========================================================= */
+
+const achievementNames={
+
+    ote:"FIRST SIGNAL",
+    defence:"DATA DEFENDER",
+    aegean:"AVIATION ANALYST",
+    pfizer:"PHARMA UNLOCKED",
+    education:"KNOWLEDGE SEEKER",
+    skills:"SKILL FORGE",
+    achievements:"VAULT MASTER",
+    contact:"NEXT LEVEL"
+
+};
+
+
+function unlockAchievement(id){
+
+    if(achievements.has(id)){
+        return;
+    }
+
+    achievements.add(id);
+
+    achievementCount.textContent=
+        `${achievements.size} / 8`;
+
+    showToast(
+        `🏆 Achievement unlocked: ${achievementNames[id]}`
+    );
+
+}
+
+
+/* =========================================================
+   TOAST
+   ========================================================= */
+
+let toastTimer;
+
+function showToast(message){
+
+    toast.textContent=message;
+
+    toast.classList.add("show");
+
+    clearTimeout(toastTimer);
+
+    toastTimer=setTimeout(()=>{
+
+        toast.classList.remove("show");
+
+    },2500);
+
+}
+
+
+/* =========================================================
+   MINIMAP
+   ========================================================= */
+
+function updateMinimap(){
+
+    const x=
+        (playerX/3000)*100;
+
+    const y=
+        (playerY/1800)*100;
+
+    mapPlayer.style.left=x+"%";
+    mapPlayer.style.top=y+"%";
+
+}
+
+
+/* =========================================================
+   GAME LOOP
+   ========================================================= */
+
+function gameLoop(){
+
+    if(game.style.display!=="none"){
+
+        updatePlayer();
+
+    }
+
+    requestAnimationFrame(gameLoop);
+
+}
+
+gameLoop();
+
+
+/* =========================================================
+   RESIZE
+   ========================================================= */
+
+window.addEventListener("resize",updateCamera);
+
+
+/* =========================================================
+   INITIALIZATION
+   ========================================================= */
+
+player.style.left=playerX+"px";
+player.style.top=playerY+"px";
+
+updateMinimap();
+
+</script>
+
 </body>
 </html>
