@@ -2,645 +2,376 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vasileios Tillis - Player 1</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Vasileios Tillis - Interactive CV</title>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <style>
         :root {
-            --sky-blue: #5c94fc;
-            --ground-brown: #c84c0c;
+            --sky: #5c94fc;
+            --ground: #c84c0c;
             --mario-red: #e80000;
             --mario-green: #008800;
-            --mario-green-light: #00ff00;
-            --coin-yellow: #f8d870;
-            --block-orange: #f89020;
-            --block-shadow: #882000;
-            --text-dark: #000000;
-            --text-light: #ffffff;
-            
-            /* Pixel Borders */
-            --pixel-border: 4px solid var(--text-dark);
+            --text-dark: #000;
+            --text-light: #fff;
         }
-        
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
-        body {
-            background-color: var(--sky-blue);
-            color: var(--text-dark);
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--sky);
             font-family: 'VT323', monospace;
-            font-size: 1.4rem;
-            line-height: 1.4;
-            overflow-x: hidden;
-            padding-top: 80px;
-            padding-bottom: 50px;
+            color: var(--text-dark);
+            touch-action: none; /* Prevent default scrolling on mobile */
         }
 
-        h1, h2, h3, h4, .retro-font {
+        h1, h2, h3, .retro {
             font-family: 'Press Start 2P', cursive;
         }
 
-        /* --- HUD (Heads Up Display) Navbar --- */
-        .hud {
-            position: fixed;
+        /* --- Game World --- */
+        #game-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        #level {
+            position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
-            background: var(--sky-blue);
-            display: flex;
-            justify-content: space-around;
-            padding: 15px 10px;
-            z-index: 1000;
-            font-size: 0.8rem;
-            color: var(--text-light);
-            text-shadow: 2px 2px 0 #000;
-            border-bottom: var(--pixel-border);
-        }
-
-        .hud-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 5px;
-        }
-
-        /* --- Main Container --- */
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.85);
-            border: var(--pixel-border);
-            box-shadow: 10px 10px 0 rgba(0,0,0,0.3);
-            margin-bottom: 40px;
-        }
-
-        /* --- Header Section --- */
-        header {
-            text-align: center;
-            margin-bottom: 40px;
-            padding-bottom: 20px;
-            border-bottom: 4px dashed var(--mario-green);
-        }
-
-        h1 {
-            color: var(--mario-red);
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            text-shadow: 3px 3px 0 #000;
-            line-height: 1.2;
-        }
-
-        h2 {
-            font-size: 1rem;
-            color: var(--text-dark);
-            margin-bottom: 20px;
-        }
-
-        .contact-info {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 15px;
-            font-size: 1.2rem;
-            font-family: 'VT323', monospace;
-            background: #000;
-            color: #fff;
-            padding: 10px;
-            border: var(--pixel-border);
-        }
-
-        /* --- Sections & Green Pipes --- */
-        section {
-            margin-bottom: 40px;
-        }
-
-        .pipe-header {
-            background: linear-gradient(to right, #005500 0%, #008800 20%, #00ff00 50%, #008800 80%, #005500 100%);
-            border: var(--pixel-border);
-            border-radius: 10px 10px 0 0;
-            padding: 15px;
-            color: white;
-            text-shadow: 2px 2px 0 #000;
-            font-size: 1.2rem;
-            margin-bottom: -4px; /* Connect to box below */
-            display: inline-block;
-            position: relative;
-            z-index: 2;
-        }
-
-        .section-content {
-            border: var(--pixel-border);
-            padding: 20px;
-            background: #fff;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* --- Interactive Question Blocks --- */
-        .q-block-container {
-            margin-bottom: 20px;
-        }
-
-        .q-block {
-            background-color: var(--block-orange);
-            border: 4px solid #000;
-            box-shadow: inset -4px -4px 0px 0px var(--block-shadow), inset 4px 4px 0px 0px #ffdfa0;
-            padding: 15px;
-            cursor: pointer;
-            position: relative;
-            transition: transform 0.1s;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            user-select: none;
-        }
-
-        .q-block:hover {
-            filter: brightness(1.1);
-        }
-
-        .q-block h4 {
-            font-size: 0.8rem;
-            line-height: 1.4;
-            color: #000;
-        }
-
-        .q-icon {
-            font-family: 'Press Start 2P', cursive;
-            color: #000;
-            font-size: 1.5rem;
-            animation: blink 1s infinite;
-        }
-
-        @keyframes blink {
-            0%, 100% { color: #000; }
-            50% { color: #882000; }
-        }
-
-        /* Block bump animation */
-        .bump {
-            animation: blockBump 0.2s ease-in-out;
-        }
-
-        @keyframes blockBump {
-            0% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0); }
-        }
-
-        /* Coin pop animation */
-        .coin-pop {
-            position: absolute;
-            top: 0;
-            left: 50%;
-            width: 20px;
-            height: 30px;
-            background: var(--coin-yellow);
-            border: 2px solid #000;
-            border-radius: 50%;
-            opacity: 0;
-            pointer-events: none;
-            transform: translateX(-50%);
-            z-index: 10;
-        }
-
-        .animate-coin {
-            animation: coinRise 0.5s linear;
-        }
-
-        @keyframes coinRise {
-            0% { top: 0; opacity: 1; }
-            50% { top: -40px; opacity: 1; }
-            100% { top: -50px; opacity: 0; }
-        }
-
-        /* Hidden content that drops down */
-        .hidden-details {
-            display: none;
-            background: #f0f0f0;
-            border: var(--pixel-border);
-            border-top: none;
-            padding: 20px;
-            font-size: 1.3rem;
-            animation: slideDown 0.3s ease-out;
-        }
-
-        .hidden-details.open {
-            display: block;
-        }
-
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .date {
-            color: var(--mario-red);
-            font-weight: bold;
-            margin-bottom: 10px;
-            display: block;
-        }
-
-        ul {
-            list-style-type: none;
-            padding-left: 20px;
-        }
-
-        li {
-            margin-bottom: 8px;
-            position: relative;
-        }
-
-        li::before {
-            content: "►";
-            position: absolute;
-            left: -20px;
-            color: var(--mario-red);
-            font-size: 1rem;
-        }
-
-        /* --- Skills / Health Bars --- */
-        .skills-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        .skill-group h4 {
-            font-size: 0.9rem;
-            margin-bottom: 15px;
-            color: var(--mario-green);
-            text-shadow: 1px 1px 0 #000;
-        }
-
-        .skill-item {
-            margin-bottom: 15px;
-        }
-
-        .skill-name {
-            display: flex;
-            justify-content: space-between;
-            font-family: 'VT323', monospace;
-            font-size: 1.4rem;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .health-bar-container {
-            width: 100%;
-            height: 20px;
-            background: #000;
-            border: 3px solid #000;
-            padding: 2px;
-            box-shadow: inset 2px 2px 0 rgba(255,255,255,0.2);
-        }
-
-        .health-bar-fill {
             height: 100%;
-            background: var(--mario-red);
-            box-shadow: inset 0 -4px 0 rgba(0,0,0,0.3), inset 0 4px 0 rgba(255,255,255,0.4);
-            width: 0;
-            transition: width 1s ease-in-out;
+            width: 6000px; /* Length of the level */
+            transition: transform 0.1s linear;
+            display: flex;
+            align-items: flex-end;
+            padding-bottom: 80px; /* Space for ground */
         }
 
-        /* --- Footer / Ground --- */
-        footer {
-            text-align: center;
-            padding: 30px;
-            background: var(--ground-brown);
-            border-top: 4px solid #000;
-            color: white;
-            font-size: 1.5rem;
-            position: relative;
-            box-shadow: inset 0 6px 0 #ffaaa0;
-        }
-
-        .brick-pattern {
+        /* --- Ground & Scenery --- */
+        .ground {
             position: fixed;
-            bottom: 0; left: 0; width: 100%; height: 20px;
-            background-color: var(--ground-brown);
+            bottom: 0;
+            left: 0;
+            width: 100vw;
+            height: 80px;
+            background-color: var(--ground);
+            border-top: 4px solid #000;
             background-image: 
                 linear-gradient(335deg, rgba(0,0,0,0.3) 15%, transparent 15%),
                 linear-gradient(155deg, rgba(0,0,0,0.3) 15%, transparent 15%);
             background-size: 20px 20px;
-            z-index: 1000;
-            border-top: 4px solid #000;
+            z-index: 10;
         }
 
-        /* --- Responsive Design --- */
-        @media (max-width: 768px) {
-            h1 { font-size: 1.6rem; }
-            .hud { font-size: 0.6rem; padding: 10px 5px; }
-            body { padding-top: 60px; font-size: 1.2rem; }
-            .skills-grid { grid-template-columns: 1fr; }
-            .q-block h4 { font-size: 0.7rem; }
-            .contact-info { font-size: 1rem; flex-direction: column; text-align: center;}
+        .cloud {
+            position: absolute;
+            font-size: 4rem;
+            opacity: 0.8;
+            top: 15%;
+        }
+
+        /* --- Player Character --- */
+        #player {
+            position: fixed;
+            bottom: 80px; /* Right above ground */
+            left: 20vw; /* Fixed position on screen */
+            font-size: 3rem;
+            z-index: 20;
+            transition: transform 0.1s;
+        }
+
+        .walking {
+            animation: bounce 0.3s infinite alternate;
+        }
+
+        @keyframes bounce {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-10px); }
+        }
+
+        /* --- Resume Sections (Checkpoints) --- */
+        .checkpoint {
+            position: absolute;
+            bottom: 80px;
+            width: 350px;
+            background: rgba(255, 255, 255, 0.95);
+            border: 4px solid #000;
+            padding: 20px;
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.5);
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 5;
+        }
+
+        .checkpoint.visible {
+            opacity: 1;
+            transform: translateY(-20px);
+        }
+
+        .checkpoint::after {
+            content: '';
+            position: absolute;
+            bottom: -24px;
+            left: 20px;
+            border-width: 12px;
+            border-style: solid;
+            border-color: #000 transparent transparent transparent;
+        }
+
+        .checkpoint h3 {
+            font-size: 1rem;
+            color: var(--mario-red);
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .checkpoint p, .checkpoint li {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+            line-height: 1.2;
+        }
+        
+        ul { padding-left: 20px; }
+
+        /* Flag Pole */
+        .flag-pole {
+            position: absolute;
+            bottom: 0;
+            width: 10px;
+            height: 400px;
+            background: #ccc;
+            border: 2px solid #000;
+        }
+
+        .flag {
+            position: absolute;
+            top: 20px;
+            left: -40px;
+            font-size: 3rem;
+        }
+
+        /* --- UI & Controls --- */
+        #instructions {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            text-align: center;
+            z-index: 100;
+            border: 2px solid #fff;
+        }
+
+        /* Mobile Controls */
+        #mobile-controls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 100;
+        }
+
+        .btn {
+            background: rgba(255, 255, 255, 0.5);
+            border: 4px solid #000;
+            width: 60px;
+            height: 60px;
+            font-size: 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            user-select: none;
+            cursor: pointer;
+        }
+        
+        .btn:active {
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        @media (min-width: 769px) {
+            #mobile-controls { display: none; }
+            .checkpoint { width: 500px; }
+            #instructions { font-size: 1.5rem; }
         }
     </style>
 </head>
 <body>
 
-    <nav class="hud">
-        <div class="hud-item">
-            <span class="retro-font">SCORE</span>
-            <span class="retro-font" id="score-display">000000</span>
-        </div>
-        <div class="hud-item">
-            <span class="retro-font">COINS</span>
-            <span class="retro-font">🪙 x<span id="coin-display">00</span></span>
-        </div>
-        <div class="hud-item">
-            <span class="retro-font">WORLD</span>
-            <span class="retro-font">1-1</span>
-        </div>
-        <div class="hud-item">
-            <span class="retro-font">TIME</span>
-            <span class="retro-font" id="time-display">400</span>
-        </div>
-    </nav>
-
-    <div class="container">
-        <header>
-            <h1>SUPER VASILEIOS BROS.</h1>
-            <h2 class="retro-font">STATISTICAL DATA SCIENTIST</h2>
-            <div class="contact-info">
-                <span><i class="fas fa-mobile-alt"></i> +30-6978303235</span>
-                <span><i class="fas fa-paper-plane"></i> tillisvasileios@gmail.com</span>
-                <span><i class="fab fa-linkedin"></i> /in/vasilis-tillis-858233223</span>
-                <span><i class="fas fa-map-marker-alt"></i> Artemida, Attica, Greece</span>
-            </div>
-            <p style="margin-top: 15px; font-weight: bold;">[ PRESS START TO PLAY ]</p>
-            <p style="margin-top: 10px; font-size: 1.2rem;">Currently working @ Pfizer</p>
-        </header>
-
-        <section id="summary">
-            <div class="pipe-header retro-font">WORLD 1: PROFILE</div>
-            <div class="section-content">
-                <p>MSc in Data Science with experience in pharmaceutical and airline industries. Proficient in Python, R, SQL, and SAS. Passionate about uncovering insights from data and mentoring colleagues. Known for independent high-quality output and team leadership.</p>
-            </div>
-        </section>
-
-        <section id="experience">
-            <div class="pipe-header retro-font">WORLD 2: CAREER</div>
-            <div class="section-content">
-                <p style="margin-bottom: 15px; font-weight: bold; color: var(--mario-red);">
-                    <i class="fas fa-hand-pointer"></i> HIT THE BLOCKS TO REVEAL EXP!
-                </p>
-
-                <div class="q-block-container">
-                    <div class="q-block" onclick="hitBlock(this, 100)">
-                        <h4>Senior Assoc. Statistical Data Scientist @ Pfizer</h4>
-                        <div class="q-icon">?</div>
-                        <div class="coin-pop"></div>
-                    </div>
-                    <div class="hidden-details">
-                        <span class="date">Jun 2026 – Present</span>
-                        <ul>
-                            <li>Advanced to Senior Associate level, supporting statistical data science activities in a pharmaceutical / clinical development environment.</li>
-                            <li>Drive high-quality analytical delivery and contribute to cross-functional statistical reporting and process improvement.</li>
-                            <li>Contributed to a PHUSE-accepted presentation (November 2026).</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="q-block-container">
-                    <div class="q-block" onclick="hitBlock(this, 100)">
-                        <h4>Assoc. Statistical Data Scientist @ Pfizer</h4>
-                        <div class="q-icon">?</div>
-                        <div class="coin-pop"></div>
-                    </div>
-                    <div class="hidden-details">
-                        <span class="date">Dec 2023 – May 2026</span>
-                        <ul>
-                            <li>Led a team of SMEs in the transition to a new statistical reporting platform for clinical trials.</li>
-                            <li>Mentored junior colleagues to full independence and be a buddy for new hires.</li>
-                            <li>Ensured quality and continuity during team transitions.</li>
-                            <li>Contributed to a PHUSE-accepted poster on statistical validation efficiency (May 2025).</li>
-                            <li>Delivered high-quality AR's & IB's independently across multiple clinical projects.</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="q-block-container">
-                    <div class="q-block" onclick="hitBlock(this, 100)">
-                        <h4>Product Data Analyst @ Aegean Airlines</h4>
-                        <div class="q-icon">?</div>
-                        <div class="coin-pop"></div>
-                    </div>
-                    <div class="hidden-details">
-                        <span class="date">Jul 2022 – Nov 2023</span>
-                        <ul>
-                            <li>Designed business monitoring reports and digital solutions.</li>
-                            <li>Developed automated processes and conducted data analysis with Power BI.</li>
-                            <li>Collaborated with teams to meet business IT needs and improve efficiency.</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="q-block-container">
-                    <div class="q-block" onclick="hitBlock(this, 100)">
-                        <h4>Data Analyst @ Ministry of National Defence</h4>
-                        <div class="q-icon">?</div>
-                        <div class="coin-pop"></div>
-                    </div>
-                    <div class="hidden-details">
-                        <span class="date">Jan 2018 – Oct 2018</span>
-                        <ul>
-                            <li>Analyzed defense data and created dashboards.</li>
-                            <li>Assisted with tool development for performance analysis.</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="q-block-container">
-                    <div class="q-block" onclick="hitBlock(this, 100)">
-                        <h4>Information Security Analyst (Intern) @ OTE Group</h4>
-                        <div class="q-icon">?</div>
-                        <div class="coin-pop"></div>
-                    </div>
-                    <div class="hidden-details">
-                        <span class="date">Jul 2015 – Sep 2015</span>
-                        <ul>
-                            <li>Monitored telecom fraud systems and supported incident response.</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="education">
-            <div class="pipe-header retro-font">WORLD 3: ACADEMY</div>
-            <div class="section-content">
-                
-                <h4 class="retro-font" style="margin-bottom:10px;">DEGREES</h4>
-                <div style="margin-bottom: 20px; border-bottom: 2px dashed #ccc; padding-bottom: 10px;">
-                    <p style="font-weight:bold; font-size:1.4rem;">MSc in Data Science</p>
-                    <p>University of East London (2020 – 2021)</p>
-                    <p><em>Thesis: Algorithmic identification of toxic language patterns within distributed networks via NLP architectures.</em></p>
-                </div>
-                
-                <div style="margin-bottom: 25px;">
-                    <p style="font-weight:bold; font-size:1.4rem;">BSc in Science & Technology of Telecoms</p>
-                    <p>University of Peloponnese (2011 – 2017)</p>
-                    <p><em>Thesis: High-Volume Data Systems Architectures and Cloud Computing Infrastructure Topologies.</em></p>
-                </div>
-
-                <h4 class="retro-font" style="margin-bottom:10px;">POWER-UP CERTS</h4>
-                <ul>
-                    <li>Google Data Analytics Professional Certificate</li>
-                    <li>IBM Data Science Professional Certificate</li>
-                    <li>SAS Programmer Professional Certificate</li>
-                </ul>
-            </div>
-        </section>
-
-        <section id="skills">
-            <div class="pipe-header retro-font">WORLD 4: SKILL STATS</div>
-            <div class="section-content skills-grid">
-                
-                <div class="skill-group">
-                    <h4 class="retro-font">PROGRAMMATIC STACK</h4>
-                    
-                    <div class="skill-item">
-                        <div class="skill-name"><span>Python</span><span>95%</span></div>
-                        <div class="health-bar-container"><div class="health-bar-fill" data-width="95%"></div></div>
-                    </div>
-                    <div class="skill-item">
-                        <div class="skill-name"><span>R Language</span><span>90%</span></div>
-                        <div class="health-bar-container"><div class="health-bar-fill" data-width="90%"></div></div>
-                    </div>
-                    <div class="skill-item">
-                        <div class="skill-name"><span>SQL Environment</span><span>90%</span></div>
-                        <div class="health-bar-container"><div class="health-bar-fill" data-width="90%"></div></div>
-                    </div>
-                    <div class="skill-item">
-                        <div class="skill-name"><span>SAS Framework</span><span>90%</span></div>
-                        <div class="health-bar-container"><div class="health-bar-fill" data-width="90%"></div></div>
-                    </div>
-                    <div class="skill-item">
-                        <div class="skill-name"><span>Power BI</span><span>85%</span></div>
-                        <div class="health-bar-container"><div class="health-bar-fill" data-width="85%"></div></div>
-                    </div>
-                </div>
-
-                <div class="skill-group">
-                    <h4 class="retro-font">TACTICAL COMPETENCIES</h4>
-                    
-                    <div class="skill-item">
-                        <div class="skill-name"><span>Project Management</span><span>90%</span></div>
-                        <div class="health-bar-container"><div class="health-bar-fill" data-width="90%"></div></div>
-                    </div>
-                    <div class="skill-item">
-                        <div class="skill-name"><span>Complex Problem Solving</span><span>95%</span></div>
-                        <div class="health-bar-container"><div class="health-bar-fill" data-width="95%"></div></div>
-                    </div>
-                    <div class="skill-item">
-                        <div class="skill-name"><span>Team Leadership</span><span>95%</span></div>
-                        <div class="health-bar-container"><div class="health-bar-fill" data-width="95%"></div></div>
-                    </div>
-                    <div class="skill-item">
-                        <div class="skill-name"><span>Data Cleansing / ETL</span><span>90%</span></div>
-                        <div class="health-bar-container"><div class="health-bar-fill" data-width="90%"></div></div>
-                    </div>
-                    <div class="skill-item">
-                        <div class="skill-name"><span>Machine Learning</span><span>85%</span></div>
-                        <div class="health-bar-container"><div class="health-bar-fill" data-width="85%"></div></div>
-                    </div>
-                </div>
-
-            </div>
-        </section>
-        
-        <section id="languages">
-            <div class="pipe-header retro-font">BONUS STAGE: LANGUAGES</div>
-            <div class="section-content" style="text-align: center;">
-                <p><strong>Greek:</strong> Native Command 🍄</p>
-                <p><strong>English:</strong> Professional / Technical ⭐</p>
-                <p><strong>German:</strong> Elementary Access 🐢</p>
-            </div>
-        </section>
-
+    <div id="instructions">
+        <span class="retro" style="font-size: 0.8rem;">HOLD RIGHT ARROW TO EXPLORE</span><br>
+        <span style="font-size: 1rem;">Currently working @ Pfizer</span>
     </div>
 
-    <footer>
-        <p class="retro-font" style="font-size:0.8rem;">© 2026 VASILEIOS TILLIS - GAME OVER</p>
-    </footer>
-    <div class="brick-pattern"></div>
+    <div id="game-container">
+        
+        <div id="player">🏃‍♂️</div>
+
+        <div id="level">
+            
+            <div class="cloud" style="left: 300px;">☁️</div>
+            <div class="cloud" style="left: 1200px; top: 20%;">☁️</div>
+            <div class="cloud" style="left: 2500px; top: 10%;">☁️</div>
+            <div class="cloud" style="left: 3800px;">☁️</div>
+
+            <div class="checkpoint" style="left: 300px;">
+                <h3>WORLD 1: VASILEIOS TILLIS</h3>
+                <p><strong>Statistical Data Scientist</strong></p>
+                <p>Artemida, Attica, Greece</p>
+                <p>MSc in Data Science with experience in pharmaceutical and airline industries. Passionate about uncovering insights and mentoring teams.</p>
+            </div>
+
+            <div class="checkpoint" style="left: 1100px;">
+                <h3>WORLD 2: PFIZER HQ</h3>
+                <p><strong>Senior Assoc. Statistical Data Scientist</strong><br><em>(Jun 2026 - Present)</em></p>
+                <ul>
+                    <li>Supporting statistical data science activities in clinical development.</li>
+                    <li>Driving high-quality analytical delivery and process improvement.</li>
+                    <li>Contributed to a PHUSE-accepted presentation.</li>
+                </ul>
+                <p><strong>Assoc. Statistical Data Scientist</strong><br><em>(Dec 2023 - May 2026)</em></p>
+                <ul>
+                    <li>Led a team of SMEs for a new reporting platform.</li>
+                </ul>
+            </div>
+
+            <div class="checkpoint" style="left: 2200px;">
+                <h3>WORLD 3: PAST QUESTS</h3>
+                <p><strong>Product Data Analyst @ Aegean Airlines</strong><br><em>(Jul 2022 – Nov 2023)</em></p>
+                <p>Designed business monitoring reports and conducted data analysis with Power BI.</p>
+                <br>
+                <p><strong>Data Analyst @ Ministry of National Defence</strong><br><em>(Jan 2018 – Oct 2018)</em></p>
+                <p>Analyzed defense data and created dashboards.</p>
+            </div>
+
+            <div class="checkpoint" style="left: 3300px;">
+                <h3>WORLD 4: ACADEMY</h3>
+                <p><strong>MSc in Data Science</strong><br>University of East London (2020-2021)</p>
+                <p><em>Thesis: Algorithmic identification of toxic language patterns via NLP.</em></p>
+                <br>
+                <p><strong>BSc Science & Tech of Telecoms</strong><br>University of Peloponnese (2011-2017)</p>
+                <p><strong>Power-Ups (Certs):</strong> Google Data Analytics, IBM Data Science, SAS Programmer.</p>
+            </div>
+
+            <div class="checkpoint" style="left: 4400px;">
+                <h3>WORLD 5: SKILLS</h3>
+                <p><strong>Code:</strong> Python (95%), R (90%), SQL (90%), SAS (90%), Power BI (85%)</p>
+                <p><strong>Tactics:</strong> Project Management, Complex Problem Solving, Team Leadership.</p>
+                <p><strong>Languages:</strong> Greek (Native), English (Pro), German (Basic).</p>
+            </div>
+
+            <div style="position: absolute; left: 5200px; bottom: 80px;">
+                <div class="flag-pole">
+                    <div class="flag">🚩</div>
+                </div>
+                <div class="retro" style="position: absolute; top: -50px; left: -100px; width: 300px; text-align: center;">
+                    LEVEL COMPLETE!<br><br>tillisvasileios@gmail.com
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="ground"></div>
+
+    <div id="mobile-controls">
+        <div class="btn" id="btn-left">◀</div>
+        <div class="btn" id="btn-right">▶</div>
+    </div>
 
     <script>
-        // --- Game Engine Variables ---
-        let coins = 0;
-        let score = 0;
-        let timeLeft = 400;
+        const level = document.getElementById('level');
+        const player = document.getElementById('player');
+        const checkpoints = document.querySelectorAll('.checkpoint');
+        
+        let position = 0;
+        const maxScroll = 4800; // Stop scrolling at the flag
+        const speed = 10;
+        let keys = { ArrowRight: false, ArrowLeft: false };
 
-        // --- HUD Timer Logic ---
-        setInterval(() => {
-            if (timeLeft > 0) {
-                timeLeft--;
-                document.getElementById('time-display').innerText = timeLeft.toString().padStart(3, '0');
+        // Keyboard listeners
+        window.addEventListener('keydown', (e) => {
+            if (e.code === 'ArrowRight' || e.code === 'ArrowLeft') {
+                keys[e.code] = true;
             }
-        }, 1000); // 1 second real-time per game-second
+        });
 
-        // --- Interactive Question Blocks Logic ---
-        function hitBlock(element, points) {
-            // Find the hidden details container next to the block
-            const details = element.nextElementSibling;
-            const icon = element.querySelector('.q-icon');
-            const coinAnim = element.querySelector('.coin-pop');
+        window.addEventListener('keyup', (e) => {
+            if (e.code === 'ArrowRight' || e.code === 'ArrowLeft') {
+                keys[e.code] = false;
+            }
+        });
 
-            // If it hasn't been hit yet (icon is still "?")
-            if (icon.innerText === "?") {
-                // Play Block Bump Animation
-                element.classList.add('bump');
-                setTimeout(() => element.classList.remove('bump'), 200);
+        // Mobile touch listeners
+        const btnLeft = document.getElementById('btn-left');
+        const btnRight = document.getElementById('btn-right');
 
-                // Play Coin Animation
-                coinAnim.classList.add('animate-coin');
-                setTimeout(() => coinAnim.classList.remove('animate-coin'), 500);
+        btnRight.addEventListener('touchstart', (e) => { e.preventDefault(); keys['ArrowRight'] = true; });
+        btnRight.addEventListener('touchend', (e) => { e.preventDefault(); keys['ArrowRight'] = false; });
+        
+        btnLeft.addEventListener('touchstart', (e) => { e.preventDefault(); keys['ArrowLeft'] = true; });
+        btnLeft.addEventListener('touchend', (e) => { e.preventDefault(); keys['ArrowLeft'] = false; });
 
-                // Update HUD
-                coins++;
-                score += points;
-                
-                // Format with leading zeros
-                document.getElementById('coin-display').innerText = coins.toString().padStart(2, '0');
-                document.getElementById('score-display').innerText = score.toString().padStart(6, '0');
+        // Game Loop
+        function gameLoop() {
+            let isMoving = false;
 
-                // Change the "?" to a used block "X" or blank square
-                icon.innerText = "■";
-                icon.style.animation = "none";
-                element.style.backgroundColor = "#c84c0c"; // Turns to standard brown block color
-                
-                // Reveal the content
-                details.classList.add('open');
+            if (keys['ArrowRight'] && position < maxScroll) {
+                position += speed;
+                player.style.transform = 'scaleX(1)'; // Face right
+                isMoving = true;
+            }
+            if (keys['ArrowLeft'] && position > 0) {
+                position -= speed;
+                player.style.transform = 'scaleX(-1)'; // Face left
+                isMoving = true;
+            }
+
+            // Apply movement to the world (parallax effect)
+            level.style.transform = `translateX(${-position}px)`;
+
+            // Animate walking
+            if (isMoving) {
+                player.classList.add('walking');
             } else {
-                // Allow toggling content visibility after it's been hit without re-scoring
-                details.classList.toggle('open');
+                player.classList.remove('walking');
             }
-        }
 
-        // --- Health Bar Animation (Trigger on scroll) ---
-        function animateHealthBars() {
-            const bars = document.querySelectorAll('.health-bar-fill');
-            bars.forEach(bar => {
-                const rect = bar.getBoundingClientRect();
-                // If bar is in viewport
-                if (rect.top < window.innerHeight && rect.bottom >= 0) {
-                    const targetWidth = bar.getAttribute('data-width');
-                    bar.style.width = targetWidth;
+            // Check collisions/triggers for resume sections
+            checkpoints.forEach(cp => {
+                // Get the left position of the checkpoint relative to the level
+                const cpLeft = parseInt(cp.style.left);
+                
+                // If the player's virtual world position is close to the checkpoint
+                // (Screen width is factored in loosely, assuming player is 20vw in)
+                const triggerPoint = cpLeft - window.innerWidth * 0.6;
+                const hidePoint = cpLeft + 400; // Hide after passing it
+
+                if (position > triggerPoint && position < hidePoint) {
+                    cp.classList.add('visible');
+                } else {
+                    cp.classList.remove('visible');
                 }
             });
+
+            requestAnimationFrame(gameLoop);
         }
 
-        // Run on load and scroll
-        window.addEventListener('load', animateHealthBars);
-        window.addEventListener('scroll', animateHealthBars);
+        // Start loop
+        gameLoop();
     </script>
 </body>
 </html>
