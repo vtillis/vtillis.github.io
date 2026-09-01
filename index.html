@@ -3,22 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Vasileios Tillis - Interactive CV</title>
+    <title>Vasileios Tillis - Advanced Interactive CV</title>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
     <style>
         :root {
             --sky: #5c94fc;
-            --ground: #c84c0c;
+            --ground-top: #52d94a;
+            --ground-dirt: #c84c0c;
             --mario-red: #e80000;
-            --mario-green: #008800;
+            --mario-blue: #0058f8;
+            --coin-gold: #f8d870;
             --text-dark: #000;
-            --text-light: #fff;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            user-select: none;
         }
 
         body, html {
@@ -28,350 +30,485 @@
             background-color: var(--sky);
             font-family: 'VT323', monospace;
             color: var(--text-dark);
-            touch-action: none; /* Prevent default scrolling on mobile */
+            touch-action: none;
         }
 
-        h1, h2, h3, .retro {
+        h1, h2, h3, h4, .retro {
             font-family: 'Press Start 2P', cursive;
         }
 
+        /* --- HUD (Heads Up Display) --- */
+        #hud {
+            position: fixed;
+            top: 0; left: 0; width: 100%;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            z-index: 1000;
+            color: white;
+            text-shadow: 2px 2px 0 #000;
+            font-size: 1.2rem;
+            pointer-events: none;
+        }
+
         /* --- Game World --- */
-        #game-container {
+        #game-viewport {
             position: relative;
             width: 100vw;
             height: 100vh;
+            overflow: hidden;
         }
 
-        #level {
+        /* Parallax Layers */
+        .layer {
             position: absolute;
-            top: 0;
-            left: 0;
+            top: 0; left: 0;
             height: 100%;
-            width: 6000px; /* Length of the level */
-            transition: transform 0.1s linear;
-            display: flex;
-            align-items: flex-end;
-            padding-bottom: 80px; /* Space for ground */
+            will-change: transform;
         }
 
-        /* --- Ground & Scenery --- */
+        #layer-clouds { width: 8000px; background: url('data:image/svg+xml;utf8,<svg width="200" height="100" xmlns="http://www.w3.org/2000/svg"><path d="M50 50 Q 60 30 80 40 Q 100 20 120 40 Q 140 30 150 50 Z" fill="white" opacity="0.8"/></svg>') repeat-x 0 10%; }
+        #layer-mountains { width: 8000px; background: url('data:image/svg+xml;utf8,<svg width="300" height="200" xmlns="http://www.w3.org/2000/svg"><polygon points="0,200 150,50 300,200" fill="%2300a800" opacity="0.5"/><polygon points="100,200 250,80 400,200" fill="%23008800" opacity="0.7"/></svg>') repeat-x 0 bottom; padding-bottom: 80px;}
+        
+        #layer-world {
+            width: 6000px; /* Total level width */
+        }
+
+        /* --- The Ground --- */
         .ground {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100vw;
-            height: 80px;
-            background-color: var(--ground);
-            border-top: 4px solid #000;
-            background-image: 
-                linear-gradient(335deg, rgba(0,0,0,0.3) 15%, transparent 15%),
-                linear-gradient(155deg, rgba(0,0,0,0.3) 15%, transparent 15%);
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 100%; height: 80px;
+            background-color: var(--ground-dirt);
+            border-top: 15px solid var(--ground-top);
+            background-image: linear-gradient(335deg, rgba(0,0,0,0.2) 15%, transparent 15%), linear-gradient(155deg, rgba(0,0,0,0.2) 15%, transparent 15%);
             background-size: 20px 20px;
             z-index: 10;
         }
 
-        .cloud {
-            position: absolute;
-            font-size: 4rem;
-            opacity: 0.8;
-            top: 15%;
-        }
-
-        /* --- Player Character --- */
+        /* --- Player Sprite (CSS Art) --- */
         #player {
-            position: fixed;
-            bottom: 80px; /* Right above ground */
-            left: 20vw; /* Fixed position on screen */
-            font-size: 3rem;
-            z-index: 20;
-            transition: transform 0.1s;
-        }
-
-        .walking {
-            animation: bounce 0.3s infinite alternate;
-        }
-
-        @keyframes bounce {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(-10px); }
-        }
-
-        /* --- Resume Sections (Checkpoints) --- */
-        .checkpoint {
             position: absolute;
-            bottom: 80px;
-            width: 350px;
-            background: rgba(255, 255, 255, 0.95);
-            border: 4px solid #000;
-            padding: 20px;
-            box-shadow: 8px 8px 0 rgba(0,0,0,0.5);
-            opacity: 0;
-            transform: translateY(50px);
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            z-index: 5;
+            width: 40px; height: 50px;
+            bottom: 80px; left: 20vw;
+            z-index: 50;
+            will-change: transform;
         }
 
-        .checkpoint.visible {
-            opacity: 1;
-            transform: translateY(-20px);
-        }
-
-        .checkpoint::after {
-            content: '';
-            position: absolute;
-            bottom: -24px;
-            left: 20px;
-            border-width: 12px;
-            border-style: solid;
-            border-color: #000 transparent transparent transparent;
-        }
-
-        .checkpoint h3 {
-            font-size: 1rem;
-            color: var(--mario-red);
-            margin-bottom: 10px;
-            line-height: 1.4;
-        }
-
-        .checkpoint p, .checkpoint li {
-            font-size: 1.2rem;
-            margin-bottom: 8px;
-            line-height: 1.2;
-        }
-        
-        ul { padding-left: 20px; }
-
-        /* Flag Pole */
-        .flag-pole {
-            position: absolute;
-            bottom: 0;
-            width: 10px;
-            height: 400px;
-            background: #ccc;
+        .mario-body {
+            width: 100%; height: 60%;
+            background: var(--mario-blue);
+            position: absolute; bottom: 0;
+            border-radius: 5px 5px 0 0;
             border: 2px solid #000;
         }
 
-        .flag {
+        .mario-head {
+            width: 80%; height: 50%;
+            background: var(--mario-red);
+            position: absolute; top: -10%; left: 10%;
+            border-radius: 10px 10px 5px 5px;
+            border: 2px solid #000;
+        }
+
+        .mario-head::after { /* The Cap Bill */
+            content: ''; position: absolute;
+            width: 15px; height: 5px; background: var(--mario-red);
+            right: -10px; top: 5px; border: 2px solid #000; border-left: none;
+        }
+
+        .walking { animation: walkCycle 0.2s infinite alternate; }
+        @keyframes walkCycle { 0% { transform: translateY(0) rotate(-5deg); } 100% { transform: translateY(-5px) rotate(5deg); } }
+        
+        .jumping { background: var(--mario-red); } /* Quick color flash on jump */
+
+        /* --- Interactables --- */
+        .pipe {
             position: absolute;
-            top: 20px;
-            left: -40px;
-            font-size: 3rem;
-        }
-
-        /* --- UI & Controls --- */
-        #instructions {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0,0,0,0.7);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 10px;
-            font-size: 1.2rem;
-            text-align: center;
-            z-index: 100;
-            border: 2px solid #fff;
-        }
-
-        /* Mobile Controls */
-        #mobile-controls {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            display: flex;
-            gap: 10px;
-            z-index: 100;
-        }
-
-        .btn {
-            background: rgba(255, 255, 255, 0.5);
+            bottom: 80px;
+            width: 80px; height: 100px;
+            background: linear-gradient(to right, #008800, #00ff00, #008800);
             border: 4px solid #000;
-            width: 60px;
-            height: 60px;
-            font-size: 2rem;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            border-bottom: none;
+            z-index: 15;
+        }
+        .pipe::before {
+            content: ''; position: absolute;
+            top: -10px; left: -5px; width: 82px; height: 20px;
+            background: inherit; border: 4px solid #000;
+        }
+
+        .coin {
+            position: absolute;
+            width: 25px; height: 35px;
+            background: var(--coin-gold);
+            border: 3px solid #000;
             border-radius: 50%;
-            user-select: none;
+            animation: spin 1s linear infinite;
+            box-shadow: inset -4px 0 0 rgba(0,0,0,0.2);
+            z-index: 20;
+        }
+        @keyframes spin { 0% { transform: rotateY(0deg); } 100% { transform: rotateY(360deg); } }
+
+        .floating-score {
+            position: absolute;
+            color: white; font-family: 'Press Start 2P', cursive; font-size: 0.8rem;
+            text-shadow: 2px 2px 0 #000;
+            animation: floatUp 1s forwards;
+            pointer-events: none; z-index: 100;
+        }
+        @keyframes floatUp { 0% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; transform: translateY(-50px); } }
+
+        /* --- Glassmorphism UI (Resume Checkpoints) --- */
+        .cv-card {
+            position: absolute;
+            bottom: 220px;
+            width: 400px;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 4px solid #000;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 10px 10px 0 rgba(0,0,0,0.3), inset 0 0 20px rgba(255,255,255,0.5);
+            opacity: 0;
+            transform: translateY(30px) scale(0.9);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 5;
+            pointer-events: none; /* Let player jump "through" the visual card */
+        }
+
+        .cv-card.active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .cv-card h3 { color: var(--mario-red); font-size: 1.1rem; margin-bottom: 15px; border-bottom: 2px dashed #000; padding-bottom: 10px;}
+        .cv-card p, .cv-card li { font-size: 1.3rem; margin-bottom: 10px; line-height: 1.3; }
+        .cv-card ul { padding-left: 20px; }
+        .date-badge { display: inline-block; background: #000; color: #fff; padding: 3px 8px; font-size: 1rem; border-radius: 4px; margin-bottom: 10px;}
+
+        /* --- Mobile Controls --- */
+        #controls {
+            position: fixed; bottom: 20px; left: 0; width: 100%;
+            display: flex; justify-content: space-between; padding: 0 30px;
+            z-index: 1000;
+        }
+        .ctrl-group { display: flex; gap: 15px; }
+        .btn {
+            width: 65px; height: 65px; background: rgba(255,255,255,0.6);
+            border: 4px solid #000; border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 2rem; box-shadow: 0 4px 0 rgba(0,0,0,0.5);
             cursor: pointer;
         }
-        
-        .btn:active {
-            background: rgba(255, 255, 255, 0.9);
+        .btn:active { transform: translateY(4px); box-shadow: 0 0 0 rgba(0,0,0,0.5); background: rgba(255,255,255,0.9); }
+
+        #instructions {
+            position: fixed; top: 60px; left: 50%; transform: translateX(-50%);
+            background: rgba(0,0,0,0.8); color: #fff; padding: 10px 20px;
+            border: 2px solid #fff; border-radius: 8px; text-align: center;
+            animation: pulse 2s infinite; z-index: 1000;
         }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
 
         @media (min-width: 769px) {
-            #mobile-controls { display: none; }
-            .checkpoint { width: 500px; }
-            #instructions { font-size: 1.5rem; }
+            #controls { display: none; }
+            .cv-card { width: 500px; }
         }
     </style>
 </head>
 <body>
 
-    <div id="instructions">
-        <span class="retro" style="font-size: 0.8rem;">HOLD RIGHT ARROW TO EXPLORE</span><br>
-        <span style="font-size: 1rem;">Currently working @ Pfizer</span>
+    <div id="hud">
+        <div><span class="retro">SCORE </span><span id="score-display" class="retro">0000</span></div>
+        <div><span class="retro">WORLD 1-1</span></div>
+        <div><span class="retro">🪙 x<span id="coin-display">00</span></span></div>
     </div>
 
-    <div id="game-container">
+    <div id="instructions">
+        <span class="retro" style="font-size: 0.8rem;">ARROW KEYS TO MOVE | SPACE TO JUMP</span>
+    </div>
+
+    <div id="game-viewport">
+        <div id="layer-clouds" class="layer"></div>
+        <div id="layer-mountains" class="layer"></div>
         
-        <div id="player">🏃‍♂️</div>
-
-        <div id="level">
+        <div id="layer-world" class="layer">
             
-            <div class="cloud" style="left: 300px;">☁️</div>
-            <div class="cloud" style="left: 1200px; top: 20%;">☁️</div>
-            <div class="cloud" style="left: 2500px; top: 10%;">☁️</div>
-            <div class="cloud" style="left: 3800px;">☁️</div>
-
-            <div class="checkpoint" style="left: 300px;">
-                <h3>WORLD 1: VASILEIOS TILLIS</h3>
-                <p><strong>Statistical Data Scientist</strong></p>
-                <p>Artemida, Attica, Greece</p>
-                <p>MSc in Data Science with experience in pharmaceutical and airline industries. Passionate about uncovering insights and mentoring teams.</p>
+            <div id="player">
+                <div class="mario-head"></div>
+                <div class="mario-body"></div>
             </div>
 
-            <div class="checkpoint" style="left: 1100px;">
+            <div class="pipe" style="left: 600px;"></div>
+            <div class="cv-card" id="card-1" style="left: 450px;">
+                <h3>WORLD 1: PROFILE</h3>
+                <p><strong>Vasileios Tillis</strong><br>Statistical Data Scientist</p>
+                <p>MSc in Data Science with experience in pharmaceutical and airline industries. Passionate about uncovering insights from data and mentoring colleagues. Known for independent high-quality output and team leadership.</p>
+            </div>
+
+            <div class="pipe" style="left: 1600px; height: 150px;"></div>
+            <div class="cv-card" id="card-2" style="left: 1450px; bottom: 270px;">
                 <h3>WORLD 2: PFIZER HQ</h3>
-                <p><strong>Senior Assoc. Statistical Data Scientist</strong><br><em>(Jun 2026 - Present)</em></p>
+                <span class="date-badge">Jun 2026 – Present</span>
+                <p><strong>Senior Assoc. Statistical Data Scientist</strong></p>
                 <ul>
-                    <li>Supporting statistical data science activities in clinical development.</li>
-                    <li>Driving high-quality analytical delivery and process improvement.</li>
-                    <li>Contributed to a PHUSE-accepted presentation.</li>
+                    <li>Driving high-quality analytical delivery and statistical reporting.</li>
+                    <li>Contributed to a PHUSE-accepted presentation (Nov 2026).</li>
                 </ul>
-                <p><strong>Assoc. Statistical Data Scientist</strong><br><em>(Dec 2023 - May 2026)</em></p>
+                <span class="date-badge" style="margin-top:10px;">Dec 2023 – May 2026</span>
+                <p><strong>Assoc. Statistical Data Scientist</strong></p>
                 <ul>
-                    <li>Led a team of SMEs for a new reporting platform.</li>
+                    <li>Led a team of SMEs in the transition to a new statistical reporting platform.</li>
                 </ul>
             </div>
 
-            <div class="checkpoint" style="left: 2200px;">
+            <div class="pipe" style="left: 2800px; height: 120px;"></div>
+            <div class="cv-card" id="card-3" style="left: 2650px; bottom: 240px;">
                 <h3>WORLD 3: PAST QUESTS</h3>
-                <p><strong>Product Data Analyst @ Aegean Airlines</strong><br><em>(Jul 2022 – Nov 2023)</em></p>
-                <p>Designed business monitoring reports and conducted data analysis with Power BI.</p>
+                <p><strong>Product Data Analyst @ Aegean Airlines</strong></p>
+                <span class="date-badge">Jul 2022 – Nov 2023</span>
+                <p>Designed business monitoring reports and digital solutions using Power BI.</p>
                 <br>
-                <p><strong>Data Analyst @ Ministry of National Defence</strong><br><em>(Jan 2018 – Oct 2018)</em></p>
-                <p>Analyzed defense data and created dashboards.</p>
+                <p><strong>Data Analyst @ Ministry of National Defence</strong></p>
+                <span class="date-badge">Jan 2018 – Oct 2018</span>
+                <p>Analyzed defense data and created specialized performance dashboards.</p>
             </div>
 
-            <div class="checkpoint" style="left: 3300px;">
-                <h3>WORLD 4: ACADEMY</h3>
-                <p><strong>MSc in Data Science</strong><br>University of East London (2020-2021)</p>
-                <p><em>Thesis: Algorithmic identification of toxic language patterns via NLP.</em></p>
-                <br>
-                <p><strong>BSc Science & Tech of Telecoms</strong><br>University of Peloponnese (2011-2017)</p>
-                <p><strong>Power-Ups (Certs):</strong> Google Data Analytics, IBM Data Science, SAS Programmer.</p>
+            <div class="pipe" style="left: 4000px;"></div>
+            <div class="cv-card" id="card-4" style="left: 3850px;">
+                <h3>WORLD 4: ACADEMY & SKILLS</h3>
+                <p>🎓 <strong>MSc in Data Science</strong> (UEL, 2020-2021)</p>
+                <p>🎓 <strong>BSc Telecoms</strong> (UOP, 2011-2017)</p>
+                <hr style="margin: 10px 0; border: 1px dashed #000;">
+                <p><strong>Code:</strong> Python (95%), R (90%), SQL (90%), SAS (90%)</p>
+                <p><strong>Power-Ups:</strong> Google Data Analytics Cert, IBM Data Science Cert, SAS Programmer Cert.</p>
             </div>
 
-            <div class="checkpoint" style="left: 4400px;">
-                <h3>WORLD 5: SKILLS</h3>
-                <p><strong>Code:</strong> Python (95%), R (90%), SQL (90%), SAS (90%), Power BI (85%)</p>
-                <p><strong>Tactics:</strong> Project Management, Complex Problem Solving, Team Leadership.</p>
-                <p><strong>Languages:</strong> Greek (Native), English (Pro), German (Basic).</p>
+            <div class="pipe" style="left: 5200px; height: 300px; width: 40px;"></div>
+            <div style="position:absolute; left:5140px; bottom: 400px; width: 200px; text-align:center; font-family:'Press Start 2P'; line-height: 1.5;">
+                LEVEL COMPLETE!<br><br>Let's Connect:<br>tillisvasileios@gmail.com
             </div>
 
-            <div style="position: absolute; left: 5200px; bottom: 80px;">
-                <div class="flag-pole">
-                    <div class="flag">🚩</div>
-                </div>
-                <div class="retro" style="position: absolute; top: -50px; left: -100px; width: 300px; text-align: center;">
-                    LEVEL COMPLETE!<br><br>tillisvasileios@gmail.com
-                </div>
-            </div>
-
+            <div class="ground"></div>
         </div>
     </div>
 
-    <div class="ground"></div>
-
-    <div id="mobile-controls">
-        <div class="btn" id="btn-left">◀</div>
-        <div class="btn" id="btn-right">▶</div>
+    <div id="controls">
+        <div class="ctrl-group">
+            <div class="btn" id="btn-left">◀</div>
+            <div class="btn" id="btn-right">▶</div>
+        </div>
+        <div class="btn" id="btn-jump">▲</div>
     </div>
 
     <script>
-        const level = document.getElementById('level');
-        const player = document.getElementById('player');
-        const checkpoints = document.querySelectorAll('.checkpoint');
+        // --- Game Engine Variables ---
+        const playerEl = document.getElementById('player');
+        const worldLayer = document.getElementById('layer-world');
+        const mountainsLayer = document.getElementById('layer-mountains');
+        const cloudsLayer = document.getElementById('layer-clouds');
         
-        let position = 0;
-        const maxScroll = 4800; // Stop scrolling at the flag
-        const speed = 10;
-        let keys = { ArrowRight: false, ArrowLeft: false };
+        // Physics variables
+        let player = {
+            x: 150,           // Starts slightly inset
+            y: 0,             // 0 is ground level
+            vx: 0,
+            vy: 0,
+            width: 40,
+            height: 50,
+            speed: 8,         // Horizontal speed
+            jumpPower: 16,    // Jump strength
+            gravity: 0.8,     // Downward force
+            grounded: true,
+            facingRight: true
+        };
 
-        // Keyboard listeners
+        let cameraX = 0;
+        let score = 0;
+        let coins = 0;
+        let keys = { left: false, right: false, up: false };
+
+        // Constants
+        const LEVEL_WIDTH = 6000;
+        const SCREEN_OFFSET = window.innerWidth * 0.2; // Keep player 20% from left of screen
+
+        // --- Coin Generation ---
+        const coinPositions = [
+            {x: 400, y: 100}, {x: 450, y: 150}, {x: 500, y: 100}, // Arc before pipe 1
+            {x: 1300, y: 0}, {x: 1350, y: 0}, {x: 1400, y: 0},   // Ground coins
+            {x: 2500, y: 150}, {x: 2550, y: 150}, {x: 2600, y: 150}, // Floating coins
+            {x: 3700, y: 0}, {x: 3750, y: 50}, {x: 3800, y: 100},
+            {x: 4800, y: 0}, {x: 4900, y: 0}, {x: 5000, y: 0}
+        ];
+
+        let activeCoins = [];
+
+        function initCoins() {
+            coinPositions.forEach((pos, index) => {
+                const coinEl = document.createElement('div');
+                coinEl.className = 'coin';
+                coinEl.style.left = `${pos.x}px`;
+                coinEl.style.bottom = `${pos.y + 80}px`; // +80 for ground height
+                worldLayer.appendChild(coinEl);
+                
+                activeCoins.push({
+                    el: coinEl,
+                    x: pos.x,
+                    y: pos.y,
+                    width: 25,
+                    height: 35,
+                    collected: false
+                });
+            });
+        }
+        initCoins();
+
+        // --- Input Handling ---
         window.addEventListener('keydown', (e) => {
-            if (e.code === 'ArrowRight' || e.code === 'ArrowLeft') {
-                keys[e.code] = true;
-            }
+            if (e.code === 'ArrowRight') keys.right = true;
+            if (e.code === 'ArrowLeft') keys.left = true;
+            if (e.code === 'Space' || e.code === 'ArrowUp') { keys.up = true; e.preventDefault(); }
         });
 
         window.addEventListener('keyup', (e) => {
-            if (e.code === 'ArrowRight' || e.code === 'ArrowLeft') {
-                keys[e.code] = false;
-            }
+            if (e.code === 'ArrowRight') keys.right = false;
+            if (e.code === 'ArrowLeft') keys.left = false;
+            if (e.code === 'Space' || e.code === 'ArrowUp') keys.up = false;
         });
 
-        // Mobile touch listeners
-        const btnLeft = document.getElementById('btn-left');
-        const btnRight = document.getElementById('btn-right');
+        // Mobile Controls
+        const bindTouch = (id, key) => {
+            const el = document.getElementById(id);
+            el.addEventListener('touchstart', (e) => { e.preventDefault(); keys[key] = true; });
+            el.addEventListener('touchend', (e) => { e.preventDefault(); keys[key] = false; });
+        };
+        bindTouch('btn-left', 'left');
+        bindTouch('btn-right', 'right');
+        bindTouch('btn-jump', 'up');
 
-        btnRight.addEventListener('touchstart', (e) => { e.preventDefault(); keys['ArrowRight'] = true; });
-        btnRight.addEventListener('touchend', (e) => { e.preventDefault(); keys['ArrowRight'] = false; });
-        
-        btnLeft.addEventListener('touchstart', (e) => { e.preventDefault(); keys['ArrowLeft'] = true; });
-        btnLeft.addEventListener('touchend', (e) => { e.preventDefault(); keys['ArrowLeft'] = false; });
+        // Hide instructions on first input
+        window.addEventListener('keydown', hideInstructions, {once:true});
+        window.addEventListener('touchstart', hideInstructions, {once:true});
+        function hideInstructions() { document.getElementById('instructions').style.display = 'none'; }
 
-        // Game Loop
-        function gameLoop() {
-            let isMoving = false;
+        // --- Collision Detection (AABB) ---
+        function checkCollision(rect1, rect2) {
+            return (
+                rect1.x < rect2.x + rect2.width &&
+                rect1.x + rect1.width > rect2.x &&
+                rect1.y < rect2.y + rect2.height &&
+                rect1.y + rect1.height > rect2.y
+            );
+        }
 
-            if (keys['ArrowRight'] && position < maxScroll) {
-                position += speed;
-                player.style.transform = 'scaleX(1)'; // Face right
-                isMoving = true;
-            }
-            if (keys['ArrowLeft'] && position > 0) {
-                position -= speed;
-                player.style.transform = 'scaleX(-1)'; // Face left
-                isMoving = true;
-            }
-
-            // Apply movement to the world (parallax effect)
-            level.style.transform = `translateX(${-position}px)`;
-
-            // Animate walking
-            if (isMoving) {
-                player.classList.add('walking');
+        // --- Main Game Loop ---
+        function update() {
+            // 1. Horizontal Movement
+            if (keys.right) {
+                player.vx = player.speed;
+                player.facingRight = true;
+                if(player.grounded) playerEl.classList.add('walking');
+            } else if (keys.left) {
+                player.vx = -player.speed;
+                player.facingRight = false;
+                if(player.grounded) playerEl.classList.add('walking');
             } else {
-                player.classList.remove('walking');
+                player.vx = 0;
+                playerEl.classList.remove('walking');
             }
 
-            // Check collisions/triggers for resume sections
-            checkpoints.forEach(cp => {
-                // Get the left position of the checkpoint relative to the level
-                const cpLeft = parseInt(cp.style.left);
-                
-                // If the player's virtual world position is close to the checkpoint
-                // (Screen width is factored in loosely, assuming player is 20vw in)
-                const triggerPoint = cpLeft - window.innerWidth * 0.6;
-                const hidePoint = cpLeft + 400; // Hide after passing it
+            // Apply X velocity
+            player.x += player.vx;
+            
+            // World Bounds
+            if (player.x < 0) player.x = 0;
+            if (player.x > LEVEL_WIDTH - player.width) player.x = LEVEL_WIDTH - player.width;
 
-                if (position > triggerPoint && position < hidePoint) {
-                    cp.classList.add('visible');
-                } else {
-                    cp.classList.remove('visible');
+            // 2. Vertical Movement (Jumping & Gravity)
+            if (keys.up && player.grounded) {
+                player.vy = player.jumpPower;
+                player.grounded = false;
+                playerEl.classList.remove('walking');
+                playerEl.children[1].classList.add('jumping'); // Mario body flash
+            }
+
+            if (!player.grounded) {
+                player.y += player.vy;
+                player.vy -= player.gravity; // Apply gravity (pulls down)
+
+                // Floor Collision
+                if (player.y <= 0) {
+                    player.y = 0;
+                    player.grounded = true;
+                    player.vy = 0;
+                    playerEl.children[1].classList.remove('jumping');
+                }
+            }
+
+            // 3. Collect Coins
+            activeCoins.forEach(coin => {
+                if (!coin.collected) {
+                    if (checkCollision(player, coin)) {
+                        coin.collected = true;
+                        coin.el.style.display = 'none'; // Hide coin
+                        
+                        // Update Score
+                        coins++;
+                        score += 100;
+                        document.getElementById('coin-display').innerText = coins.toString().padStart(2, '0');
+                        document.getElementById('score-display').innerText = score.toString().padStart(4, '0');
+
+                        // Floating Text Animation
+                        const floatTxt = document.createElement('div');
+                        floatTxt.className = 'floating-score';
+                        floatTxt.innerText = '100';
+                        floatTxt.style.left = `${coin.x}px`;
+                        floatTxt.style.bottom = `${coin.y + 100}px`;
+                        worldLayer.appendChild(floatTxt);
+                        setTimeout(() => floatTxt.remove(), 1000);
+                    }
                 }
             });
 
-            requestAnimationFrame(gameLoop);
+            // 4. Trigger UI Checkpoints (Proximity)
+            const checkpoints = [
+                { id: 'card-1', x: 600 },
+                { id: 'card-2', x: 1600 },
+                { id: 'card-3', x: 2800 },
+                { id: 'card-4', x: 4000 }
+            ];
+
+            checkpoints.forEach(cp => {
+                const card = document.getElementById(cp.id);
+                // Trigger if player is within 400px of the pipe
+                if (Math.abs(player.x - cp.x) < 400) {
+                    card.classList.add('active');
+                } else {
+                    card.classList.remove('active');
+                }
+            });
+
+            // 5. Update Camera & Parallax
+            // Keep player at SCREEN_OFFSET relative to the viewport
+            cameraX = player.x - SCREEN_OFFSET;
+            if (cameraX < 0) cameraX = 0;
+            if (cameraX > LEVEL_WIDTH - window.innerWidth) cameraX = LEVEL_WIDTH - window.innerWidth;
+
+            // Apply transforms (Hardware Accelerated)
+            playerEl.style.transform = `translate3d(${player.x}px, ${-player.y}px, 0) scaleX(${player.facingRight ? 1 : -1})`;
+            worldLayer.style.transform = `translate3d(${-cameraX}px, 0, 0)`;
+            
+            // Parallax layers move slower than the camera
+            mountainsLayer.style.transform = `translate3d(${-cameraX * 0.3}px, 0, 0)`;
+            cloudsLayer.style.transform = `translate3d(${-cameraX * 0.1}px, 0, 0)`;
+
+            requestAnimationFrame(update);
         }
 
-        // Start loop
-        gameLoop();
+        // Start Game Engine
+        requestAnimationFrame(update);
     </script>
 </body>
 </html>
