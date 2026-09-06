@@ -4,51 +4,54 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Vasileios Tillis | Statistical Data Scientist</title>
+<title>Vasileios Tillis | Survey Corps Data Scientist</title>
 
-<!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Rajdhani:wght@400;500;600;700&family=Special+Elite&display=swap" rel="stylesheet">
+<!-- Swapped to classical, cinematic, and military-style fonts fitting the AoT universe -->
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800;900&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Noto+Serif+JP:wght@400;700;900&display=swap" rel="stylesheet">
 
 <style>
 
 /* =========================================================
-   ATTACK ON TITAN INSPIRED MILITARY DOSSIER
+   AOT SOLDIER DOSSIER
    VASILEIOS TILLIS
    ========================================================= */
 
 :root {
+    /* Gritty, dark atmospheric colors */
+    --bg: #0f0d0c;
+    --bg2: #1a1614;
 
-    --black: #080a08;
-    --dark: #111512;
-    --dark-green: #18231c;
-    --military: #26382a;
-    --green: #3f5c45;
+    /* Scout Regiment & AoT Palette */
+    --scout-green: #294a31;
+    --scout-blue: #1c2b42;
+    --blood-red: #8a0b0b;
+    --titan-spark: #f4d03f;
+    --titan-orange: #d35400;
+    --brass: #cba153;
+    --silver: #a3adb8;
+    --parchment: #e8dcc4;
+    --white: #f4f2ee;
 
-    --paper: #d6d0bd;
-    --paper-dark: #aaa48f;
-    --paper-light: #e8e3d2;
+    --panel: rgba(22, 19, 17, 0.88);
+    --panel-light: rgba(35, 30, 27, 0.75);
 
-    --blood: #8e1e1e;
-    --blood-light: #c43333;
+    --border: rgba(203, 161, 83, 0.35); /* Brass border */
 
-    --gold: #b49a58;
+    --glow-spark:
+        0 0 8px rgba(244, 208, 63, 0.7),
+        0 0 25px rgba(244, 208, 63, 0.3);
 
-    --white: #eeeade;
-    --gray: #8f9489;
+    --glow-red:
+        0 0 8px rgba(138, 11, 11, 0.7),
+        0 0 25px rgba(138, 11, 11, 0.4);
 
-    --shadow:
-        0 20px 50px rgba(0,0,0,.65);
-
-    --military-border:
-        rgba(180,154,88,.35);
+    --glow-green:
+        0 0 8px rgba(41, 74, 49, 0.7),
+        0 0 20px rgba(41, 74, 49, 0.4);
 }
-
-/* =========================================================
-   RESET
-   ========================================================= */
 
 * {
     margin: 0;
@@ -61,220 +64,141 @@ html {
 }
 
 body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: 'Lora', serif; /* Classic serif for dossiers */
+    overflow-x: hidden;
+}
 
-    background:
-        #080a08;
-
-    color:
-        var(--white);
-
-    font-family:
-        'Rajdhani',
-        sans-serif;
-
-    line-height:
-        1.6;
-
-    overflow-x:
-        hidden;
+h1, h2, h3, .cinzel-font {
+    font-family: 'Cinzel', serif;
 }
 
 /* =========================================================
-   PAPER / FILM GRAIN
-   ========================================================= */
-
-body::before {
-
-    content: "";
-
-    position: fixed;
-
-    inset: 0;
-
-    z-index: 9998;
-
-    pointer-events: none;
-
-    opacity: .08;
-
-    background-image:
-        url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='.5'/%3E%3C/svg%3E");
-
-    mix-blend-mode:
-        overlay;
-}
-
-/* =========================================================
-   BACKGROUND
+   BACKGROUND (THE WALLS & STEAM)
    ========================================================= */
 
 .background {
-
     position: fixed;
-
     inset: 0;
-
     z-index: -10;
+    overflow: hidden;
 
     background:
-
         radial-gradient(
-            ellipse at 50% 20%,
-            rgba(73,93,70,.28),
-            transparent 45%
+            circle at 50% 100%,
+            rgba(138, 11, 11, 0.15),
+            transparent 60%
         ),
-
         linear-gradient(
             180deg,
-            #101510 0%,
-            #090c09 55%,
-            #050605 100%
+            #0a0807 0%,
+            #14110f 50%,
+            #050404 100%
         );
-
-    overflow: hidden;
 }
 
-/* Clouds */
-
-.cloud {
-
+/* Red Signal Flare (Replacing the Moon) */
+.flare {
     position: absolute;
-
-    width: 700px;
-
-    height: 180px;
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
 
     background:
         radial-gradient(
-            ellipse,
-            rgba(190,190,170,.07),
+            circle at 50% 50%,
+            #ff4d4d,
+            #8a0b0b 35%,
             transparent 70%
         );
-
-    filter:
-        blur(25px);
-
-    animation:
-        cloudMove 30s linear infinite;
+    opacity: 0.15;
+    filter: blur(8px);
+    box-shadow: 0 0 150px rgba(255, 0, 0, 0.3);
+    animation: flareBurn 4s ease-in-out infinite alternate;
 }
 
-.cloud:nth-child(1) {
-
-    top: 10%;
-
-    left: -300px;
+@keyframes flareBurn {
+    0% { opacity: 0.12; transform: translateX(-50%) scale(0.95); }
+    100% { opacity: 0.25; transform: translateX(-50%) scale(1.05); }
 }
 
-.cloud:nth-child(2) {
-
-    top: 35%;
-
-    right: -400px;
-
-    animation-duration:
-        45s;
-}
-
-@keyframes cloudMove {
-
-    from {
-        transform:
-            translateX(0);
-    }
-
-    to {
-        transform:
-            translateX(100vw);
-    }
-
-}
-
-/* =========================================================
-   MILITARY GRID
-   ========================================================= */
-
+/* Wall Texture (Replacing Cyber Grid) */
 .grid {
-
     position: absolute;
-
     inset: 0;
-
-    opacity: .12;
-
     background-image:
+        linear-gradient(rgba(0,0,0,0.6) 2px, transparent 2px),
+        linear-gradient(90deg, rgba(0,0,0,0.6) 2px, transparent 2px);
+    background-size: 120px 60px;
+    transform: perspective(600px) rotateX(50deg) scale(1.8);
+    transform-origin: bottom;
+    opacity: 0.15;
+}
 
-        linear-gradient(
-            rgba(180,154,88,.18) 1px,
-            transparent 1px
-        ),
+/* ODM Gear Cables (Replacing Energy Lines) */
+.energy {
+    position: absolute;
+    width: 2px;
+    height: 300px;
+    background: linear-gradient(transparent, var(--silver), transparent);
+    opacity: 0.3;
+    transform: rotate(35deg);
+    animation: odmShoot linear infinite;
+}
 
-        linear-gradient(
-            90deg,
-            rgba(180,154,88,.18) 1px,
-            transparent 1px
-        );
+.energy:nth-child(1) { left: -10%; animation-duration: 3s; }
+.energy:nth-child(2) { left: 40%; animation-duration: 4.5s; }
+.energy:nth-child(3) { left: 80%; animation-duration: 2.5s; }
+.energy:nth-child(4) { left: 110%; animation-duration: 3.5s; }
 
-    background-size:
-        70px 70px;
+@keyframes odmShoot {
+    from { transform: rotate(35deg) translateY(120vh); }
+    to { transform: rotate(35deg) translateY(-150vh); }
 }
 
 /* =========================================================
-   FLOATING DUST
+   PARTICLES (TITAN STEAM & TRANSFORMATION SPARKS)
    ========================================================= */
 
-.dust {
-
+.particles {
     position: fixed;
-
     inset: 0;
-
     pointer-events: none;
-
-    z-index: -1;
+    z-index: -2;
 }
 
-.dust span {
-
+.particle {
     position: absolute;
-
-    width: 2px;
-
-    height: 2px;
-
-    background:
-        rgba(220,215,190,.6);
-
-    border-radius:
-        50%;
-
-    animation:
-        dustFloat linear infinite;
+    border-radius: 50%;
 }
 
-@keyframes dustFloat {
+.spark {
+    background: var(--titan-spark);
+    box-shadow: 0 0 10px var(--titan-spark), 0 0 20px var(--titan-orange);
+    animation: floatSpark linear infinite;
+}
 
-    from {
-        transform:
-            translateY(105vh)
-            translateX(0);
-        opacity: 0;
-    }
+.steam {
+    background: rgba(200, 200, 200, 0.15);
+    filter: blur(4px);
+    animation: floatSteam linear infinite;
+}
 
-    20% {
-        opacity: .7;
-    }
+@keyframes floatSpark {
+    from { transform: translateY(110vh) scale(1); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    to { transform: translateY(-10vh) scale(0.5); opacity: 0; }
+}
 
-    80% {
-        opacity: .5;
-    }
-
-    to {
-        transform:
-            translateY(-10vh)
-            translateX(80px);
-        opacity: 0;
-    }
-
+@keyframes floatSteam {
+    from { transform: translateY(110vh) scale(1); opacity: 0; }
+    50% { opacity: 0.6; transform: translateY(50vh) scale(3); }
+    to { transform: translateY(-10vh) scale(5); opacity: 0; }
 }
 
 /* =========================================================
@@ -282,137 +206,48 @@ body::before {
    ========================================================= */
 
 .navbar {
-
     position: fixed;
-
     top: 0;
-
     left: 0;
-
     width: 100%;
-
     z-index: 1000;
-
-    background:
-        rgba(8,10,8,.94);
-
-    border-bottom:
-        2px solid
-        rgba(180,154,88,.3);
-
-    box-shadow:
-        0 5px 25px
-        rgba(0,0,0,.7);
-
-    backdrop-filter:
-        blur(10px);
+    background: rgba(15, 13, 12, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 2px solid var(--blood-red);
+    box-shadow: 0 5px 30px rgba(0,0,0,0.8);
 }
 
 .nav {
-
-    max-width:
-        1200px;
-
-    margin:
-        auto;
-
-    padding:
-        9px 20px;
-
-    display:
-        flex;
-
-    justify-content:
-        center;
-
-    gap:
-        5px;
-
-    flex-wrap:
-        wrap;
+    max-width: 1200px;
+    margin: auto;
+    padding: 12px 20px;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
 }
 
 .nav button {
-
+    background: transparent;
+    border: 1px solid rgba(203, 161, 83, 0.3);
+    color: var(--brass);
+    padding: 8px 16px;
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: 0.3s;
     position: relative;
-
-    background:
-        transparent;
-
-    border:
-        1px solid
-        rgba(214,208,189,.18);
-
-    color:
-        #a9ad9f;
-
-    padding:
-        8px 14px;
-
-    font-family:
-        'Oswald',
-        sans-serif;
-
-    text-transform:
-        uppercase;
-
-    font-size:
-        11px;
-
-    letter-spacing:
-        1.5px;
-
-    cursor:
-        pointer;
-
-    transition:
-        .3s;
-}
-
-.nav button::before {
-
-    content:
-        "";
-
-    position:
-        absolute;
-
-    left:
-        0;
-
-    bottom:
-        0;
-
-    width:
-        0;
-
-    height:
-        2px;
-
-    background:
-        var(--blood);
-
-    transition:
-        .3s;
+    overflow: hidden;
 }
 
 .nav button:hover {
-
-    color:
-        var(--paper-light);
-
-    border-color:
-        rgba(180,154,88,.5);
-
-    background:
-        rgba(180,154,88,.05);
-
-    transform:
-        translateY(-2px);
-}
-
-.nav button:hover::before {
-    width: 100%;
+    color: var(--white);
+    border-color: var(--blood-red);
+    box-shadow: inset 0 0 10px rgba(138, 11, 11, 0.5);
+    background: rgba(138, 11, 11, 0.2);
+    transform: translateY(-2px);
 }
 
 /* =========================================================
@@ -420,82 +255,10 @@ body::before {
    ========================================================= */
 
 .container {
-
-    width:
-        min(1150px, 92%);
-
-    margin:
-        auto;
-
-    padding-top:
-        110px;
-
-    padding-bottom:
-        80px;
-}
-
-/* =========================================================
-   MILITARY LABEL
-   ========================================================= */
-
-.classification {
-
-    display:
-        inline-flex;
-
-    align-items:
-        center;
-
-    gap:
-        10px;
-
-    border:
-        1px solid
-        rgba(180,154,88,.35);
-
-    background:
-        rgba(10,12,9,.7);
-
-    padding:
-        6px 12px;
-
-    color:
-        var(--gold);
-
-    font-family:
-        'Oswald',
-        sans-serif;
-
-    font-size:
-        10px;
-
-    letter-spacing:
-        2px;
-
-    text-transform:
-        uppercase;
-}
-
-.classification::before {
-
-    content:
-        "";
-
-    width:
-        7px;
-
-    height:
-        7px;
-
-    background:
-        var(--blood);
-
-    border-radius:
-        50%;
-
-    box-shadow:
-        0 0 10px
-        rgba(196,51,51,.5);
+    width: min(1150px, 92%);
+    margin: auto;
+    padding-top: 130px;
+    padding-bottom: 60px;
 }
 
 /* =========================================================
@@ -503,1273 +266,573 @@ body::before {
    ========================================================= */
 
 .hero {
-
-    min-height:
-        650px;
-
-    display:
-        grid;
-
-    grid-template-columns:
-        340px 1fr;
-
-    gap:
-        65px;
-
-    align-items:
-        center;
-
-    position:
-        relative;
+    min-height: 620px;
+    display: grid;
+    grid-template-columns: 1fr 1.6fr;
+    gap: 50px;
+    align-items: center;
+    position: relative;
 }
 
-/* =========================================================
-   EMBLEM
-   ========================================================= */
-
-.emblem-container {
-
-    position:
-        relative;
-
-    width:
-        320px;
-
-    height:
-        400px;
-
-    display:
-        flex;
-
-    align-items:
-        center;
-
-    justify-content:
-        center;
+/* Titan Heat Aura */
+.hero::before {
+    content: "";
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(244, 208, 63, 0.08), transparent 65%);
+    filter: blur(25px);
+    animation: aura 5s ease-in-out infinite alternate;
 }
 
-.emblem {
-
-    width:
-        270px;
-
-    height:
-        330px;
-
-    position:
-        relative;
-
-    display:
-        flex;
-
-    align-items:
-        center;
-
-    justify-content:
-        center;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(40,55,43,.85),
-            rgba(8,11,8,.95)
-        );
-
-    border:
-        1px solid
-        rgba(180,154,88,.35);
-
-    box-shadow:
-        var(--shadow);
-
-    clip-path:
-        polygon(
-            0 18px,
-            18px 0,
-            calc(100% - 18px) 0,
-            100% 18px,
-            100% calc(100% - 18px),
-            calc(100% - 18px) 100%,
-            18px 100%,
-            0 calc(100% - 18px)
-        );
+@keyframes aura {
+    0% { transform: translate(-50%,-50%) scale(0.9); opacity: 0.5; }
+    100% { transform: translate(-50%,-50%) scale(1.1); opacity: 1; }
 }
 
-/* Original military-inspired wing emblem */
-
-.wings {
-
-    position:
-        relative;
-
-    width:
-        190px;
-
-    height:
-        190px;
+/* Regiment Shield Card (Replaces polygon card) */
+.character-card {
+    position: relative;
+    min-height: 470px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(145deg, rgba(41, 74, 49, 0.4), rgba(15, 13, 12, 0.9));
+    border: 2px solid var(--brass);
+    /* Shield shape */
+    clip-path: polygon(50% 0%, 100% 12%, 100% 80%, 50% 100%, 0 80%, 0 12%);
+    box-shadow: 0 0 60px rgba(41, 74, 49, 0.2);
+    overflow: hidden;
 }
 
-/* Left wing */
-
-.wings::before {
-
-    content:
-        "◀";
-
-    position:
-        absolute;
-
-    left:
-        -8px;
-
-    top:
-        25px;
-
-    font-size:
-        105px;
-
-    color:
-        var(--paper);
-
-    transform:
-        scaleX(1.2)
-        rotate(-15deg);
-
-    opacity:
-        .85;
-
-    text-shadow:
-        3px 3px 0
-        rgba(0,0,0,.5);
+/* Inner Shield details */
+.character-symbol {
+    width: 260px;
+    height: 330px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-/* Right wing */
-
-.wings::after {
-
-    content:
-        "▶";
-
-    position:
-        absolute;
-
-    right:
-        -8px;
-
-    top:
-        25px;
-
-    font-size:
-        105px;
-
-    color:
-        var(--paper);
-
-    transform:
-        scaleX(1.2)
-        rotate(15deg);
-
-    opacity:
-        .85;
-
-    text-shadow:
-        3px 3px 0
-        rgba(0,0,0,.5);
+.character-symbol::before {
+    content: "";
+    position: absolute;
+    width: 210px;
+    height: 210px;
+    border-radius: 50%;
+    border: 2px solid rgba(203, 161, 83, 0.6);
+    border-style: dashed solid;
+    box-shadow: 0 0 40px rgba(203, 161, 83, 0.15);
+    animation: rotate 20s linear infinite;
 }
 
-.emblem-text {
-
-    position:
-        absolute;
-
-    bottom:
-        42px;
-
-    font-family:
-        'Oswald',
-        sans-serif;
-
-    font-size:
-        13px;
-
-    letter-spacing:
-        4px;
-
-    color:
-        var(--gold);
-
-    text-align:
-        center;
-}
-
-/* rotating rings */
-
-.emblem-ring {
-
-    position:
-        absolute;
-
-    width:
-        300px;
-
-    height:
-        300px;
-
-    border:
-        1px dashed
-        rgba(180,154,88,.25);
-
-    border-radius:
-        50%;
-
-    animation:
-        rotate 30s linear infinite;
+.character-symbol::after {
+    content: "VT";
+    position: absolute;
+    font-family: 'Cinzel', serif;
+    font-size: 110px;
+    font-weight: 900;
+    letter-spacing: -5px;
+    color: var(--bg);
+    -webkit-text-stroke: 2px var(--brass);
+    text-shadow: 0 0 25px rgba(244, 208, 63, 0.4);
+    animation: symbolPulse 4s ease-in-out infinite;
 }
 
 @keyframes rotate {
-
-    to {
-        transform:
-            rotate(360deg);
-    }
-
+    from { transform: rotate(0); }
+    to { transform: rotate(360deg); }
 }
 
-/* =========================================================
-   HERO TEXT
-   ========================================================= */
+@keyframes symbolPulse {
+    0%,100% { opacity: 0.7; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.05); }
+}
 
+/* Hero text */
 .hero-content {
-
-    position:
-        relative;
+    position: relative;
+    z-index: 2;
 }
 
-.hero-kana {
-
-    font-family:
-        'Special Elite',
-        monospace;
-
-    color:
-        var(--blood-light);
-
-    font-size:
-        13px;
-
-    letter-spacing:
-        4px;
-
-    margin-bottom:
-        8px;
-
-    text-transform:
-        uppercase;
+.jp {
+    font-family: "Noto Serif JP", serif;
+    color: var(--brass);
+    letter-spacing: 6px;
+    font-size: 15px;
+    margin-bottom: 12px;
+    text-shadow: 0 0 10px rgba(203, 161, 83, 0.4);
 }
 
 .hero h1 {
-
-    font-family:
-        'Oswald',
-        sans-serif;
-
-    font-weight:
-        700;
-
-    font-size:
-        clamp(3.4rem, 7vw, 6.3rem);
-
-    line-height:
-        .92;
-
-    letter-spacing:
-        3px;
-
-    color:
-        var(--paper-light);
-
-    text-transform:
-        uppercase;
-
-    text-shadow:
-        4px 4px 0
-        rgba(0,0,0,.8);
-
-    margin-bottom:
-        18px;
+    font-size: clamp(3rem, 6.5vw, 5.5rem);
+    line-height: 1.05;
+    font-weight: 900;
+    letter-spacing: 2px;
+    margin-bottom: 15px;
+    color: var(--white);
+    text-shadow: 4px 4px 0 var(--blood-red), 8px 8px 0 rgba(0,0,0,0.8);
 }
 
 .hero h1 span {
-
-    display:
-        block;
-
-    color:
-        var(--gold);
-
-    font-size:
-        .7em;
-
-    letter-spacing:
-        9px;
+    color: var(--brass);
 }
 
-.role {
-
-    font-family:
-        'Oswald',
-        sans-serif;
-
-    font-size:
-        18px;
-
-    color:
-        var(--paper);
-
-    letter-spacing:
-        2px;
-
-    border-left:
-        3px solid
-        var(--blood);
-
-    padding-left:
-        15px;
-
-    margin-bottom:
-        25px;
+.subtitle {
+    font-family: 'Cinzel', serif;
+    color: var(--parchment);
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    margin-bottom: 30px;
+    border-bottom: 1px solid var(--blood-red);
+    display: inline-block;
+    padding-bottom: 8px;
 }
 
 .hero-description {
+    color: #c4c1b9;
+    font-size: 17px;
+    max-width: 600px;
+    line-height: 1.8;
+    margin-bottom: 35px;
+}
 
-    max-width:
-        650px;
+/* Stats */
+.hero-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    max-width: 650px;
+}
 
-    color:
-        #aeb1a7;
+.stat {
+    padding: 15px;
+    background: rgba(20, 16, 14, 0.8);
+    border: 1px solid rgba(203, 161, 83, 0.3);
+    border-left: 3px solid var(--scout-green);
+    position: relative;
+}
 
-    font-size:
-        17px;
+.stat small {
+    display: block;
+    color: var(--brass);
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+}
 
-    line-height:
-        1.8;
-
-    margin-bottom:
-        30px;
+.stat strong {
+    font-family: 'Cinzel', serif;
+    font-size: 18px;
+    color: var(--white);
 }
 
 /* =========================================================
-   CONTACT
-   ========================================================= */
-
-.contact-grid {
-
-    display:
-        grid;
-
-    grid-template-columns:
-        repeat(2, 1fr);
-
-    gap:
-        8px;
-
-    max-width:
-        650px;
-}
-
-.contact {
-
-    padding:
-        10px 12px;
-
-    border:
-        1px solid
-        rgba(214,208,189,.12);
-
-    background:
-        rgba(10,12,10,.6);
-
-    color:
-        #9da297;
-
-    font-size:
-        12px;
-
-    transition:
-        .3s;
-
-    overflow:
-        hidden;
-
-    text-overflow:
-        ellipsis;
-
-    white-space:
-        nowrap;
-}
-
-.contact:hover {
-
-    border-color:
-        rgba(180,154,88,.45);
-
-    color:
-        var(--paper);
-
-    background:
-        rgba(180,154,88,.05);
-}
-
-.contact strong {
-
-    color:
-        var(--gold);
-
-    margin-right:
-        8px;
-
-    font-family:
-        'Oswald',
-        sans-serif;
-
-    font-size:
-        10px;
-
-    letter-spacing:
-        1px;
-}
-
-/* =========================================================
-   SECTION
+   SECTIONS GENERAL
    ========================================================= */
 
 section {
-
-    margin-top:
-        120px;
-
-    opacity:
-        0;
-
-    transform:
-        translateY(45px);
-
-    transition:
-        opacity .8s ease,
-        transform .8s ease;
+    margin-top: 110px;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
 }
 
 section.visible {
-
-    opacity:
-        1;
-
-    transform:
-        translateY(0);
+    opacity: 1;
+    transform: translateY(0);
 }
 
-.section-heading {
-
-    display:
-        flex;
-
-    align-items:
-        center;
-
-    gap:
-        15px;
-
-    margin-bottom:
-        35px;
-
-    border-bottom:
-        1px solid
-        rgba(180,154,88,.2);
-
-    padding-bottom:
-        14px;
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 45px;
 }
 
 .section-number {
-
-    font-family:
-        'Oswald',
-        sans-serif;
-
-    color:
-        var(--blood-light);
-
-    font-size:
-        13px;
-
-    letter-spacing:
-        2px;
+    font-family: 'Cinzel', serif;
+    font-size: 18px;
+    font-weight: 900;
+    color: var(--blood-red);
+    text-shadow: 0 0 10px rgba(138, 11, 11, 0.6);
 }
 
 .section-title {
+    font-family: 'Cinzel', serif;
+    font-size: 30px;
+    letter-spacing: 3px;
+    color: var(--white);
+    position: relative;
+    text-transform: uppercase;
+}
 
-    font-family:
-        'Oswald',
-        sans-serif;
-
-    text-transform:
-        uppercase;
-
-    font-size:
-        30px;
-
-    letter-spacing:
-        2px;
-
-    color:
-        var(--paper-light);
+.section-title::after {
+    content: "";
+    display: block;
+    width: 150px;
+    height: 3px;
+    margin-top: 8px;
+    background: linear-gradient(90deg, var(--blood-red), transparent);
 }
 
 .section-jp {
-
-    margin-left:
-        auto;
-
-    color:
-        rgba(214,208,189,.25);
-
-    font-family:
-        'Special Elite',
-        monospace;
-
-    font-size:
-        11px;
-
-    letter-spacing:
-        2px;
+    margin-left: auto;
+    color: rgba(232, 220, 196, 0.3);
+    font-family: "Noto Serif JP", serif;
+    font-size: 14px;
+    letter-spacing: 4px;
 }
 
 /* =========================================================
-   DOSSIER PANELS
-   ========================================================= */
-
-.panel {
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(28,38,30,.82),
-            rgba(10,13,10,.92)
-        );
-
-    border:
-        1px solid
-        rgba(180,154,88,.2);
-
-    padding:
-        30px;
-
-    box-shadow:
-        var(--shadow);
-
-    position:
-        relative;
-}
-
-.panel::before {
-
-    content:
-        "ARCHIVE";
-
-    position:
-        absolute;
-
-    top:
-        12px;
-
-    right:
-        15px;
-
-    font-family:
-        'Special Elite',
-        monospace;
-
-    font-size:
-        8px;
-
-    color:
-        rgba(214,208,189,.2);
-
-    letter-spacing:
-        2px;
-}
-
-.panel h3 {
-
-    font-family:
-        'Oswald',
-        sans-serif;
-
-    color:
-        var(--gold);
-
-    font-size:
-        14px;
-
-    letter-spacing:
-        2px;
-
-    margin-bottom:
-        20px;
-}
-
-.panel p {
-
-    color:
-        #aeb1a7;
-
-    font-size:
-        16px;
-
-    line-height:
-        1.8;
-}
-
-/* =========================================================
-   PROFILE
+   PROFILE / DOSSIER
    ========================================================= */
 
 .profile-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 30px;
+}
 
-    display:
-        grid;
+.panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    padding: 35px;
+    position: relative;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+}
 
-    grid-template-columns:
-        1.5fr 1fr;
+/* Decorative corner pins */
+.panel::before, .panel::after {
+    content: "";
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--brass);
+}
+.panel::before { top: 10px; left: 10px; }
+.panel::after { top: 10px; right: 10px; }
 
-    gap:
-        20px;
+.panel h3 {
+    font-size: 16px;
+    color: var(--brass);
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+    border-bottom: 1px dashed rgba(203, 161, 83, 0.3);
+    padding-bottom: 10px;
+}
+
+.panel p {
+    color: var(--parchment);
+    font-size: 17px;
+    line-height: 1.9;
 }
 
 .attributes {
-
-    display:
-        grid;
-
-    gap:
-        12px;
+    display: grid;
+    gap: 16px;
 }
 
 .attribute {
-
-    display:
-        flex;
-
-    justify-content:
-        space-between;
-
-    gap:
-        15px;
-
-    border-bottom:
-        1px dashed
-        rgba(214,208,189,.12);
-
-    padding-bottom:
-        9px;
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
 }
 
 .attribute span:first-child {
-
-    color:
-        #777d72;
-
-    font-family:
-        'Oswald',
-        sans-serif;
-
-    font-size:
-        10px;
-
-    letter-spacing:
-        1px;
+    color: var(--silver);
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 1px;
+    font-weight: 700;
 }
 
 .attribute span:last-child {
-
-    color:
-        var(--paper);
-
-    font-size:
-        12px;
-
-    text-align:
-        right;
+    color: var(--white);
+    font-weight: 600;
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    text-align: right;
 }
 
 /* =========================================================
-   CAREER TIMELINE
+   CAREER TIMELINE / EXPEDITIONS
    ========================================================= */
 
 .timeline {
-
-    position:
-        relative;
-
-    margin-left:
-        20px;
+    position: relative;
+    margin-left: 20px;
 }
 
+/* ODM Wire Line */
 .timeline::before {
-
-    content:
-        "";
-
-    position:
-        absolute;
-
-    left:
-        0;
-
-    top:
-        0;
-
-    bottom:
-        0;
-
-    width:
-        2px;
-
-    background:
-        linear-gradient(
-            var(--gold),
-            var(--blood),
-            transparent
-        );
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(var(--silver), var(--scout-blue), transparent);
 }
 
 .job {
-
-    position:
-        relative;
-
-    padding-left:
-        45px;
-
-    margin-bottom:
-        55px;
+    position: relative;
+    padding-left: 50px;
+    margin-bottom: 50px;
 }
 
+/* Timeline Knots (Regiment Crests placeholder) */
 .job::before {
-
-    content:
-        "";
-
-    position:
-        absolute;
-
-    left:
-        -6px;
-
-    top:
-        5px;
-
-    width:
-        12px;
-
-    height:
-        12px;
-
-    border:
-        2px solid
-        var(--gold);
-
-    background:
-        var(--black);
-
-    transform:
-        rotate(45deg);
+    content: "";
+    position: absolute;
+    left: -7px;
+    top: 5px;
+    width: 16px;
+    height: 16px;
+    background: var(--bg);
+    border: 2px solid var(--silver);
+    transform: rotate(45deg); /* Diamond shape */
+    transition: 0.3s;
 }
 
 .job.active::before {
-
-    background:
-        var(--blood);
-
-    border-color:
-        var(--blood-light);
-
-    box-shadow:
-        0 0 15px
-        rgba(196,51,51,.45);
+    background: var(--blood-red);
+    border-color: var(--brass);
+    box-shadow: 0 0 15px var(--blood-red);
 }
 
 .job-date {
-
-    display:
-        inline-block;
-
-    color:
-        var(--blood-light);
-
-    font-family:
-        'Oswald',
-        sans-serif;
-
-    font-size:
-        11px;
-
-    letter-spacing:
-        2px;
-
-    margin-bottom:
-        7px;
-
-    border-bottom:
-        1px solid
-        rgba(196,51,51,.3);
+    font-family: 'Cinzel', serif;
+    color: var(--brass);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
 }
 
 .job h3 {
-
-    font-family:
-        'Oswald',
-        sans-serif;
-
-    font-size:
-        21px;
-
-    color:
-        var(--paper-light);
-
-    letter-spacing:
-        1px;
-
-    margin-bottom:
-        3px;
+    font-size: 22px;
+    margin-bottom: 6px;
+    color: var(--white);
 }
 
 .company {
-
-    color:
-        var(--gold);
-
-    font-size:
-        15px;
-
-    font-weight:
-        700;
-
-    letter-spacing:
-        1px;
-
-    margin-bottom:
-        15px;
+    color: var(--scout-green);
+    font-weight: 700;
+    font-family: 'Cinzel', serif;
+    letter-spacing: 1px;
+    margin-bottom: 18px;
+    font-size: 16px;
 }
 
 .job ul {
-
-    list-style:
-        none;
+    list-style: none;
 }
 
 .job li {
-
-    color:
-        #9da297;
-
-    font-size:
-        15px;
-
-    margin-bottom:
-        8px;
-
-    padding-left:
-        18px;
-
-    position:
-        relative;
+    color: #babcbd;
+    margin-bottom: 10px;
+    padding-left: 25px;
+    position: relative;
+    font-size: 16px;
+    line-height: 1.6;
 }
 
+/* Swords as bullet points */
 .job li::before {
-
-    content:
-        "◆";
-
-    position:
-        absolute;
-
-    left:
-        0;
-
-    color:
-        var(--blood);
-
-    font-size:
-        7px;
-
-    top:
-        6px;
+    content: "⚔";
+    position: absolute;
+    left: 0;
+    color: var(--brass);
+    font-size: 12px;
+    top: 4px;
 }
 
 /* =========================================================
-   EDUCATION
+   EDUCATION / TRAINING CORPS
    ========================================================= */
 
 .education-grid {
-
-    display:
-        grid;
-
-    grid-template-columns:
-        repeat(2,1fr);
-
-    gap:
-        20px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
 }
 
 .education {
-
-    background:
-        rgba(21,28,22,.8);
-
-    border:
-        1px solid
-        rgba(180,154,88,.2);
-
-    padding:
-        28px;
-
-    transition:
-        .35s;
-
-    position:
-        relative;
+    padding: 30px;
+    background: linear-gradient(145deg, rgba(28, 43, 66, 0.4), rgba(15, 13, 12, 0.9));
+    border: 1px solid rgba(163, 173, 184, 0.2);
+    border-top: 3px solid var(--scout-blue);
+    position: relative;
+    transition: 0.4s;
 }
 
 .education:hover {
-
-    transform:
-        translateY(-5px);
-
-    border-color:
-        rgba(180,154,88,.55);
-
-    box-shadow:
-        var(--shadow);
+    transform: translateY(-5px);
+    border-color: var(--scout-blue);
+    box-shadow: 0 10px 40px rgba(28, 43, 66, 0.3);
 }
 
-.education::after {
-
-    content:
-        "ACADEMY";
-
-    position:
-        absolute;
-
-    right:
-        15px;
-
-    top:
-        15px;
-
-    font-family:
-        'Special Elite';
-
-    color:
-        rgba(214,208,189,.15);
-
-    font-size:
-        9px;
-
-    letter-spacing:
-        2px;
-}
-
-.education-icon {
-
-    font-size:
-        30px;
-
-    margin-bottom:
-        15px;
+.education .icon {
+    font-size: 30px;
+    margin-bottom: 15px;
+    filter: sepia(1) hue-rotate(180deg) saturate(2); /* Mutes emojis slightly */
 }
 
 .education h3 {
-
-    font-family:
-        'Oswald',
-        sans-serif;
-
-    color:
-        var(--paper-light);
-
-    font-size:
-        18px;
-
-    margin-bottom:
-        6px;
+    font-size: 18px;
+    margin-bottom: 8px;
+    line-height: 1.4;
 }
 
 .education .date {
-
-    color:
-        var(--blood-light);
-
-    font-family:
-        'Oswald',
-        sans-serif;
-
-    font-size:
-        10px;
-
-    letter-spacing:
-        2px;
-
-    margin-bottom:
-        15px;
+    color: var(--brass);
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    font-weight: 700;
+    margin-bottom: 18px;
+    letter-spacing: 1px;
 }
 
 .education p {
-
-    color:
-        #92988d;
-
-    line-height:
-        1.7;
+    color: var(--parchment);
+    line-height: 1.7;
+    font-size: 15px;
 }
 
 /* =========================================================
-   SKILLS
+   SKILLS / TACTICAL APTITUDE
    ========================================================= */
 
 .skills-grid {
-
-    display:
-        grid;
-
-    grid-template-columns:
-        repeat(3,1fr);
-
-    gap:
-        20px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
 }
 
 .skill-card {
-
-    background:
-        rgba(14,19,15,.88);
-
-    border:
-        1px solid
-        rgba(214,208,189,.15);
-
-    padding:
-        25px;
-
-    position:
-        relative;
-
-    transition:
-        .3s;
+    background: var(--panel);
+    border: 1px solid rgba(41, 74, 49, 0.3);
+    padding: 30px;
+    transition: 0.3s;
 }
 
 .skill-card:hover {
-
-    border-color:
-        rgba(180,154,88,.45);
-
-    transform:
-        translateY(-4px);
+    border-color: var(--scout-green);
+    transform: translateY(-5px);
+    box-shadow: var(--glow-green);
 }
 
 .skill-card h3 {
-
-    font-family:
-        'Oswald',
-        sans-serif;
-
-    color:
-        var(--gold);
-
-    font-size:
-        14px;
-
-    letter-spacing:
-        1.5px;
-
-    margin-bottom:
-        25px;
+    color: var(--white);
+    font-size: 15px;
+    margin-bottom: 25px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 15px;
 }
 
 .skill {
-
-    margin-bottom:
-        17px;
+    margin-bottom: 22px;
 }
 
 .skill-top {
-
-    display:
-        flex;
-
-    justify-content:
-        space-between;
-
-    font-family:
-        'Oswald',
-        sans-serif;
-
-    font-size:
-        10px;
-
-    color:
-        #b9bbae;
-
-    letter-spacing:
-        1px;
-
-    margin-bottom:
-        6px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
 }
 
 .skill-top span:last-child {
-
-    color:
-        var(--blood-light);
+    color: var(--brass);
 }
 
 .skill-bar {
-
-    height:
-        6px;
-
-    background:
-        #080b08;
-
-    border:
-        1px solid
-        rgba(214,208,189,.1);
-
-    overflow:
-        hidden;
+    height: 4px;
+    background: #25201c;
+    overflow: hidden;
 }
 
+/* Scout Green & Blood Red Fills */
 .skill-fill {
+    width: 0;
+    height: 100%;
+    background: linear-gradient(90deg, var(--scout-green), var(--titan-spark));
+    box-shadow: 0 0 10px var(--titan-spark);
+    transition: width 1.5s cubic-bezier(.17,.67,.3,1.2);
+}
 
-    height:
-        100%;
+/* Variant fills for visual interest */
+.skill-card:nth-child(2) .skill-fill {
+    background: linear-gradient(90deg, var(--scout-blue), var(--brass));
+    box-shadow: 0 0 10px var(--brass);
+}
 
-    width:
-        0;
-
-    background:
-        linear-gradient(
-            90deg,
-            var(--blood),
-            var(--gold)
-        );
-
-    transition:
-        width 1.4s
-        cubic-bezier(.2,.7,.3,1);
+.skill-card:nth-child(3) .skill-fill {
+    background: linear-gradient(90deg, var(--blood-red), var(--titan-orange));
+    box-shadow: 0 0 10px var(--titan-orange);
 }
 
 /* =========================================================
-   CERTIFICATIONS
+   CERTIFICATIONS / COMMENDATIONS
    ========================================================= */
 
 .cert-grid {
-
-    display:
-        grid;
-
-    grid-template-columns:
-        repeat(3,1fr);
-
-    gap:
-        20px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
 }
 
 .cert {
-
-    padding:
-        28px;
-
-    text-align:
-        center;
-
-    background:
-        rgba(20,25,20,.85);
-
-    border:
-        1px solid
-        rgba(180,154,88,.2);
-
-    transition:
-        .3s;
-
-    position:
-        relative;
-}
-
-.cert:hover {
-
-    border-color:
-        var(--gold);
-
-    box-shadow:
-        var(--shadow);
-
-    transform:
-        translateY(-5px);
+    padding: 30px 20px;
+    border: 1px solid rgba(203, 161, 83, 0.25);
+    background: rgba(20, 17, 15, 0.85);
+    text-align: center;
+    transition: 0.3s;
+    position: relative;
+    overflow: hidden;
 }
 
 .cert::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 2px;
+    background: var(--brass);
+}
 
-    content:
-        "VERIFIED";
-
-    position:
-        absolute;
-
-    top:
-        10px;
-
-    right:
-        10px;
-
-    font-family:
-        'Oswald';
-
-    color:
-        rgba(180,154,88,.45);
-
-    font-size:
-        8px;
-
-    letter-spacing:
-        1px;
+.cert:hover {
+    transform: translateY(-5px);
+    border-color: var(--brass);
+    box-shadow: 0 10px 20px rgba(203, 161, 83, 0.15);
 }
 
 .cert-icon {
-
-    font-size:
-        32px;
-
-    margin-bottom:
-        15px;
+    font-size: 35px;
+    margin-bottom: 20px;
+    filter: grayscale(0.5) sepia(1) hue-rotate(30deg); /* Brass look */
 }
 
 .cert h3 {
-
-    font-family:
-        'Oswald',
-        sans-serif;
-
-    color:
-        var(--paper-light);
-
-    font-size:
-        14px;
-
-    line-height:
-        1.5;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--white);
+    letter-spacing: 1px;
 }
 
 /* =========================================================
@@ -1777,167 +840,43 @@ section.visible {
    ========================================================= */
 
 .languages {
-
-    display:
-        grid;
-
-    grid-template-columns:
-        repeat(3,1fr);
-
-    gap:
-        20px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
 }
 
 .language {
-
-    padding:
-        28px;
-
-    text-align:
-        center;
-
-    background:
-        rgba(15,20,16,.85);
-
-    border:
-        1px solid
-        rgba(214,208,189,.14);
-
-    transition:
-        .3s;
+    text-align: center;
+    padding: 30px;
+    background: var(--panel);
+    border: 1px solid rgba(138, 11, 11, 0.3);
+    transition: 0.3s;
 }
 
 .language:hover {
-
-    border-color:
-        var(--blood);
-
-    transform:
-        translateY(-4px);
+    border-color: var(--blood-red);
+    box-shadow: var(--glow-red);
+    transform: scale(1.03);
 }
 
 .language .flag {
-
-    font-size:
-        34px;
-
-    margin-bottom:
-        10px;
+    font-size: 40px;
+    margin-bottom: 15px;
+    opacity: 0.9;
 }
 
 .language h3 {
-
-    font-family:
-        'Oswald',
-        sans-serif;
-
-    color:
-        var(--paper-light);
-
-    letter-spacing:
-        1px;
+    font-size: 16px;
+    margin-bottom: 8px;
+    letter-spacing: 2px;
 }
 
 .language p {
-
-    color:
-        var(--blood-light);
-
-    font-size:
-        11px;
-
-    letter-spacing:
-        1px;
-
-    margin-top:
-        5px;
-}
-
-/* =========================================================
-   FINAL MISSION
-   ========================================================= */
-
-.final-message {
-
-    margin-top:
-        100px;
-
-    padding:
-        50px 30px;
-
-    text-align:
-        center;
-
-    border:
-        1px solid
-        rgba(180,154,88,.25);
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(35,46,37,.65),
-            rgba(8,10,8,.9)
-        );
-
-    position:
-        relative;
-
-    overflow:
-        hidden;
-}
-
-.final-message::before {
-
-    content:
-        "MISSION STATUS";
-
-    display:
-        block;
-
-    font-family:
-        'Special Elite';
-
-    color:
-        var(--blood-light);
-
-    font-size:
-        10px;
-
-    letter-spacing:
-        3px;
-
-    margin-bottom:
-        15px;
-}
-
-.final-message h2 {
-
-    font-family:
-        'Oswald';
-
-    color:
-        var(--paper-light);
-
-    font-size:
-        32px;
-
-    letter-spacing:
-        2px;
-
-    text-transform:
-        uppercase;
-
-    margin-bottom:
-        10px;
-}
-
-.final-message p {
-
-    color:
-        #858b80;
-
-    font-size:
-        14px;
+    color: var(--brass);
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
 }
 
 /* =========================================================
@@ -1945,302 +884,181 @@ section.visible {
    ========================================================= */
 
 footer {
-
-    margin-top:
-        100px;
-
-    padding:
-        30px;
-
-    text-align:
-        center;
-
-    border-top:
-        1px solid
-        rgba(180,154,88,.15);
-
-    color:
-        #60665d;
-
-    font-family:
-        'Special Elite',
-        monospace;
-
-    font-size:
-        10px;
-
-    letter-spacing:
-        2px;
+    margin-top: 120px;
+    padding: 50px 20px;
+    text-align: center;
+    border-top: 1px solid rgba(203, 161, 83, 0.2);
+    color: var(--silver);
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    background: linear-gradient(180deg, transparent, rgba(138, 11, 11, 0.1));
 }
 
 footer strong {
-
-    color:
-        var(--blood-light);
+    color: var(--blood-red);
 }
 
 /* =========================================================
-   SCROLL TOP
+   SCROLL BUTTON
    ========================================================= */
 
 .scroll-top {
-
-    position:
-        fixed;
-
-    right:
-        25px;
-
-    bottom:
-        25px;
-
-    width:
-        48px;
-
-    height:
-        48px;
-
-    display:
-        flex;
-
-    align-items:
-        center;
-
-    justify-content:
-        center;
-
-    background:
-        rgba(20,27,21,.95);
-
-    border:
-        1px solid
-        var(--gold);
-
-    color:
-        var(--gold);
-
-    cursor:
-        pointer;
-
-    z-index:
-        1000;
-
-    opacity:
-        0;
-
-    pointer-events:
-        none;
-
-    transition:
-        .3s;
-
-    font-family:
-        'Oswald';
-
-    font-size:
-        18px;
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(15, 13, 12, 0.8);
+    border: 1px solid var(--brass);
+    color: var(--brass);
+    font-family: 'Cinzel', serif;
+    font-size: 20px;
+    cursor: pointer;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.3s;
 }
 
 .scroll-top.show {
-
-    opacity:
-        1;
-
-    pointer-events:
-        auto;
+    opacity: 1;
+    pointer-events: auto;
 }
 
 .scroll-top:hover {
-
-    background:
-        var(--blood);
-
-    border-color:
-        var(--blood-light);
-
-    color:
-        white;
-
-    transform:
-        translateY(-4px);
+    background: var(--brass);
+    color: var(--bg);
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(203, 161, 83, 0.4);
 }
 
 /* =========================================================
-   RESPONSIVE
+   MOBILE
    ========================================================= */
 
-@media(max-width:900px) {
-
+@media(max-width: 850px) {
     .hero {
-
-        grid-template-columns:
-            1fr;
-
-        text-align:
-            center;
-
-        gap:
-            20px;
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 30px;
     }
-
-    .emblem-container {
-
-        margin:
-            auto;
-
-        height:
-            330px;
+    .character-card {
+        min-height: 380px;
+        width: 80%;
+        margin: auto;
     }
-
-    .role {
-
-        border-left:
-            none;
-
-        border-bottom:
-            2px solid
-            var(--blood);
-
-        padding:
-            0 0 10px;
-    }
-
     .hero-description {
-
-        margin:
-            auto auto 25px;
+        margin-left: auto;
+        margin-right: auto;
     }
-
-    .contact-grid {
-
-        margin:
-            auto;
+    .hero-stats {
+        margin: auto;
     }
-
-    .profile-grid,
-    .education-grid {
-
-        grid-template-columns:
-            1fr;
+    .profile-grid, .education-grid, .skills-grid, .cert-grid, .languages {
+        grid-template-columns: 1fr;
     }
-
-    .skills-grid {
-
-        grid-template-columns:
-            1fr;
+    .section-jp {
+        display: none;
     }
-
-    .cert-grid {
-
-        grid-template-columns:
-            1fr;
-    }
-
-    .languages {
-
-        grid-template-columns:
-            1fr;
-    }
-
 }
 
-@media(max-width:600px) {
-
+@media(max-width: 550px) {
     .container {
-
-        width:
-            94%;
+        width: 95%;
     }
-
     .nav {
-
-        justify-content:
-            flex-start;
-
-        overflow-x:
-            auto;
-
-        flex-wrap:
-            nowrap;
+        justify-content: flex-start;
+        overflow-x: auto;
+        flex-wrap: nowrap;
     }
-
     .nav button {
-
-        white-space:
-            nowrap;
+        white-space: nowrap;
     }
-
     .hero h1 {
-
-        font-size:
-            3.2rem;
+        font-size: 2.8rem;
     }
-
-    .hero h1 span {
-
-        letter-spacing:
-            5px;
+    .hero-stats {
+        grid-template-columns: 1fr;
     }
-
-    .contact-grid {
-
-        grid-template-columns:
-            1fr;
-    }
-
-    .section-title {
-
-        font-size:
-            23px;
-    }
-
-    .section-jp {
-
-        display:
-            none;
-    }
-
     .panel {
-
-        padding:
-            20px;
+        padding: 25px 20px;
     }
-
+    .timeline {
+        margin-left: 10px;
+    }
 }
 
 /* =========================================================
-   PRINT
+   FILM GRAIN / GRIT OVERLAY
    ========================================================= */
 
-@media print {
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+    background: url('data:image/svg+xml;utf8,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E');
+    opacity: 0.04; /* Gives it that vintage anime grit */
+    mix-blend-mode: overlay;
+}
 
-    .navbar,
-    .scroll-top,
-    .background,
-    .dust {
+/* =========================================================
+   TITAN LIGHTNING (Replaces Glitch)
+   ========================================================= */
 
-        display:
-            none;
-    }
+.lightning {
+    position: relative;
+    display: inline-block;
+}
 
-    body {
+.lightning::before,
+.lightning::after {
+    content: attr(data-text);
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+}
 
-        background:
-            white;
+.lightning::before {
+    color: var(--titan-spark);
+    text-shadow: 0 0 20px var(--titan-orange);
+    z-index: -1;
+    transform: translate(3px, 2px);
+    clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+    animation: flash1 4s infinite;
+}
 
-        color:
-            black;
-    }
+.lightning::after {
+    color: var(--white);
+    text-shadow: 0 0 15px var(--titan-spark);
+    z-index: -1;
+    transform: translate(-3px, -2px);
+    clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+    animation: flash2 4s infinite;
+}
 
-    section {
+@keyframes flash1 {
+    0%, 94%, 100% { opacity: 0; transform: translate(0); }
+    95% { opacity: 0.8; transform: translate(4px, -3px) skewX(5deg); }
+    96% { opacity: 0; }
+    97% { opacity: 0.9; transform: translate(-2px, 4px) skewX(-10deg); }
+    98% { opacity: 0; }
+}
 
-        opacity:
-            1;
-
-        transform:
-            none;
-    }
-
+@keyframes flash2 {
+    0%, 94%, 100% { opacity: 0; transform: translate(0); }
+    95% { opacity: 0.8; transform: translate(-4px, 3px) skewX(-5deg); }
+    96% { opacity: 0; }
+    97% { opacity: 1; transform: translate(2px, -4px) skewX(10deg); }
+    98% { opacity: 0; }
 }
 
 </style>
@@ -2253,54 +1071,32 @@ footer strong {
      ====================================================== -->
 
 <div class="background">
-
+    <div class="flare"></div>
     <div class="grid"></div>
 
-    <div class="cloud"></div>
-    <div class="cloud"></div>
-
+    <!-- ODM Cables -->
+    <div class="energy"></div>
+    <div class="energy"></div>
+    <div class="energy"></div>
+    <div class="energy"></div>
 </div>
 
-<div class="dust" id="dust"></div>
+<div class="particles" id="particles"></div>
 
 <!-- ======================================================
      NAVIGATION
      ====================================================== -->
 
 <nav class="navbar">
-
     <div class="nav">
-
-        <button data-target="home">
-            DOSSIER
-        </button>
-
-        <button data-target="profile">
-            PROFILE
-        </button>
-
-        <button data-target="career">
-            SERVICE RECORD
-        </button>
-
-        <button data-target="education">
-            ACADEMY
-        </button>
-
-        <button data-target="skills">
-            ABILITIES
-        </button>
-
-        <button data-target="certifications">
-            AWARDS
-        </button>
-
-        <button data-target="languages">
-            LANGUAGES
-        </button>
-
+        <button data-target="home">HQ</button>
+        <button data-target="profile">DOSSIER</button>
+        <button data-target="career">EXPEDITIONS</button>
+        <button data-target="education">TRAINING</button>
+        <button data-target="skills">APTITUDE</button>
+        <button data-target="certifications">HONORS</button>
+        <button data-target="languages">LANGUAGES</button>
     </div>
-
 </nav>
 
 <!-- ======================================================
@@ -2313,89 +1109,48 @@ footer strong {
      HERO
      ====================================================== -->
 
-<section
-    class="hero visible"
-    id="home"
->
+<section class="hero visible" id="home">
 
-    <div class="emblem-container">
-
-        <div class="emblem-ring"></div>
-
-        <div class="emblem">
-
-            <div class="wings"></div>
-
-            <div class="emblem-text">
-                DATA SCIENCE
-            </div>
-
-        </div>
-
+    <div class="character-card">
+        <div class="character-symbol"></div>
     </div>
 
     <div class="hero-content">
 
-        <div class="classification">
-            PERSONNEL DOSSIER // CLASSIFIED
+        <div class="jp">
+            データサイエンティスト
         </div>
 
-        <div class="hero-kana">
-            戦術データ解析部隊
-        </div>
-
-        <h1>
-            Vasileios
-            <span>Tillis</span>
+        <h1 class="lightning" data-text="VASILEIOS TILLIS">
+            VASILEIOS<br>
+            <span>TILLIS</span>
         </h1>
 
-        <div class="role">
-            SENIOR ASSOCIATE STATISTICAL DATA SCIENTIST
+        <div class="subtitle">
+            VETERAN SQUAD LEADER | STATISTICAL DATA SCIENTIST
         </div>
 
         <p class="hero-description">
-
-            MSc Data Scientist operating at the intersection
-            of statistics, technology and pharmaceutical
-            analytics.
-
-            Specialized in transforming complex data into
-            actionable intelligence while leading technical
-            initiatives, mentoring colleagues and delivering
-            high-quality analytical solutions.
-
+            Data Scientist operating at the intersection of statistics, technology, and pharmaceutical intelligence.
+            Tasked with turning complex operational datasets into actionable strategies. A seasoned operative 
+            building scalable analytical solutions and leading squads through complex technical frontiers.
         </p>
 
-        <div class="contact-grid">
+        <div class="hero-stats">
 
-            <div class="contact">
-                <strong>COMMS</strong>
-                +30-6978303235
+            <div class="stat">
+                <small>REGIMENT</small>
+                <strong>SURVEY CORPS</strong>
             </div>
 
-            <div class="contact">
-                <strong>EMAIL</strong>
-                tillisvasileios@gmail.com
+            <div class="stat">
+                <small>RANK</small>
+                <strong>SR. ASSOCIATE</strong>
             </div>
 
-            <div class="contact">
-                <strong>LINKEDIN</strong>
-                linkedin.com/in/vasilis-tillis-858233223
-            </div>
-
-            <div class="contact">
-                <strong>HQ</strong>
-                Artemida, Attica, Greece
-            </div>
-
-            <div class="contact">
-                <strong>NETWORK</strong>
-                vtillis.github.io
-            </div>
-
-            <div class="contact">
-                <strong>STATUS</strong>
-                ACTIVE
+            <div class="stat">
+                <small>DIVISION</small>
+                <strong>PHARMA INTELLIGENCE</strong>
             </div>
 
         </div>
@@ -2405,97 +1160,57 @@ footer strong {
 </section>
 
 <!-- ======================================================
-     PROFILE
+     PROFILE / DOSSIER
      ====================================================== -->
 
 <section id="profile">
 
-    <div class="section-heading">
-
-        <span class="section-number">
-            01 //
-        </span>
-
-        <h2 class="section-title">
-            Personnel Profile
-        </h2>
-
-        <span class="section-jp">
-            人事記録
-        </span>
-
+    <div class="section-header">
+        <span class="section-number">I</span>
+        <h2 class="section-title">DOSSIER: CLASSIFIED</h2>
+        <span class="section-jp">調査兵団記録</span>
     </div>
 
     <div class="profile-grid">
 
         <div class="panel">
-
-            <h3>
-                INTELLIGENCE SUMMARY
-            </h3>
-
+            <h3 class="cinzel-font">⚔ MISSION PROFILE</h3>
             <p>
-
-                MSc in Data Science with professional experience
-                across pharmaceutical and airline industries.
-
-                Proficient in Python, R, SQL and SAS, with
-                additional experience in Power BI, statistical
-                modelling, machine learning and data
-                visualization.
-
+                MSc in Data Science with rigorous field experience across pharmaceutical and aviation operations. 
+                Specialized in tactical statistical data science, advanced analytics, rapid automation, and data-driven problem solving behind enemy lines.
                 <br><br>
-
-                Demonstrated ability to independently deliver
-                high-quality analytical work, lead technical
-                initiatives, mentor colleagues and operate
-                effectively in complex cross-functional
-                environments.
-
+                A proven track record of spearheading technical initiatives, commanding junior recruits to full independence, and independently delivering high-quality analytical outputs in highly volatile and complex environments.
             </p>
-
         </div>
 
         <div class="panel">
-
-            <h3>
-                PERSONNEL ATTRIBUTES
-            </h3>
-
+            <h3 class="cinzel-font">🛡️ OPERATIVE ATTRIBUTES</h3>
             <div class="attributes">
-
                 <div class="attribute">
-                    <span>CURRENT UNIT</span>
-                    <span>PFIZER</span>
+                    <span>BASE OF OPERATIONS</span>
+                    <span>GREECE</span>
                 </div>
-
                 <div class="attribute">
-                    <span>RANK</span>
-                    <span>SENIOR ASSOCIATE</span>
+                    <span>DESIGNATION</span>
+                    <span>STATISTICAL DATA SCIENTIST</span>
                 </div>
-
                 <div class="attribute">
-                    <span>SPECIALIZATION</span>
-                    <span>STATISTICAL DATA SCIENCE</span>
-                </div>
-
-                <div class="attribute">
-                    <span>DOMAIN</span>
+                    <span>THEATER</span>
                     <span>PHARMACEUTICAL</span>
                 </div>
-
                 <div class="attribute">
-                    <span>PRIMARY SYSTEM</span>
-                    <span>PYTHON</span>
+                    <span>TRAINING TIER</span>
+                    <span>MSc DATA SCIENCE</span>
                 </div>
-
                 <div class="attribute">
-                    <span>CORE ATTRIBUTE</span>
-                    <span>PROBLEM SOLVING</span>
+                    <span>PRIMARY WEAPON</span>
+                    <span>PYTHON / R</span>
                 </div>
-
+                <div class="attribute">
+                    <span>CORE TRAIT</span>
+                    <span>TACTICAL PROBLEM SOLVING</span>
+                </div>
             </div>
-
         </div>
 
     </div>
@@ -2503,229 +1218,80 @@ footer strong {
 </section>
 
 <!-- ======================================================
-     CAREER
+     CAREER / EXPEDITIONS
      ====================================================== -->
 
 <section id="career">
 
-    <div class="section-heading">
-
-        <span class="section-number">
-            02 //
-        </span>
-
-        <h2 class="section-title">
-            Service Record
-        </h2>
-
-        <span class="section-jp">
-            戦歴
-        </span>
-
+    <div class="section-header">
+        <span class="section-number">II</span>
+        <h2 class="section-title">EXPEDITION RECORDS</h2>
+        <span class="section-jp">作戦経歴</span>
     </div>
 
     <div class="timeline">
 
         <!-- Pfizer Senior -->
-
         <div class="job active">
-
-            <div class="job-date">
-                JUN 2026 — PRESENT // ACTIVE DUTY
-            </div>
-
-            <h3>
-                SENIOR ASSOCIATE STATISTICAL DATA SCIENTIST
-            </h3>
-
-            <div class="company">
-                PFIZER
-            </div>
-
+            <div class="job-date">JUN 2026 — PRESENT</div>
+            <h3 class="cinzel-font">SENIOR ASSOCIATE STATISTICAL DATA SCIENTIST</h3>
+            <div class="company">PFIZER DIVISION</div>
             <ul>
-
-                <li>
-                    Advanced to Senior Associate level within
-                    Statistical Data Science Analytics.
-                </li>
-
-                <li>
-                    Support statistical data science activities
-                    within a pharmaceutical / clinical
-                    development environment.
-                </li>
-
-                <li>
-                    Drive high-quality analytical delivery and
-                    contribute to cross-functional reporting
-                    and process improvement.
-                </li>
-
-                <li>
-                    Contribute to scientific communication and
-                    PHUSE activities.
-                </li>
-
+                <li>Promoted to Vanguard rank (Senior Associate) within Statistical Data Science Analytics.</li>
+                <li>Execute critical statistical data science maneuvers in a highly regulated pharmaceutical and clinical development environment.</li>
+                <li>Drive high-quality analytical delivery and forge new process optimizations for the unit.</li>
+                <li>Contribute heavily to scientific communications and strategic PHUSE activities.</li>
             </ul>
-
         </div>
 
         <!-- Pfizer Associate -->
-
         <div class="job">
-
-            <div class="job-date">
-                DEC 2023 — MAY 2026
-            </div>
-
-            <h3>
-                ASSOCIATE STATISTICAL DATA SCIENTIST
-            </h3>
-
-            <div class="company">
-                PFIZER
-            </div>
-
+            <div class="job-date">DEC 2023 — MAY 2026</div>
+            <h3 class="cinzel-font">ASSOCIATE STATISTICAL DATA SCIENTIST</h3>
+            <div class="company">PFIZER DIVISION</div>
             <ul>
-
-                <li>
-                    Led a team of SMEs during transition to a
-                    new statistical reporting platform for
-                    clinical trials.
-                </li>
-
-                <li>
-                    Mentored junior colleagues toward full
-                    independence.
-                </li>
-
-                <li>
-                    Acted as buddy for new hires and supported
-                    onboarding.
-                </li>
-
-                <li>
-                    Ensured quality and continuity during
-                    team transitions.
-                </li>
-
-                <li>
-                    Contributed to a PHUSE-accepted poster on
-                    statistical validation efficiency.
-                </li>
-
-                <li>
-                    Independently delivered high-quality ARs
-                    and IBs across multiple clinical projects.
-                </li>
-
+                <li>Commanded Subject Matter Experts (SMEs) during the regiment's transition to a new statistical reporting platform.</li>
+                <li>Mentored new recruits and junior cadets to achieve full operational independence.</li>
+                <li>Served as squad buddy for newly inducted personnel.</li>
+                <li>Ensured mission quality and continuity during critical structural transitions.</li>
+                <li>Authored a PHUSE-accepted strategic report on statistical validation efficiency.</li>
+                <li>Independently delivered critical ARs and IBs across multiple high-stakes clinical projects.</li>
             </ul>
-
         </div>
 
         <!-- Aegean -->
-
         <div class="job">
-
-            <div class="job-date">
-                JUL 2022 — NOV 2023
-            </div>
-
-            <h3>
-                PRODUCT DATA ANALYST
-            </h3>
-
-            <div class="company">
-                AEGEAN AIRLINES
-            </div>
-
+            <div class="job-date">JUL 2022 — NOV 2023</div>
+            <h3 class="cinzel-font">PRODUCT DATA ANALYST</h3>
+            <div class="company">AEGEAN AIR FLEET</div>
             <ul>
-
-                <li>
-                    Designed business monitoring reports and
-                    digital solutions.
-                </li>
-
-                <li>
-                    Developed automated processes and conducted
-                    data analysis using Power BI.
-                </li>
-
-                <li>
-                    Collaborated with teams to meet business
-                    and IT requirements.
-                </li>
-
-                <li>
-                    Improved operational efficiency through
-                    data-driven solutions.
-                </li>
-
+                <li>Architected intelligence monitoring reports and digital infrastructure solutions.</li>
+                <li>Engineered automated pipeline processes to reduce operational drag.</li>
+                <li>Conducted deep-dive logistical data analysis utilizing Power BI gear.</li>
+                <li>Collaborated across squads to refine IT capabilities and structural business processes.</li>
             </ul>
-
         </div>
 
         <!-- Ministry -->
-
         <div class="job">
-
-            <div class="job-date">
-                JAN 2018 — OCT 2018
-            </div>
-
-            <h3>
-                DATA ANALYST
-            </h3>
-
-            <div class="company">
-                MINISTRY OF NATIONAL DEFENCE
-            </div>
-
+            <div class="job-date">JAN 2018 — OCT 2018</div>
+            <h3 class="cinzel-font">DATA ANALYST</h3>
+            <div class="company">MINISTRY OF NATIONAL DEFENCE (GARRISON)</div>
             <ul>
-
-                <li>
-                    Analyzed defense-related datasets and
-                    developed dashboards.
-                </li>
-
-                <li>
-                    Supported development of performance
-                    analysis tools.
-                </li>
-
+                <li>Decoded and analyzed defense data matrices to construct command dashboards.</li>
+                <li>Reinforced the development of advanced performance analysis toolkits for military personnel.</li>
             </ul>
-
         </div>
 
         <!-- OTE -->
-
         <div class="job">
-
-            <div class="job-date">
-                JUL 2015 — SEP 2015
-            </div>
-
-            <h3>
-                INFORMATION SECURITY ANALYST — INTERN
-            </h3>
-
-            <div class="company">
-                OTE GROUP
-            </div>
-
+            <div class="job-date">JUL 2015 — SEP 2015</div>
+            <h3 class="cinzel-font">INFORMATION SECURITY ANALYST — CADET</h3>
+            <div class="company">OTE GROUP</div>
             <ul>
-
-                <li>
-                    Monitored telecommunications fraud systems.
-                </li>
-
-                <li>
-                    Supported information security incident
-                    response activities.
-                </li>
-
+                <li>Stood watch over telecom fraud detection systems.</li>
+                <li>Assisted elite units during active information security incident response operations.</li>
             </ul>
-
         </div>
 
     </div>
@@ -2733,86 +1299,37 @@ footer strong {
 </section>
 
 <!-- ======================================================
-     EDUCATION
+     EDUCATION / TRAINING
      ====================================================== -->
 
 <section id="education">
 
-    <div class="section-heading">
-
-        <span class="section-number">
-            03 //
-        </span>
-
-        <h2 class="section-title">
-            Academy Record
-        </h2>
-
-        <span class="section-jp">
-            学歴
-        </span>
-
+    <div class="section-header">
+        <span class="section-number">III</span>
+        <h2 class="section-title">TRAINING CORPS RECORDS</h2>
+        <span class="section-jp">訓練兵団</span>
     </div>
 
     <div class="education-grid">
 
         <div class="education">
-
-            <div class="education-icon">
-                🎓
-            </div>
-
-            <h3>
-                MSc IN DATA SCIENCE
-            </h3>
-
-            <div class="date">
-                2020 — 2021
-            </div>
-
+            <div class="icon">📜</div>
+            <h3 class="cinzel-font">MSc IN DATA SCIENCE</h3>
+            <div class="date">2020 — 2021</div>
             <p>
-
-                University of East London
-
-                <br><br>
-
-                <strong>Thesis Focus:</strong>
-
-                Algorithmic identification of toxic language
-                patterns within distributed networks via
-                Natural Language Processing architectures.
-
+                University of East London<br><br>
+                <em>Command Thesis:</em> Algorithmic identification of toxic language patterns within distributed networks via Natural Language Processing architectures.
             </p>
-
         </div>
 
         <div class="education">
-
-            <div class="education-icon">
-                🛰️
-            </div>
-
-            <h3>
-                BSc IN SCIENCE & TECHNOLOGY OF TELECOMMUNICATIONS
-            </h3>
-
-            <div class="date">
-                2011 — 2017
-            </div>
-
+            <div class="icon">⚙️</div>
+            <h3 class="cinzel-font">BSc IN SCIENCE & TECH OF TELECOMMUNICATIONS</h3>
+            <div class="date">2011 — 2017</div>
             <p>
-
-                University of Peloponnese
-
-                <br><br>
-
-                <strong>Thesis Focus:</strong>
-
-                High-Volume Data Systems Architectures and
-                Cloud Computing Infrastructure Topologies.
-
+                University of Peloponnese<br><br>
+                <em>Command Thesis:</em> High-Volume Data Systems Architectures and Cloud Computing Infrastructure Topologies for mass deployment.
             </p>
-
         </div>
 
     </div>
@@ -2820,297 +1337,107 @@ footer strong {
 </section>
 
 <!-- ======================================================
-     SKILLS
+     SKILLS / TACTICAL APTITUDE
      ====================================================== -->
 
 <section id="skills">
 
-    <div class="section-heading">
-
-        <span class="section-number">
-            04 //
-        </span>
-
-        <h2 class="section-title">
-            Tactical Abilities
-        </h2>
-
-        <span class="section-jp">
-            能力値
-        </span>
-
+    <div class="section-header">
+        <span class="section-number">IV</span>
+        <h2 class="section-title">COMBAT & TACTICAL APTITUDE</h2>
+        <span class="section-jp">戦闘力</span>
     </div>
 
     <div class="skills-grid">
 
         <!-- Programming -->
-
         <div class="skill-card">
-
-            <h3>
-                PROGRAMMING SYSTEMS
-            </h3>
-
+            <h3 class="cinzel-font">⚔ WEAPONRY & GEAR</h3>
+            
             <div class="skill">
-
-                <div class="skill-top">
-                    <span>PYTHON</span>
-                    <span>95</span>
-                </div>
-
-                <div class="skill-bar">
-                    <div
-                        class="skill-fill"
-                        data-width="95%"
-                    ></div>
-                </div>
-
+                <div class="skill-top"><span>PYTHON</span><span>95%</span></div>
+                <div class="skill-bar"><div class="skill-fill" data-width="95%"></div></div>
             </div>
-
+            
             <div class="skill">
-
-                <div class="skill-top">
-                    <span>R</span>
-                    <span>90</span>
-                </div>
-
-                <div class="skill-bar">
-                    <div
-                        class="skill-fill"
-                        data-width="90%"
-                    ></div>
-                </div>
-
+                <div class="skill-top"><span>R</span><span>90%</span></div>
+                <div class="skill-bar"><div class="skill-fill" data-width="90%"></div></div>
             </div>
-
+            
             <div class="skill">
-
-                <div class="skill-top">
-                    <span>SQL</span>
-                    <span>90</span>
-                </div>
-
-                <div class="skill-bar">
-                    <div
-                        class="skill-fill"
-                        data-width="90%"
-                    ></div>
-                </div>
-
+                <div class="skill-top"><span>SQL</span><span>90%</span></div>
+                <div class="skill-bar"><div class="skill-fill" data-width="90%"></div></div>
             </div>
-
+            
             <div class="skill">
-
-                <div class="skill-top">
-                    <span>SAS</span>
-                    <span>90</span>
-                </div>
-
-                <div class="skill-bar">
-                    <div
-                        class="skill-fill"
-                        data-width="90%"
-                    ></div>
-                </div>
-
+                <div class="skill-top"><span>SAS</span><span>90%</span></div>
+                <div class="skill-bar"><div class="skill-fill" data-width="90%"></div></div>
             </div>
-
+            
             <div class="skill">
-
-                <div class="skill-top">
-                    <span>POWER BI</span>
-                    <span>85</span>
-                </div>
-
-                <div class="skill-bar">
-                    <div
-                        class="skill-fill"
-                        data-width="85%"
-                    ></div>
-                </div>
-
+                <div class="skill-top"><span>POWER BI</span><span>85%</span></div>
+                <div class="skill-bar"><div class="skill-fill" data-width="85%"></div></div>
             </div>
-
         </div>
 
         <!-- Analytics -->
-
         <div class="skill-card">
-
-            <h3>
-                ANALYTICAL SYSTEMS
-            </h3>
-
+            <h3 class="cinzel-font">🧠 INTELLIGENCE OPS</h3>
+            
             <div class="skill">
-
-                <div class="skill-top">
-                    <span>DATA CLEANSING / ETL</span>
-                    <span>90</span>
-                </div>
-
-                <div class="skill-bar">
-                    <div
-                        class="skill-fill"
-                        data-width="90%"
-                    ></div>
-                </div>
-
+                <div class="skill-top"><span>DATA CLEANSING / ETL</span><span>90%</span></div>
+                <div class="skill-bar"><div class="skill-fill" data-width="90%"></div></div>
             </div>
-
+            
             <div class="skill">
-
-                <div class="skill-top">
-                    <span>DATA MINING</span>
-                    <span>85</span>
-                </div>
-
-                <div class="skill-bar">
-                    <div
-                        class="skill-fill"
-                        data-width="85%"
-                    ></div>
-                </div>
-
+                <div class="skill-top"><span>DATA MINING</span><span>85%</span></div>
+                <div class="skill-bar"><div class="skill-fill" data-width="85%"></div></div>
             </div>
-
+            
             <div class="skill">
-
-                <div class="skill-top">
-                    <span>VISUALIZATION</span>
-                    <span>90</span>
-                </div>
-
-                <div class="skill-bar">
-                    <div
-                        class="skill-fill"
-                        data-width="90%"
-                    ></div>
-                </div>
-
+                <div class="skill-top"><span>VISUALIZATION</span><span>90%</span></div>
+                <div class="skill-bar"><div class="skill-fill" data-width="90%"></div></div>
             </div>
-
+            
             <div class="skill">
-
-                <div class="skill-top">
-                    <span>MACHINE LEARNING</span>
-                    <span>85</span>
-                </div>
-
-                <div class="skill-bar">
-                    <div
-                        class="skill-fill"
-                        data-width="85%"
-                    ></div>
-                </div>
-
+                <div class="skill-top"><span>MACHINE LEARNING</span><span>85%</span></div>
+                <div class="skill-bar"><div class="skill-fill" data-width="85%"></div></div>
             </div>
-
+            
             <div class="skill">
-
-                <div class="skill-top">
-                    <span>STATISTICAL MODELING</span>
-                    <span>90</span>
-                </div>
-
-                <div class="skill-bar">
-                    <div
-                        class="skill-fill"
-                        data-width="90%"
-                    ></div>
-                </div>
-
+                <div class="skill-top"><span>STATISTICAL MODELING</span><span>90%</span></div>
+                <div class="skill-bar"><div class="skill-fill" data-width="90%"></div></div>
             </div>
-
         </div>
 
         <!-- Leadership -->
-
         <div class="skill-card">
-
-            <h3>
-                COMMAND ABILITIES
-            </h3>
-
+            <h3 class="cinzel-font">🦅 COMMAND CAPABILITIES</h3>
+            
             <div class="skill">
-
-                <div class="skill-top">
-                    <span>PROJECT MANAGEMENT</span>
-                    <span>90</span>
-                </div>
-
-                <div class="skill-bar">
-                    <div
-                        class="skill-fill"
-                        data-width="90%"
-                    ></div>
-                </div>
-
+                <div class="skill-top"><span>OPERATION MANAGEMENT</span><span>90%</span></div>
+                <div class="skill-bar"><div class="skill-fill" data-width="90%"></div></div>
             </div>
-
+            
             <div class="skill">
-
-                <div class="skill-top">
-                    <span>TECHNICAL TRANSLATION</span>
-                    <span>90</span>
-                </div>
-
-                <div class="skill-bar">
-                    <div
-                        class="skill-fill"
-                        data-width="90%"
-                    ></div>
-                </div>
-
+                <div class="skill-top"><span>TECHNICAL TRANSLATION</span><span>90%</span></div>
+                <div class="skill-bar"><div class="skill-fill" data-width="90%"></div></div>
             </div>
-
+            
             <div class="skill">
-
-                <div class="skill-top">
-                    <span>PROBLEM SOLVING</span>
-                    <span>95</span>
-                </div>
-
-                <div class="skill-bar">
-                    <div
-                        class="skill-fill"
-                        data-width="95%"
-                    ></div>
-                </div>
-
+                <div class="skill-top"><span>TACTICAL PROBLEM SOLVING</span><span>95%</span></div>
+                <div class="skill-bar"><div class="skill-fill" data-width="95%"></div></div>
             </div>
-
+            
             <div class="skill">
-
-                <div class="skill-top">
-                    <span>TEAM LEADERSHIP</span>
-                    <span>95</span>
-                </div>
-
-                <div class="skill-bar">
-                    <div
-                        class="skill-fill"
-                        data-width="95%"
-                    ></div>
-                </div>
-
+                <div class="skill-top"><span>SQUAD LEADERSHIP</span><span>95%</span></div>
+                <div class="skill-bar"><div class="skill-fill" data-width="95%"></div></div>
             </div>
-
+            
             <div class="skill">
-
-                <div class="skill-top">
-                    <span>TECHNICAL MENTORING</span>
-                    <span>95</span>
-                </div>
-
-                <div class="skill-bar">
-                    <div
-                        class="skill-fill"
-                        data-width="95%"
-                    ></div>
-                </div>
-
+                <div class="skill-top"><span>MENTORING RECRUITS</span><span>95%</span></div>
+                <div class="skill-bar"><div class="skill-fill" data-width="95%"></div></div>
             </div>
-
         </div>
 
     </div>
@@ -3118,66 +1445,32 @@ footer strong {
 </section>
 
 <!-- ======================================================
-     CERTIFICATIONS
+     CERTIFICATIONS / HONORS
      ====================================================== -->
 
 <section id="certifications">
 
-    <div class="section-heading">
-
-        <span class="section-number">
-            05 //
-        </span>
-
-        <h2 class="section-title">
-            Verified Achievements
-        </h2>
-
-        <span class="section-jp">
-            実績
-        </span>
-
+    <div class="section-header">
+        <span class="section-number">V</span>
+        <h2 class="section-title">MEDALS & COMMENDATIONS</h2>
+        <span class="section-jp">勲章</span>
     </div>
 
     <div class="cert-grid">
 
         <div class="cert">
-
-            <div class="cert-icon">
-                🏅
-            </div>
-
-            <h3>
-                GOOGLE DATA ANALYTICS
-                PROFESSIONAL CERTIFICATE
-            </h3>
-
+            <div class="cert-icon">🦅</div>
+            <h3 class="cinzel-font">GOOGLE DATA ANALYTICS<br>PROFESSIONAL CERTIFICATE</h3>
         </div>
 
         <div class="cert">
-
-            <div class="cert-icon">
-                🧬
-            </div>
-
-            <h3>
-                IBM DATA SCIENCE
-                PROFESSIONAL CERTIFICATE
-            </h3>
-
+            <div class="cert-icon">🎖️</div>
+            <h3 class="cinzel-font">IBM DATA SCIENCE<br>PROFESSIONAL CERTIFICATE</h3>
         </div>
 
         <div class="cert">
-
-            <div class="cert-icon">
-                ⚙️
-            </div>
-
-            <h3>
-                SAS PROGRAMMER
-                PROFESSIONAL CERTIFICATE
-            </h3>
-
+            <div class="cert-icon">⚙️</div>
+            <h3 class="cinzel-font">SAS PROGRAMMER<br>PROFESSIONAL CERTIFICATE</h3>
         </div>
 
     </div>
@@ -3190,70 +1483,30 @@ footer strong {
 
 <section id="languages">
 
-    <div class="section-heading">
-
-        <span class="section-number">
-            06 //
-        </span>
-
-        <h2 class="section-title">
-            Language Proficiency
-        </h2>
-
-        <span class="section-jp">
-            言語能力
-        </span>
-
+    <div class="section-header">
+        <span class="section-number">VI</span>
+        <h2 class="section-title">LINGUISTIC PROFICIENCY</h2>
+        <span class="section-jp">言語</span>
     </div>
 
     <div class="languages">
 
         <div class="language">
-
-            <div class="flag">
-                🇬🇷
-            </div>
-
-            <h3>
-                GREEK
-            </h3>
-
-            <p>
-                NATIVE
-            </p>
-
+            <div class="flag">🇬🇷</div>
+            <h3 class="cinzel-font">GREEK</h3>
+            <p>NATIVE / MOTHER TONGUE</p>
         </div>
 
         <div class="language">
-
-            <div class="flag">
-                🇬🇧
-            </div>
-
-            <h3>
-                ENGLISH
-            </h3>
-
-            <p>
-                PROFESSIONAL / TECHNICAL
-            </p>
-
+            <div class="flag">🇬🇧</div>
+            <h3 class="cinzel-font">ENGLISH</h3>
+            <p>TACTICAL / PROFESSIONAL</p>
         </div>
 
         <div class="language">
-
-            <div class="flag">
-                🇩🇪
-            </div>
-
-            <h3>
-                GERMAN
-            </h3>
-
-            <p>
-                ELEMENTARY
-            </p>
-
+            <div class="flag">🇩🇪</div>
+            <h3 class="cinzel-font">GERMAN</h3>
+            <p>ELEMENTARY</p>
         </div>
 
     </div>
@@ -3261,49 +1514,13 @@ footer strong {
 </section>
 
 <!-- ======================================================
-     FINAL
-     ====================================================== -->
-
-<div class="final-message">
-
-    <div class="classification">
-        PERSONNEL STATUS // ACTIVE
-    </div>
-
-    <h2>
-        READY FOR THE NEXT MISSION
-    </h2>
-
-    <p>
-        Statistical Data Science • Pharmaceutical Analytics
-        • Leadership • Problem Solving
-    </p>
-
-</div>
-
-<!-- ======================================================
      FOOTER
      ====================================================== -->
 
 <footer>
-
-    <p>
-        PERSONNEL DOSSIER // VASILEIOS TILLIS
-    </p>
-
+    <p>DOSSIER STATUS: <strong>ACTIVE DUTY</strong></p>
     <br>
-
-    <p>
-        SYSTEM STATUS:
-        <strong>ACTIVE</strong>
-    </p>
-
-    <br>
-
-    <p>
-        © 2026
-    </p>
-
+    <p>SURVEY CORPS RECORDS © 2026 - V. TILLIS</p>
 </footer>
 
 </main>
@@ -3312,311 +1529,147 @@ footer strong {
      SCROLL TOP
      ====================================================== -->
 
-<div
-    class="scroll-top"
-    id="scrollTop"
->
-    ↑
-</div>
+<div class="scroll-top" id="scrollTop">↑</div>
+
+<!-- ======================================================
+     JAVASCRIPT
+     ====================================================== -->
 
 <script>
-
 /* =========================================================
    NAVIGATION
    ========================================================= */
-
-document
-    .querySelectorAll(".nav button")
-    .forEach(button => {
-
-        button.addEventListener(
-            "click",
-            () => {
-
-                const target =
-                    document.getElementById(
-                        button.dataset.target
-                    );
-
-                if (!target) return;
-
-                window.scrollTo({
-
-                    top:
-                        target.offsetTop - 75,
-
-                    behavior:
-                        "smooth"
-
-                });
-
-            }
-        );
-
+document.querySelectorAll(".nav button").forEach(button => {
+    button.addEventListener("click", () => {
+        const target = document.getElementById(button.dataset.target);
+        if (!target) return;
+        const offset = 100;
+        window.scrollTo({
+            top: target.offsetTop - offset,
+            behavior: "smooth"
+        });
     });
-
+});
 
 /* =========================================================
    SECTION REVEAL
    ========================================================= */
-
-const sections =
-    document.querySelectorAll(
-        "main section"
-    );
-
-const observer =
-    new IntersectionObserver(
-
-        entries => {
-
-            entries.forEach(entry => {
-
-                if (
-                    entry.isIntersecting
-                ) {
-
-                    entry.target
-                        .classList
-                        .add("visible");
-
-                }
-
-            });
-
-        },
-
-        {
-            threshold: .12
-        }
-
-    );
-
-sections.forEach(section => {
-
-    if (
-        section.id !== "home"
-    ) {
-
-        observer.observe(
-            section
-        );
-
-    }
-
-});
-
-
-/* =========================================================
-   SKILL ANIMATION
-   ========================================================= */
-
-const skillSection =
-    document.getElementById(
-        "skills"
-    );
-
-const skillObserver =
-    new IntersectionObserver(
-
-        entries => {
-
-            entries.forEach(entry => {
-
-                if (
-                    entry.isIntersecting
-                ) {
-
-                    const bars =
-                        skillSection
-                        .querySelectorAll(
-                            ".skill-fill"
-                        );
-
-                    bars.forEach(bar => {
-
-                        bar.style.width =
-                            bar.dataset.width;
-
-                    });
-
-                    skillObserver.unobserve(
-                        skillSection
-                    );
-
-                }
-
-            });
-
-        },
-
-        {
-            threshold: .2
-        }
-
-    );
-
-skillObserver.observe(
-    skillSection
+const sections = document.querySelectorAll("main section");
+const sectionObserver = new IntersectionObserver(
+    entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add("visible");
+            }
+        });
+    },
+    { threshold: 0.12 }
 );
 
+sections.forEach(section => {
+    if (section.id !== "home") {
+        sectionObserver.observe(section);
+    }
+});
 
 /* =========================================================
-   DUST PARTICLES
+   SKILL BAR ANIMATION
    ========================================================= */
+const skillObserver = new IntersectionObserver(
+    entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const bars = entry.target.querySelectorAll(".skill-fill");
+                bars.forEach(bar => {
+                    bar.style.width = bar.dataset.width;
+                });
+                skillObserver.unobserve(entry.target);
+            }
+        });
+    },
+    { threshold: 0.25 }
+);
 
-const dust =
-    document.getElementById(
-        "dust"
-    );
+const skillsSection = document.getElementById("skills");
+skillObserver.observe(skillsSection);
 
-for (
-    let i = 0;
-    i < 60;
-    i++
-) {
+/* =========================================================
+   PARTICLE ENGINE (TITAN SPARKS & STEAM)
+   ========================================================= */
+const particleContainer = document.getElementById("particles");
+const particleCount = 60;
 
-    const particle =
-        document.createElement(
-            "span"
-        );
-
-    particle.style.left =
-        Math.random() * 100 + "%";
-
-    particle.style.animationDuration =
-        6 + Math.random() * 12 + "s";
-
-    particle.style.animationDelay =
-        -Math.random() * 12 + "s";
-
-    const size =
-        1 + Math.random() * 3;
-
-    particle.style.width =
-        size + "px";
-
-    particle.style.height =
-        size + "px";
-
-    dust.appendChild(
-        particle
-    );
-
+for (let i = 0; i < particleCount; i++) {
+    const particle = document.createElement("div");
+    
+    // 30% chance for spark, 70% chance for steam
+    const isSpark = Math.random() > 0.7;
+    
+    particle.className = isSpark ? "particle spark" : "particle steam";
+    
+    particle.style.left = Math.random() * 100 + "%";
+    
+    if (isSpark) {
+        particle.style.animationDuration = (2 + Math.random() * 4) + "s";
+        const size = 2 + Math.random() * 3;
+        particle.style.width = size + "px";
+        particle.style.height = size + "px";
+    } else {
+        particle.style.animationDuration = (8 + Math.random() * 12) + "s";
+        const size = 20 + Math.random() * 50;
+        particle.style.width = size + "px";
+        particle.style.height = size + "px";
+    }
+    
+    particle.style.animationDelay = (-Math.random() * 10) + "s";
+    particleContainer.appendChild(particle);
 }
-
 
 /* =========================================================
    SCROLL TOP
    ========================================================= */
+const scrollTop = document.getElementById("scrollTop");
 
-const scrollTop =
-    document.getElementById(
-        "scrollTop"
-    );
-
-window.addEventListener(
-    "scroll",
-    () => {
-
-        if (
-            window.scrollY > 500
-        ) {
-
-            scrollTop.classList
-                .add("show");
-
-        } else {
-
-            scrollTop.classList
-                .remove("show");
-
-        }
-
+window.addEventListener("scroll", () => {
+    if (window.scrollY > 500) {
+        scrollTop.classList.add("show");
+    } else {
+        scrollTop.classList.remove("show");
     }
-);
+});
 
-scrollTop.addEventListener(
-    "click",
-    () => {
-
-        window.scrollTo({
-
-            top: 0,
-
-            behavior: "smooth"
-
-        });
-
-    }
-);
-
+scrollTop.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+});
 
 /* =========================================================
-   PARALLAX EMBLEM
+   MOUSE PARALLAX (SHIELD)
    ========================================================= */
+const character = document.querySelector(".character-card");
 
-const emblem =
-    document.querySelector(
-        ".emblem"
-    );
+document.addEventListener("mousemove", event => {
+    if (window.innerWidth < 850) return;
+    const x = (event.clientX / window.innerWidth - 0.5) * 12;
+    const y = (event.clientY / window.innerHeight - 0.5) * 12;
+    character.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
+});
 
-document.addEventListener(
-    "mousemove",
-    event => {
-
-        if (
-            window.innerWidth < 900
-        ) return;
-
-        const x =
-            (event.clientX /
-                window.innerWidth -
-                .5) * 5;
-
-        const y =
-            (event.clientY /
-                window.innerHeight -
-                .5) * 5;
-
-        emblem.style.transform =
-            `rotateY(${x}deg)
-             rotateX(${-y}deg)`;
-
-    }
-);
-
+document.addEventListener("mouseleave", () => {
+    character.style.transform = "rotateY(0) rotateX(0)";
+});
 
 /* =========================================================
-   RANDOM "RADIO" GLITCH
+   LIGHTNING TRIGGER (Random flares)
    ========================================================= */
+const lightning = document.querySelector(".lightning");
 
-const heroTitle =
-    document.querySelector(
-        ".hero h1"
-    );
-
-setInterval(
-    () => {
-
-        heroTitle.style.transform =
-            `translateX(
-                ${Math.random() * 2 - 1}px
-            )`;
-
-        setTimeout(
-            () => {
-
-                heroTitle.style.transform =
-                    "translateX(0)";
-
-            },
-            80
-        );
-
-    },
-    5000
-);
+setInterval(() => {
+    // Subtle shake to simulate titan transformation impact
+    lightning.style.transform = `translateX(${Math.random() * 2 - 1}px)`;
+    setTimeout(() => {
+        lightning.style.transform = "translateX(0)";
+    }, 100);
+}, 4000);
 
 </script>
 
