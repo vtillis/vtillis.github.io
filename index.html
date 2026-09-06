@@ -6,47 +6,49 @@
 
 <title>Vasileios Tillis | Statistical Data Scientist</title>
 
+<!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Rajdhani:wght@400;500;600;700&family=Special+Elite&display=swap" rel="stylesheet">
 
 <style>
 
 /* =========================================================
-   ANIME CHARACTER DOSSIER
+   ATTACK ON TITAN INSPIRED MILITARY DOSSIER
    VASILEIOS TILLIS
    ========================================================= */
 
 :root {
-    --bg: #05060b;
-    --bg2: #0b1020;
 
-    --cyan: #00eaff;
-    --blue: #386cff;
-    --purple: #8b5cf6;
-    --pink: #ff2d75;
-    --red: #ff3b30;
-    --gold: #ffd84d;
-    --white: #f4f7ff;
+    --black: #080a08;
+    --dark: #111512;
+    --dark-green: #18231c;
+    --military: #26382a;
+    --green: #3f5c45;
 
-    --panel: rgba(8, 12, 25, .86);
-    --panel-light: rgba(20, 27, 50, .75);
+    --paper: #d6d0bd;
+    --paper-dark: #aaa48f;
+    --paper-light: #e8e3d2;
 
-    --border: rgba(0,234,255,.35);
+    --blood: #8e1e1e;
+    --blood-light: #c43333;
 
-    --glow-cyan:
-        0 0 5px rgba(0,234,255,.7),
-        0 0 20px rgba(0,234,255,.35);
+    --gold: #b49a58;
 
-    --glow-pink:
-        0 0 5px rgba(255,45,117,.7),
-        0 0 20px rgba(255,45,117,.35);
+    --white: #eeeade;
+    --gray: #8f9489;
 
-    --glow-gold:
-        0 0 5px rgba(255,216,77,.7),
-        0 0 20px rgba(255,216,77,.3);
+    --shadow:
+        0 20px 50px rgba(0,0,0,.65);
+
+    --military-border:
+        rgba(180,154,88,.35);
 }
+
+/* =========================================================
+   RESET
+   ========================================================= */
 
 * {
     margin: 0;
@@ -59,10 +61,47 @@ html {
 }
 
 body {
-    background: var(--bg);
-    color: var(--white);
-    font-family: 'Rajdhani', sans-serif;
-    overflow-x: hidden;
+
+    background:
+        #080a08;
+
+    color:
+        var(--white);
+
+    font-family:
+        'Rajdhani',
+        sans-serif;
+
+    line-height:
+        1.6;
+
+    overflow-x:
+        hidden;
+}
+
+/* =========================================================
+   PAPER / FILM GRAIN
+   ========================================================= */
+
+body::before {
+
+    content: "";
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 9998;
+
+    pointer-events: none;
+
+    opacity: .08;
+
+    background-image:
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='.5'/%3E%3C/svg%3E");
+
+    mix-blend-mode:
+        overlay;
 }
 
 /* =========================================================
@@ -70,204 +109,172 @@ body {
    ========================================================= */
 
 .background {
+
     position: fixed;
+
     inset: 0;
+
     z-index: -10;
-    overflow: hidden;
 
     background:
+
         radial-gradient(
-            circle at 50% 15%,
-            rgba(56,108,255,.18),
-            transparent 35%
+            ellipse at 50% 20%,
+            rgba(73,93,70,.28),
+            transparent 45%
         ),
-        radial-gradient(
-            circle at 80% 80%,
-            rgba(255,45,117,.10),
-            transparent 30%
-        ),
+
         linear-gradient(
             180deg,
-            #03040a 0%,
-            #070b18 50%,
-            #020307 100%
-        );
-}
-
-/* Anime moon */
-
-.moon {
-    position: absolute;
-
-    width: 360px;
-    height: 360px;
-
-    border-radius: 50%;
-
-    top: 5%;
-    left: 50%;
-
-    transform: translateX(-50%);
-
-    background:
-        radial-gradient(
-            circle at 35% 30%,
-            #ffffff,
-            #d6e6ff 35%,
-            #6e88ff 65%,
-            transparent 72%
+            #101510 0%,
+            #090c09 55%,
+            #050605 100%
         );
 
-    opacity: .12;
-
-    filter: blur(1px);
-
-    box-shadow:
-        0 0 100px rgba(80,130,255,.4);
-
-    animation: moonPulse 6s ease-in-out infinite;
+    overflow: hidden;
 }
 
-@keyframes moonPulse {
-    0%,100% {
-        transform: translateX(-50%) scale(1);
-        opacity: .10;
-    }
+/* Clouds */
 
-    50% {
-        transform: translateX(-50%) scale(1.06);
-        opacity: .17;
-    }
-}
+.cloud {
 
-/* Grid */
-
-.grid {
-    position: absolute;
-    inset: 0;
-
-    background-image:
-        linear-gradient(
-            rgba(0,234,255,.06) 1px,
-            transparent 1px
-        ),
-        linear-gradient(
-            90deg,
-            rgba(0,234,255,.06) 1px,
-            transparent 1px
-        );
-
-    background-size: 60px 60px;
-
-    transform:
-        perspective(500px)
-        rotateX(60deg)
-        scale(1.6);
-
-    transform-origin: bottom;
-
-    opacity: .35;
-}
-
-/* Energy lines */
-
-.energy {
     position: absolute;
 
-    width: 2px;
+    width: 700px;
+
     height: 180px;
 
     background:
-        linear-gradient(
-            transparent,
-            var(--cyan),
-            transparent
+        radial-gradient(
+            ellipse,
+            rgba(190,190,170,.07),
+            transparent 70%
         );
 
-    opacity: .5;
+    filter:
+        blur(25px);
 
-    animation: energyMove linear infinite;
+    animation:
+        cloudMove 30s linear infinite;
 }
 
-.energy:nth-child(1) {
-    left: 10%;
-    animation-duration: 5s;
+.cloud:nth-child(1) {
+
+    top: 10%;
+
+    left: -300px;
 }
 
-.energy:nth-child(2) {
-    left: 25%;
-    animation-duration: 7s;
+.cloud:nth-child(2) {
+
+    top: 35%;
+
+    right: -400px;
+
+    animation-duration:
+        45s;
 }
 
-.energy:nth-child(3) {
-    left: 70%;
-    animation-duration: 6s;
-}
-
-.energy:nth-child(4) {
-    left: 90%;
-    animation-duration: 4s;
-}
-
-@keyframes energyMove {
+@keyframes cloudMove {
 
     from {
-        transform: translateY(-250px);
+        transform:
+            translateX(0);
     }
 
     to {
-        transform: translateY(110vh);
+        transform:
+            translateX(100vw);
     }
 
 }
 
 /* =========================================================
-   PARTICLES
+   MILITARY GRID
    ========================================================= */
 
-.particles {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: -2;
-}
+.grid {
 
-.particle {
     position: absolute;
 
-    width: 3px;
-    height: 3px;
+    inset: 0;
 
-    background: var(--cyan);
+    opacity: .12;
 
-    border-radius: 50%;
+    background-image:
 
-    box-shadow:
-        0 0 8px var(--cyan);
+        linear-gradient(
+            rgba(180,154,88,.18) 1px,
+            transparent 1px
+        ),
 
-    animation:
-        floatParticle linear infinite;
+        linear-gradient(
+            90deg,
+            rgba(180,154,88,.18) 1px,
+            transparent 1px
+        );
+
+    background-size:
+        70px 70px;
 }
 
-@keyframes floatParticle {
+/* =========================================================
+   FLOATING DUST
+   ========================================================= */
+
+.dust {
+
+    position: fixed;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    z-index: -1;
+}
+
+.dust span {
+
+    position: absolute;
+
+    width: 2px;
+
+    height: 2px;
+
+    background:
+        rgba(220,215,190,.6);
+
+    border-radius:
+        50%;
+
+    animation:
+        dustFloat linear infinite;
+}
+
+@keyframes dustFloat {
 
     from {
-        transform: translateY(110vh);
+        transform:
+            translateY(105vh)
+            translateX(0);
         opacity: 0;
     }
 
     20% {
-        opacity: 1;
+        opacity: .7;
     }
 
     80% {
-        opacity: 1;
+        opacity: .5;
     }
 
     to {
-        transform: translateY(-10vh);
+        transform:
+            translateY(-10vh)
+            translateX(80px);
         opacity: 0;
     }
+
 }
 
 /* =========================================================
@@ -279,6 +286,7 @@ body {
     position: fixed;
 
     top: 0;
+
     left: 0;
 
     width: 100%;
@@ -286,95 +294,125 @@ body {
     z-index: 1000;
 
     background:
-        rgba(3,5,12,.88);
-
-    backdrop-filter: blur(15px);
+        rgba(8,10,8,.94);
 
     border-bottom:
-        1px solid rgba(0,234,255,.25);
+        2px solid
+        rgba(180,154,88,.3);
 
     box-shadow:
-        0 5px 30px rgba(0,0,0,.5);
+        0 5px 25px
+        rgba(0,0,0,.7);
+
+    backdrop-filter:
+        blur(10px);
 }
 
 .nav {
 
-    max-width: 1200px;
+    max-width:
+        1200px;
 
-    margin: auto;
+    margin:
+        auto;
 
-    padding: 10px 20px;
+    padding:
+        9px 20px;
 
-    display: flex;
+    display:
+        flex;
 
-    justify-content: center;
+    justify-content:
+        center;
 
-    gap: 8px;
+    gap:
+        5px;
 
-    flex-wrap: wrap;
+    flex-wrap:
+        wrap;
 }
 
 .nav button {
 
-    background: transparent;
-
-    border: 1px solid rgba(0,234,255,.2);
-
-    color: #b8c4dd;
-
-    padding: 8px 14px;
-
-    font-family: Orbitron;
-
-    font-size: 10px;
-
-    letter-spacing: 1px;
-
-    cursor: pointer;
-
-    transition: .3s;
-
     position: relative;
 
-    overflow: hidden;
-}
+    background:
+        transparent;
 
-.nav button:hover {
+    border:
+        1px solid
+        rgba(214,208,189,.18);
 
-    color: white;
+    color:
+        #a9ad9f;
 
-    border-color: var(--cyan);
+    padding:
+        8px 14px;
 
-    box-shadow: var(--glow-cyan);
+    font-family:
+        'Oswald',
+        sans-serif;
 
-    transform: translateY(-2px);
+    text-transform:
+        uppercase;
+
+    font-size:
+        11px;
+
+    letter-spacing:
+        1.5px;
+
+    cursor:
+        pointer;
+
+    transition:
+        .3s;
 }
 
 .nav button::before {
 
-    content: "";
+    content:
+        "";
 
-    position: absolute;
+    position:
+        absolute;
 
-    width: 100%;
-    height: 100%;
+    left:
+        0;
 
-    top: 0;
-    left: -100%;
+    bottom:
+        0;
+
+    width:
+        0;
+
+    height:
+        2px;
 
     background:
-        linear-gradient(
-            90deg,
-            transparent,
-            rgba(0,234,255,.2),
-            transparent
-        );
+        var(--blood);
 
-    transition: .5s;
+    transition:
+        .3s;
+}
+
+.nav button:hover {
+
+    color:
+        var(--paper-light);
+
+    border-color:
+        rgba(180,154,88,.5);
+
+    background:
+        rgba(180,154,88,.05);
+
+    transform:
+        translateY(-2px);
 }
 
 .nav button:hover::before {
-    left: 100%;
+    width: 100%;
 }
 
 /* =========================================================
@@ -383,12 +421,81 @@ body {
 
 .container {
 
-    width: min(1150px, 92%);
+    width:
+        min(1150px, 92%);
 
-    margin: auto;
+    margin:
+        auto;
 
-    padding-top: 110px;
-    padding-bottom: 60px;
+    padding-top:
+        110px;
+
+    padding-bottom:
+        80px;
+}
+
+/* =========================================================
+   MILITARY LABEL
+   ========================================================= */
+
+.classification {
+
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    gap:
+        10px;
+
+    border:
+        1px solid
+        rgba(180,154,88,.35);
+
+    background:
+        rgba(10,12,9,.7);
+
+    padding:
+        6px 12px;
+
+    color:
+        var(--gold);
+
+    font-family:
+        'Oswald',
+        sans-serif;
+
+    font-size:
+        10px;
+
+    letter-spacing:
+        2px;
+
+    text-transform:
+        uppercase;
+}
+
+.classification::before {
+
+    content:
+        "";
+
+    width:
+        7px;
+
+    height:
+        7px;
+
+    background:
+        var(--blood);
+
+    border-radius:
+        50%;
+
+    box-shadow:
+        0 0 10px
+        rgba(196,51,51,.5);
 }
 
 /* =========================================================
@@ -397,327 +504,439 @@ body {
 
 .hero {
 
-    min-height: 620px;
+    min-height:
+        650px;
 
-    display: grid;
+    display:
+        grid;
 
     grid-template-columns:
-        1fr
-        1.6fr;
+        340px 1fr;
 
-    gap: 50px;
+    gap:
+        65px;
 
-    align-items: center;
+    align-items:
+        center;
 
-    position: relative;
+    position:
+        relative;
 }
 
-/* Character aura */
+/* =========================================================
+   EMBLEM
+   ========================================================= */
 
-.hero::before {
+.emblem-container {
 
-    content: "";
+    position:
+        relative;
 
-    position: absolute;
+    width:
+        320px;
 
-    width: 500px;
-    height: 500px;
+    height:
+        400px;
 
-    left: 50%;
-    top: 50%;
+    display:
+        flex;
 
-    transform:
-        translate(-50%,-50%);
+    align-items:
+        center;
 
-    border-radius: 50%;
-
-    background:
-        radial-gradient(
-            circle,
-            rgba(0,234,255,.12),
-            transparent 65%
-        );
-
-    filter: blur(20px);
-
-    animation: aura 4s ease-in-out infinite;
+    justify-content:
+        center;
 }
 
-@keyframes aura {
+.emblem {
 
-    0%,100% {
-        transform:
-            translate(-50%,-50%)
-            scale(.9);
-    }
+    width:
+        270px;
 
-    50% {
-        transform:
-            translate(-50%,-50%)
-            scale(1.1);
-    }
-}
+    height:
+        330px;
 
-/* Character card */
+    position:
+        relative;
 
-.character-card {
+    display:
+        flex;
 
-    position: relative;
+    align-items:
+        center;
 
-    min-height: 470px;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
+    justify-content:
+        center;
 
     background:
         linear-gradient(
             145deg,
-            rgba(20,30,60,.8),
-            rgba(5,7,15,.9)
+            rgba(40,55,43,.85),
+            rgba(8,11,8,.95)
         );
 
     border:
-        1px solid rgba(0,234,255,.35);
+        1px solid
+        rgba(180,154,88,.35);
+
+    box-shadow:
+        var(--shadow);
 
     clip-path:
         polygon(
-            0 20px,
-            20px 0,
-            calc(100% - 20px) 0,
-            100% 20px,
-            100% calc(100% - 20px),
-            calc(100% - 20px) 100%,
-            20px 100%,
-            0 calc(100% - 20px)
+            0 18px,
+            18px 0,
+            calc(100% - 18px) 0,
+            100% 18px,
+            100% calc(100% - 18px),
+            calc(100% - 18px) 100%,
+            18px 100%,
+            0 calc(100% - 18px)
         );
-
-    box-shadow:
-        0 0 60px rgba(0,234,255,.08);
-
-    overflow: hidden;
 }
 
-/* Character silhouette */
+/* Original military-inspired wing emblem */
 
-.character-symbol {
+.wings {
 
-    width: 260px;
-    height: 330px;
+    position:
+        relative;
 
-    position: relative;
+    width:
+        190px;
 
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
+    height:
+        190px;
 }
 
-/* energy circle */
+/* Left wing */
 
-.character-symbol::before {
+.wings::before {
 
-    content: "";
+    content:
+        "◀";
 
-    position: absolute;
+    position:
+        absolute;
 
-    width: 240px;
-    height: 240px;
+    left:
+        -8px;
 
-    border-radius: 50%;
+    top:
+        25px;
 
-    border:
-        1px solid rgba(0,234,255,.5);
+    font-size:
+        105px;
 
-    box-shadow:
-        0 0 30px rgba(0,234,255,.25),
-        inset 0 0 30px rgba(0,234,255,.1);
+    color:
+        var(--paper);
 
-    animation:
-        rotate 15s linear infinite;
-}
+    transform:
+        scaleX(1.2)
+        rotate(-15deg);
 
-.character-symbol::after {
-
-    content: "VT";
-
-    position: absolute;
-
-    font-family: Orbitron;
-
-    font-size: 100px;
-
-    font-weight: 900;
-
-    letter-spacing: -10px;
-
-    color: transparent;
-
-    -webkit-text-stroke:
-        2px var(--cyan);
+    opacity:
+        .85;
 
     text-shadow:
-        0 0 20px rgba(0,234,255,.7);
+        3px 3px 0
+        rgba(0,0,0,.5);
+}
+
+/* Right wing */
+
+.wings::after {
+
+    content:
+        "▶";
+
+    position:
+        absolute;
+
+    right:
+        -8px;
+
+    top:
+        25px;
+
+    font-size:
+        105px;
+
+    color:
+        var(--paper);
+
+    transform:
+        scaleX(1.2)
+        rotate(15deg);
+
+    opacity:
+        .85;
+
+    text-shadow:
+        3px 3px 0
+        rgba(0,0,0,.5);
+}
+
+.emblem-text {
+
+    position:
+        absolute;
+
+    bottom:
+        42px;
+
+    font-family:
+        'Oswald',
+        sans-serif;
+
+    font-size:
+        13px;
+
+    letter-spacing:
+        4px;
+
+    color:
+        var(--gold);
+
+    text-align:
+        center;
+}
+
+/* rotating rings */
+
+.emblem-ring {
+
+    position:
+        absolute;
+
+    width:
+        300px;
+
+    height:
+        300px;
+
+    border:
+        1px dashed
+        rgba(180,154,88,.25);
+
+    border-radius:
+        50%;
 
     animation:
-        symbolPulse 3s ease-in-out infinite;
+        rotate 30s linear infinite;
 }
 
 @keyframes rotate {
 
-    from {
-        transform: rotate(0);
-    }
-
     to {
-        transform: rotate(360deg);
+        transform:
+            rotate(360deg);
     }
+
 }
 
-@keyframes symbolPulse {
-
-    0%,100% {
-        opacity: .65;
-    }
-
-    50% {
-        opacity: 1;
-    }
-}
-
-/* Hero text */
+/* =========================================================
+   HERO TEXT
+   ========================================================= */
 
 .hero-content {
 
-    position: relative;
-
-    z-index: 2;
+    position:
+        relative;
 }
 
-.jp {
+.hero-kana {
 
-    font-family: "Noto Sans JP";
+    font-family:
+        'Special Elite',
+        monospace;
 
-    color: var(--cyan);
+    color:
+        var(--blood-light);
 
-    letter-spacing: 5px;
+    font-size:
+        13px;
 
-    font-size: 14px;
+    letter-spacing:
+        4px;
 
-    margin-bottom: 8px;
+    margin-bottom:
+        8px;
 
-    text-shadow:
-        0 0 10px var(--cyan);
+    text-transform:
+        uppercase;
 }
 
 .hero h1 {
 
-    font-family: Orbitron;
+    font-family:
+        'Oswald',
+        sans-serif;
+
+    font-weight:
+        700;
 
     font-size:
-        clamp(3rem,7vw,6rem);
+        clamp(3.4rem, 7vw, 6.3rem);
 
-    line-height: .95;
+    line-height:
+        .92;
 
-    font-weight: 900;
+    letter-spacing:
+        3px;
 
-    letter-spacing: -3px;
+    color:
+        var(--paper-light);
 
-    margin-bottom: 20px;
-
-    color: white;
+    text-transform:
+        uppercase;
 
     text-shadow:
-        3px 3px 0 var(--blue),
-        6px 6px 0 rgba(255,45,117,.35);
+        4px 4px 0
+        rgba(0,0,0,.8);
+
+    margin-bottom:
+        18px;
 }
 
 .hero h1 span {
 
-    color: var(--cyan);
+    display:
+        block;
 
-    text-shadow:
-        0 0 10px var(--cyan),
-        0 0 30px rgba(0,234,255,.5);
+    color:
+        var(--gold);
+
+    font-size:
+        .7em;
+
+    letter-spacing:
+        9px;
 }
 
-.subtitle {
+.role {
 
-    font-family: Orbitron;
+    font-family:
+        'Oswald',
+        sans-serif;
 
-    color: var(--gold);
+    font-size:
+        18px;
 
-    font-size: 16px;
+    color:
+        var(--paper);
 
-    letter-spacing: 2px;
+    letter-spacing:
+        2px;
 
-    margin-bottom: 25px;
+    border-left:
+        3px solid
+        var(--blood);
+
+    padding-left:
+        15px;
+
+    margin-bottom:
+        25px;
 }
 
 .hero-description {
 
-    color: #aeb9d0;
+    max-width:
+        650px;
 
-    font-size: 18px;
+    color:
+        #aeb1a7;
 
-    max-width: 600px;
+    font-size:
+        17px;
 
-    line-height: 1.7;
+    line-height:
+        1.8;
 
-    margin-bottom: 30px;
+    margin-bottom:
+        30px;
 }
 
-/* Stats */
+/* =========================================================
+   CONTACT
+   ========================================================= */
 
-.hero-stats {
+.contact-grid {
 
-    display: grid;
+    display:
+        grid;
 
     grid-template-columns:
-        repeat(3,1fr);
+        repeat(2, 1fr);
 
-    gap: 10px;
+    gap:
+        8px;
 
-    max-width: 600px;
+    max-width:
+        650px;
 }
 
-.stat {
+.contact {
 
-    padding: 15px;
-
-    background:
-        rgba(10,15,30,.7);
+    padding:
+        10px 12px;
 
     border:
-        1px solid rgba(0,234,255,.2);
+        1px solid
+        rgba(214,208,189,.12);
 
-    position: relative;
+    background:
+        rgba(10,12,10,.6);
+
+    color:
+        #9da297;
+
+    font-size:
+        12px;
+
+    transition:
+        .3s;
+
+    overflow:
+        hidden;
+
+    text-overflow:
+        ellipsis;
+
+    white-space:
+        nowrap;
 }
 
-.stat small {
+.contact:hover {
 
-    display: block;
+    border-color:
+        rgba(180,154,88,.45);
 
-    color: #66718a;
+    color:
+        var(--paper);
 
-    font-family: Orbitron;
-
-    font-size: 9px;
-
-    letter-spacing: 1px;
-
-    margin-bottom: 5px;
+    background:
+        rgba(180,154,88,.05);
 }
 
-.stat strong {
+.contact strong {
 
-    font-family: Orbitron;
+    color:
+        var(--gold);
 
-    font-size: 20px;
+    margin-right:
+        8px;
 
-    color: white;
+    font-family:
+        'Oswald',
+        sans-serif;
+
+    font-size:
+        10px;
+
+    letter-spacing:
+        1px;
 }
 
 /* =========================================================
@@ -726,12 +945,14 @@ body {
 
 section {
 
-    margin-top: 100px;
+    margin-top:
+        120px;
 
-    opacity: 0;
+    opacity:
+        0;
 
     transform:
-        translateY(50px);
+        translateY(45px);
 
     transition:
         opacity .8s ease,
@@ -740,81 +961,173 @@ section {
 
 section.visible {
 
-    opacity: 1;
+    opacity:
+        1;
 
     transform:
         translateY(0);
 }
 
-.section-header {
+.section-heading {
 
-    display: flex;
+    display:
+        flex;
 
-    align-items: center;
+    align-items:
+        center;
 
-    gap: 15px;
+    gap:
+        15px;
 
-    margin-bottom: 35px;
+    margin-bottom:
+        35px;
+
+    border-bottom:
+        1px solid
+        rgba(180,154,88,.2);
+
+    padding-bottom:
+        14px;
 }
 
 .section-number {
 
-    font-family: Orbitron;
+    font-family:
+        'Oswald',
+        sans-serif;
 
-    font-size: 12px;
+    color:
+        var(--blood-light);
 
-    color: var(--pink);
+    font-size:
+        13px;
 
-    text-shadow:
-        0 0 10px var(--pink);
+    letter-spacing:
+        2px;
 }
 
 .section-title {
 
-    font-family: Orbitron;
+    font-family:
+        'Oswald',
+        sans-serif;
 
-    font-size: 28px;
+    text-transform:
+        uppercase;
 
-    letter-spacing: 2px;
+    font-size:
+        30px;
 
-    color: white;
+    letter-spacing:
+        2px;
 
-    position: relative;
-}
-
-.section-title::after {
-
-    content: "";
-
-    display: block;
-
-    width: 100px;
-
-    height: 2px;
-
-    margin-top: 8px;
-
-    background:
-        linear-gradient(
-            90deg,
-            var(--cyan),
-            transparent
-        );
-
-    box-shadow:
-        0 0 10px var(--cyan);
+    color:
+        var(--paper-light);
 }
 
 .section-jp {
 
-    margin-left: auto;
+    margin-left:
+        auto;
 
-    color: #3d4862;
+    color:
+        rgba(214,208,189,.25);
 
     font-family:
-        "Noto Sans JP";
+        'Special Elite',
+        monospace;
 
-    font-size: 12px;
+    font-size:
+        11px;
+
+    letter-spacing:
+        2px;
+}
+
+/* =========================================================
+   DOSSIER PANELS
+   ========================================================= */
+
+.panel {
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(28,38,30,.82),
+            rgba(10,13,10,.92)
+        );
+
+    border:
+        1px solid
+        rgba(180,154,88,.2);
+
+    padding:
+        30px;
+
+    box-shadow:
+        var(--shadow);
+
+    position:
+        relative;
+}
+
+.panel::before {
+
+    content:
+        "ARCHIVE";
+
+    position:
+        absolute;
+
+    top:
+        12px;
+
+    right:
+        15px;
+
+    font-family:
+        'Special Elite',
+        monospace;
+
+    font-size:
+        8px;
+
+    color:
+        rgba(214,208,189,.2);
+
+    letter-spacing:
+        2px;
+}
+
+.panel h3 {
+
+    font-family:
+        'Oswald',
+        sans-serif;
+
+    color:
+        var(--gold);
+
+    font-size:
+        14px;
+
+    letter-spacing:
+        2px;
+
+    margin-bottom:
+        20px;
+}
+
+.panel p {
+
+    color:
+        #aeb1a7;
+
+    font-size:
+        16px;
+
+    line-height:
+        1.8;
 }
 
 /* =========================================================
@@ -823,110 +1136,70 @@ section.visible {
 
 .profile-grid {
 
-    display: grid;
+    display:
+        grid;
 
     grid-template-columns:
-        1.5fr
-        1fr;
+        1.5fr 1fr;
 
-    gap: 25px;
+    gap:
+        20px;
 }
-
-.panel {
-
-    background:
-        var(--panel);
-
-    border:
-        1px solid var(--border);
-
-    padding: 30px;
-
-    position: relative;
-
-    overflow: hidden;
-
-    box-shadow:
-        0 20px 50px rgba(0,0,0,.3);
-}
-
-.panel::before {
-
-    content: "";
-
-    position: absolute;
-
-    top: 0;
-    left: 0;
-
-    width: 100%;
-    height: 2px;
-
-    background:
-        linear-gradient(
-            90deg,
-            var(--cyan),
-            transparent
-        );
-}
-
-.panel h3 {
-
-    font-family: Orbitron;
-
-    color: var(--cyan);
-
-    font-size: 14px;
-
-    margin-bottom: 18px;
-
-    letter-spacing: 1px;
-}
-
-.panel p {
-
-    color: #b6c0d4;
-
-    font-size: 17px;
-
-    line-height: 1.8;
-}
-
-/* Character attributes */
 
 .attributes {
 
-    display: grid;
+    display:
+        grid;
 
-    gap: 14px;
+    gap:
+        12px;
 }
 
 .attribute {
 
-    display: flex;
+    display:
+        flex;
 
-    justify-content: space-between;
+    justify-content:
+        space-between;
 
-    padding-bottom: 10px;
+    gap:
+        15px;
 
     border-bottom:
-        1px dashed rgba(255,255,255,.1);
+        1px dashed
+        rgba(214,208,189,.12);
+
+    padding-bottom:
+        9px;
 }
 
 .attribute span:first-child {
 
-    color: #65718c;
+    color:
+        #777d72;
 
-    font-family: Orbitron;
+    font-family:
+        'Oswald',
+        sans-serif;
 
-    font-size: 10px;
+    font-size:
+        10px;
+
+    letter-spacing:
+        1px;
 }
 
 .attribute span:last-child {
 
-    color: white;
+    color:
+        var(--paper);
 
-    font-weight: 700;
+    font-size:
+        12px;
+
+    text-align:
+        right;
 }
 
 /* =========================================================
@@ -935,140 +1208,203 @@ section.visible {
 
 .timeline {
 
-    position: relative;
+    position:
+        relative;
 
-    margin-left: 20px;
+    margin-left:
+        20px;
 }
 
 .timeline::before {
 
-    content: "";
+    content:
+        "";
 
-    position: absolute;
+    position:
+        absolute;
 
-    left: 0;
+    left:
+        0;
 
-    top: 0;
+    top:
+        0;
 
-    bottom: 0;
+    bottom:
+        0;
 
-    width: 1px;
+    width:
+        2px;
 
     background:
         linear-gradient(
-            var(--cyan),
-            var(--purple),
+            var(--gold),
+            var(--blood),
             transparent
         );
 }
 
 .job {
 
-    position: relative;
+    position:
+        relative;
 
-    padding-left: 45px;
+    padding-left:
+        45px;
 
-    margin-bottom: 45px;
+    margin-bottom:
+        55px;
 }
 
 .job::before {
 
-    content: "";
+    content:
+        "";
 
-    position: absolute;
+    position:
+        absolute;
 
-    left: -6px;
+    left:
+        -6px;
 
-    top: 5px;
+    top:
+        5px;
 
-    width: 13px;
+    width:
+        12px;
 
-    height: 13px;
-
-    border-radius: 50%;
-
-    background: var(--bg);
+    height:
+        12px;
 
     border:
-        2px solid var(--cyan);
+        2px solid
+        var(--gold);
 
-    box-shadow:
-        0 0 15px var(--cyan);
+    background:
+        var(--black);
+
+    transform:
+        rotate(45deg);
 }
 
 .job.active::before {
 
-    background: var(--cyan);
+    background:
+        var(--blood);
+
+    border-color:
+        var(--blood-light);
 
     box-shadow:
-        0 0 20px var(--cyan),
-        0 0 40px var(--cyan);
+        0 0 15px
+        rgba(196,51,51,.45);
 }
 
 .job-date {
 
-    font-family: Orbitron;
+    display:
+        inline-block;
 
-    color: var(--pink);
+    color:
+        var(--blood-light);
 
-    font-size: 11px;
+    font-family:
+        'Oswald',
+        sans-serif;
 
-    letter-spacing: 1px;
+    font-size:
+        11px;
 
-    margin-bottom: 8px;
+    letter-spacing:
+        2px;
+
+    margin-bottom:
+        7px;
+
+    border-bottom:
+        1px solid
+        rgba(196,51,51,.3);
 }
 
 .job h3 {
 
-    font-family: Orbitron;
+    font-family:
+        'Oswald',
+        sans-serif;
 
-    font-size: 20px;
+    font-size:
+        21px;
 
-    margin-bottom: 4px;
+    color:
+        var(--paper-light);
+
+    letter-spacing:
+        1px;
+
+    margin-bottom:
+        3px;
 }
 
 .company {
 
-    color: var(--cyan);
+    color:
+        var(--gold);
 
-    font-weight: 700;
+    font-size:
+        15px;
 
-    margin-bottom: 15px;
+    font-weight:
+        700;
 
-    font-size: 16px;
+    letter-spacing:
+        1px;
+
+    margin-bottom:
+        15px;
 }
 
 .job ul {
 
-    list-style: none;
+    list-style:
+        none;
 }
 
 .job li {
 
-    color: #aab5ca;
+    color:
+        #9da297;
 
-    margin-bottom: 8px;
+    font-size:
+        15px;
 
-    padding-left: 20px;
+    margin-bottom:
+        8px;
 
-    position: relative;
+    padding-left:
+        18px;
 
-    font-size: 15px;
+    position:
+        relative;
 }
 
 .job li::before {
 
-    content: "◆";
+    content:
+        "◆";
 
-    position: absolute;
+    position:
+        absolute;
 
-    left: 0;
+    left:
+        0;
 
-    color: var(--cyan);
+    color:
+        var(--blood);
 
-    font-size: 8px;
+    font-size:
+        7px;
 
-    top: 4px;
+    top:
+        6px;
 }
 
 /* =========================================================
@@ -1077,31 +1413,33 @@ section.visible {
 
 .education-grid {
 
-    display: grid;
+    display:
+        grid;
 
     grid-template-columns:
         repeat(2,1fr);
 
-    gap: 20px;
+    gap:
+        20px;
 }
 
 .education {
 
-    padding: 25px;
-
     background:
-        linear-gradient(
-            145deg,
-            rgba(20,25,45,.8),
-            rgba(5,7,15,.8)
-        );
+        rgba(21,28,22,.8);
 
     border:
-        1px solid rgba(139,92,246,.3);
+        1px solid
+        rgba(180,154,88,.2);
 
-    position: relative;
+    padding:
+        28px;
 
-    transition: .4s;
+    transition:
+        .35s;
+
+    position:
+        relative;
 }
 
 .education:hover {
@@ -1110,44 +1448,90 @@ section.visible {
         translateY(-5px);
 
     border-color:
-        var(--purple);
+        rgba(180,154,88,.55);
 
     box-shadow:
-        0 10px 40px rgba(139,92,246,.15);
+        var(--shadow);
 }
 
-.education .icon {
+.education::after {
 
-    font-size: 30px;
+    content:
+        "ACADEMY";
 
-    margin-bottom: 15px;
+    position:
+        absolute;
+
+    right:
+        15px;
+
+    top:
+        15px;
+
+    font-family:
+        'Special Elite';
+
+    color:
+        rgba(214,208,189,.15);
+
+    font-size:
+        9px;
+
+    letter-spacing:
+        2px;
+}
+
+.education-icon {
+
+    font-size:
+        30px;
+
+    margin-bottom:
+        15px;
 }
 
 .education h3 {
 
-    font-family: Orbitron;
+    font-family:
+        'Oswald',
+        sans-serif;
 
-    font-size: 17px;
+    color:
+        var(--paper-light);
 
-    margin-bottom: 7px;
+    font-size:
+        18px;
+
+    margin-bottom:
+        6px;
 }
 
 .education .date {
 
-    color: var(--purple);
+    color:
+        var(--blood-light);
 
-    font-family: Orbitron;
+    font-family:
+        'Oswald',
+        sans-serif;
 
-    font-size: 10px;
+    font-size:
+        10px;
 
-    margin-bottom: 15px;
+    letter-spacing:
+        2px;
+
+    margin-bottom:
+        15px;
 }
 
 .education p {
 
-    color: #9ca8bd;
+    color:
+        #92988d;
 
-    line-height: 1.6;
+    line-height:
+        1.7;
 }
 
 /* =========================================================
@@ -1156,104 +1540,134 @@ section.visible {
 
 .skills-grid {
 
-    display: grid;
+    display:
+        grid;
 
     grid-template-columns:
         repeat(3,1fr);
 
-    gap: 20px;
+    gap:
+        20px;
 }
 
 .skill-card {
 
     background:
-        var(--panel);
+        rgba(14,19,15,.88);
 
     border:
-        1px solid rgba(0,234,255,.2);
+        1px solid
+        rgba(214,208,189,.15);
 
-    padding: 25px;
+    padding:
+        25px;
 
-    transition: .3s;
+    position:
+        relative;
+
+    transition:
+        .3s;
 }
 
 .skill-card:hover {
 
     border-color:
-        var(--cyan);
+        rgba(180,154,88,.45);
 
     transform:
-        translateY(-5px);
-
-    box-shadow:
-        var(--glow-cyan);
+        translateY(-4px);
 }
 
 .skill-card h3 {
 
-    font-family: Orbitron;
+    font-family:
+        'Oswald',
+        sans-serif;
 
-    color: var(--gold);
+    color:
+        var(--gold);
 
-    font-size: 13px;
+    font-size:
+        14px;
 
-    margin-bottom: 25px;
+    letter-spacing:
+        1.5px;
+
+    margin-bottom:
+        25px;
 }
 
 .skill {
 
-    margin-bottom: 18px;
+    margin-bottom:
+        17px;
 }
 
 .skill-top {
 
-    display: flex;
+    display:
+        flex;
 
-    justify-content: space-between;
+    justify-content:
+        space-between;
 
-    margin-bottom: 6px;
+    font-family:
+        'Oswald',
+        sans-serif;
 
-    font-family: Orbitron;
+    font-size:
+        10px;
 
-    font-size: 10px;
+    color:
+        #b9bbae;
+
+    letter-spacing:
+        1px;
+
+    margin-bottom:
+        6px;
 }
 
 .skill-top span:last-child {
 
-    color: var(--cyan);
+    color:
+        var(--blood-light);
 }
 
 .skill-bar {
 
-    height: 5px;
+    height:
+        6px;
 
     background:
-        #121827;
+        #080b08;
 
-    overflow: hidden;
+    border:
+        1px solid
+        rgba(214,208,189,.1);
 
-    border-radius: 2px;
+    overflow:
+        hidden;
 }
 
 .skill-fill {
 
-    width: 0;
+    height:
+        100%;
 
-    height: 100%;
+    width:
+        0;
 
     background:
         linear-gradient(
             90deg,
-            var(--blue),
-            var(--cyan)
+            var(--blood),
+            var(--gold)
         );
 
-    box-shadow:
-        0 0 10px var(--cyan);
-
     transition:
-        width 1.5s
-        cubic-bezier(.17,.67,.3,1.2);
+        width 1.4s
+        cubic-bezier(.2,.7,.3,1);
 }
 
 /* =========================================================
@@ -1262,56 +1676,100 @@ section.visible {
 
 .cert-grid {
 
-    display: grid;
+    display:
+        grid;
 
     grid-template-columns:
         repeat(3,1fr);
 
-    gap: 20px;
+    gap:
+        20px;
 }
 
 .cert {
 
-    padding: 25px;
+    padding:
+        28px;
 
-    border:
-        1px solid rgba(255,216,77,.25);
+    text-align:
+        center;
 
     background:
-        rgba(15,15,20,.8);
+        rgba(20,25,20,.85);
 
-    text-align: center;
+    border:
+        1px solid
+        rgba(180,154,88,.2);
 
-    transition: .3s;
+    transition:
+        .3s;
+
+    position:
+        relative;
 }
 
 .cert:hover {
-
-    transform:
-        translateY(-5px)
-        rotate(-1deg);
 
     border-color:
         var(--gold);
 
     box-shadow:
-        var(--glow-gold);
+        var(--shadow);
+
+    transform:
+        translateY(-5px);
+}
+
+.cert::before {
+
+    content:
+        "VERIFIED";
+
+    position:
+        absolute;
+
+    top:
+        10px;
+
+    right:
+        10px;
+
+    font-family:
+        'Oswald';
+
+    color:
+        rgba(180,154,88,.45);
+
+    font-size:
+        8px;
+
+    letter-spacing:
+        1px;
 }
 
 .cert-icon {
 
-    font-size: 35px;
+    font-size:
+        32px;
 
-    margin-bottom: 15px;
+    margin-bottom:
+        15px;
 }
 
 .cert h3 {
 
-    font-family: Orbitron;
+    font-family:
+        'Oswald',
+        sans-serif;
 
-    font-size: 13px;
+    color:
+        var(--paper-light);
 
-    line-height: 1.5;
+    font-size:
+        14px;
+
+    line-height:
+        1.5;
 }
 
 /* =========================================================
@@ -1320,60 +1778,166 @@ section.visible {
 
 .languages {
 
-    display: grid;
+    display:
+        grid;
 
     grid-template-columns:
         repeat(3,1fr);
 
-    gap: 20px;
+    gap:
+        20px;
 }
 
 .language {
 
-    text-align: center;
+    padding:
+        28px;
 
-    padding: 25px;
+    text-align:
+        center;
 
     background:
-        var(--panel);
+        rgba(15,20,16,.85);
 
     border:
-        1px solid rgba(255,45,117,.25);
+        1px solid
+        rgba(214,208,189,.14);
 
-    transition: .3s;
+    transition:
+        .3s;
 }
 
 .language:hover {
 
     border-color:
-        var(--pink);
-
-    box-shadow:
-        var(--glow-pink);
+        var(--blood);
 
     transform:
-        scale(1.03);
+        translateY(-4px);
 }
 
 .language .flag {
 
-    font-size: 35px;
+    font-size:
+        34px;
 
-    margin-bottom: 10px;
+    margin-bottom:
+        10px;
 }
 
 .language h3 {
 
-    font-family: Orbitron;
+    font-family:
+        'Oswald',
+        sans-serif;
 
-    margin-bottom: 5px;
+    color:
+        var(--paper-light);
+
+    letter-spacing:
+        1px;
 }
 
 .language p {
 
-    color: var(--pink);
+    color:
+        var(--blood-light);
 
-    font-size: 12px;
+    font-size:
+        11px;
+
+    letter-spacing:
+        1px;
+
+    margin-top:
+        5px;
+}
+
+/* =========================================================
+   FINAL MISSION
+   ========================================================= */
+
+.final-message {
+
+    margin-top:
+        100px;
+
+    padding:
+        50px 30px;
+
+    text-align:
+        center;
+
+    border:
+        1px solid
+        rgba(180,154,88,.25);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(35,46,37,.65),
+            rgba(8,10,8,.9)
+        );
+
+    position:
+        relative;
+
+    overflow:
+        hidden;
+}
+
+.final-message::before {
+
+    content:
+        "MISSION STATUS";
+
+    display:
+        block;
+
+    font-family:
+        'Special Elite';
+
+    color:
+        var(--blood-light);
+
+    font-size:
+        10px;
+
+    letter-spacing:
+        3px;
+
+    margin-bottom:
+        15px;
+}
+
+.final-message h2 {
+
+    font-family:
+        'Oswald';
+
+    color:
+        var(--paper-light);
+
+    font-size:
+        32px;
+
+    letter-spacing:
+        2px;
+
+    text-transform:
+        uppercase;
+
+    margin-bottom:
+        10px;
+}
+
+.final-message p {
+
+    color:
+        #858b80;
+
+    font-size:
+        14px;
 }
 
 /* =========================================================
@@ -1382,310 +1946,301 @@ section.visible {
 
 footer {
 
-    margin-top: 120px;
+    margin-top:
+        100px;
 
-    padding: 40px 20px;
+    padding:
+        30px;
 
-    text-align: center;
+    text-align:
+        center;
 
     border-top:
-        1px solid rgba(0,234,255,.15);
+        1px solid
+        rgba(180,154,88,.15);
 
-    color: #4f5b73;
+    color:
+        #60665d;
 
-    font-family: Orbitron;
+    font-family:
+        'Special Elite',
+        monospace;
 
-    font-size: 10px;
+    font-size:
+        10px;
 
-    letter-spacing: 2px;
+    letter-spacing:
+        2px;
 }
 
 footer strong {
 
-    color: var(--cyan);
+    color:
+        var(--blood-light);
 }
 
 /* =========================================================
-   SCROLL BUTTON
+   SCROLL TOP
    ========================================================= */
 
 .scroll-top {
 
-    position: fixed;
+    position:
+        fixed;
 
-    bottom: 25px;
+    right:
+        25px;
 
-    right: 25px;
+    bottom:
+        25px;
 
-    width: 50px;
+    width:
+        48px;
 
-    height: 50px;
+    height:
+        48px;
 
-    display: flex;
+    display:
+        flex;
 
-    align-items: center;
+    align-items:
+        center;
 
-    justify-content: center;
+    justify-content:
+        center;
 
     background:
-        rgba(0,234,255,.1);
+        rgba(20,27,21,.95);
 
     border:
-        1px solid var(--cyan);
+        1px solid
+        var(--gold);
 
-    color: var(--cyan);
+    color:
+        var(--gold);
 
-    cursor: pointer;
+    cursor:
+        pointer;
 
-    z-index: 1000;
+    z-index:
+        1000;
 
-    opacity: 0;
+    opacity:
+        0;
 
-    pointer-events: none;
+    pointer-events:
+        none;
 
-    transition: .3s;
+    transition:
+        .3s;
 
-    box-shadow:
-        var(--glow-cyan);
+    font-family:
+        'Oswald';
+
+    font-size:
+        18px;
 }
 
 .scroll-top.show {
 
-    opacity: 1;
+    opacity:
+        1;
 
-    pointer-events: auto;
+    pointer-events:
+        auto;
 }
 
 .scroll-top:hover {
 
     background:
-        var(--cyan);
+        var(--blood);
 
-    color: black;
+    border-color:
+        var(--blood-light);
+
+    color:
+        white;
 
     transform:
-        translateY(-5px);
+        translateY(-4px);
 }
 
 /* =========================================================
-   MOBILE
+   RESPONSIVE
    ========================================================= */
 
-@media(max-width: 850px) {
+@media(max-width:900px) {
 
     .hero {
 
-        grid-template-columns: 1fr;
+        grid-template-columns:
+            1fr;
 
-        text-align: center;
+        text-align:
+            center;
 
-        gap: 20px;
+        gap:
+            20px;
     }
 
-    .character-card {
+    .emblem-container {
 
-        min-height: 350px;
+        margin:
+            auto;
+
+        height:
+            330px;
+    }
+
+    .role {
+
+        border-left:
+            none;
+
+        border-bottom:
+            2px solid
+            var(--blood);
+
+        padding:
+            0 0 10px;
     }
 
     .hero-description {
 
-        margin-left: auto;
-        margin-right: auto;
+        margin:
+            auto auto 25px;
     }
 
-    .hero-stats {
+    .contact-grid {
 
-        margin: auto;
+        margin:
+            auto;
     }
 
     .profile-grid,
     .education-grid {
 
-        grid-template-columns: 1fr;
+        grid-template-columns:
+            1fr;
     }
 
     .skills-grid {
 
-        grid-template-columns: 1fr;
+        grid-template-columns:
+            1fr;
     }
 
     .cert-grid {
 
-        grid-template-columns: 1fr;
+        grid-template-columns:
+            1fr;
     }
 
     .languages {
 
-        grid-template-columns: 1fr;
+        grid-template-columns:
+            1fr;
     }
 
-    .section-jp {
-
-        display: none;
-    }
 }
 
-@media(max-width: 550px) {
+@media(max-width:600px) {
 
     .container {
 
-        width: 94%;
+        width:
+            94%;
     }
 
     .nav {
 
-        justify-content: flex-start;
+        justify-content:
+            flex-start;
 
-        overflow-x: auto;
+        overflow-x:
+            auto;
 
-        flex-wrap: nowrap;
+        flex-wrap:
+            nowrap;
     }
 
     .nav button {
 
-        white-space: nowrap;
+        white-space:
+            nowrap;
     }
 
     .hero h1 {
 
-        font-size: 3rem;
+        font-size:
+            3.2rem;
     }
 
-    .hero-stats {
+    .hero h1 span {
 
-        grid-template-columns: 1fr;
+        letter-spacing:
+            5px;
+    }
+
+    .contact-grid {
+
+        grid-template-columns:
+            1fr;
+    }
+
+    .section-title {
+
+        font-size:
+            23px;
+    }
+
+    .section-jp {
+
+        display:
+            none;
     }
 
     .panel {
 
-        padding: 20px;
-    }
-
-    .timeline {
-
-        margin-left: 10px;
+        padding:
+            20px;
     }
 
 }
 
 /* =========================================================
-   CRT / ANIME SCANLINES
+   PRINT
    ========================================================= */
 
-body::after {
+@media print {
 
-    content: "";
+    .navbar,
+    .scroll-top,
+    .background,
+    .dust {
 
-    position: fixed;
-
-    inset: 0;
-
-    pointer-events: none;
-
-    z-index: 9999;
-
-    background:
-        repeating-linear-gradient(
-            0deg,
-            rgba(255,255,255,.015),
-            rgba(255,255,255,.015) 1px,
-            transparent 1px,
-            transparent 4px
-        );
-
-    mix-blend-mode:
-        overlay;
-}
-
-/* =========================================================
-   GLITCH
-   ========================================================= */
-
-.glitch {
-
-    position: relative;
-}
-
-.glitch::before,
-.glitch::after {
-
-    content: attr(data-text);
-
-    position: absolute;
-
-    inset: 0;
-
-    overflow: hidden;
-
-    opacity: .6;
-}
-
-.glitch::before {
-
-    color: var(--cyan);
-
-    transform:
-        translate(2px,0);
-
-    clip-path:
-        polygon(
-            0 0,
-            100% 0,
-            100% 35%,
-            0 35%
-        );
-
-    animation:
-        glitch1 3s infinite;
-}
-
-.glitch::after {
-
-    color: var(--pink);
-
-    transform:
-        translate(-2px,0);
-
-    clip-path:
-        polygon(
-            0 65%,
-            100% 65%,
-            100% 100%,
-            0 100%
-        );
-
-    animation:
-        glitch2 2.5s infinite;
-}
-
-@keyframes glitch1 {
-
-    0%,90%,100% {
-        transform: translate(0);
+        display:
+            none;
     }
 
-    92% {
-        transform: translate(3px,-2px);
+    body {
+
+        background:
+            white;
+
+        color:
+            black;
     }
 
-    94% {
-        transform: translate(-3px,2px);
-    }
-}
+    section {
 
-@keyframes glitch2 {
+        opacity:
+            1;
 
-    0%,90%,100% {
-        transform: translate(0);
+        transform:
+            none;
     }
 
-    93% {
-        transform: translate(-3px,2px);
-    }
-
-    96% {
-        transform: translate(3px,-1px);
-    }
 }
 
 </style>
@@ -1699,18 +2254,14 @@ body::after {
 
 <div class="background">
 
-    <div class="moon"></div>
-
     <div class="grid"></div>
 
-    <div class="energy"></div>
-    <div class="energy"></div>
-    <div class="energy"></div>
-    <div class="energy"></div>
+    <div class="cloud"></div>
+    <div class="cloud"></div>
 
 </div>
 
-<div class="particles" id="particles"></div>
+<div class="dust" id="dust"></div>
 
 <!-- ======================================================
      NAVIGATION
@@ -1721,7 +2272,7 @@ body::after {
     <div class="nav">
 
         <button data-target="home">
-            HOME
+            DOSSIER
         </button>
 
         <button data-target="profile">
@@ -1729,7 +2280,7 @@ body::after {
         </button>
 
         <button data-target="career">
-            CAREER
+            SERVICE RECORD
         </button>
 
         <button data-target="education">
@@ -1737,11 +2288,11 @@ body::after {
         </button>
 
         <button data-target="skills">
-            SKILLS
+            ABILITIES
         </button>
 
         <button data-target="certifications">
-            CERTS
+            AWARDS
         </button>
 
         <button data-target="languages">
@@ -1762,55 +2313,89 @@ body::after {
      HERO
      ====================================================== -->
 
-<section class="hero visible" id="home">
+<section
+    class="hero visible"
+    id="home"
+>
 
-    <div class="character-card">
+    <div class="emblem-container">
 
-        <div class="character-symbol"></div>
+        <div class="emblem-ring"></div>
+
+        <div class="emblem">
+
+            <div class="wings"></div>
+
+            <div class="emblem-text">
+                DATA SCIENCE
+            </div>
+
+        </div>
 
     </div>
 
     <div class="hero-content">
 
-        <div class="jp">
-            データサイエンティスト
+        <div class="classification">
+            PERSONNEL DOSSIER // CLASSIFIED
         </div>
 
-        <h1
-            class="glitch"
-            data-text="VASILEIOS TILLIS"
-        >
-            VASILEIOS<br>
-            <span>TILLIS</span>
+        <div class="hero-kana">
+            戦術データ解析部隊
+        </div>
+
+        <h1>
+            Vasileios
+            <span>Tillis</span>
         </h1>
 
-        <div class="subtitle">
+        <div class="role">
             SENIOR ASSOCIATE STATISTICAL DATA SCIENTIST
         </div>
 
         <p class="hero-description">
-            Data Scientist operating at the intersection of
-            statistics, technology and pharmaceutical analytics.
-            Turning complex datasets into actionable intelligence,
-            building scalable analytical solutions and empowering
-            teams through technical leadership.
+
+            MSc Data Scientist operating at the intersection
+            of statistics, technology and pharmaceutical
+            analytics.
+
+            Specialized in transforming complex data into
+            actionable intelligence while leading technical
+            initiatives, mentoring colleagues and delivering
+            high-quality analytical solutions.
+
         </p>
 
-        <div class="hero-stats">
+        <div class="contact-grid">
 
-            <div class="stat">
-                <small>CLASS</small>
-                <strong>DATA SCIENTIST</strong>
+            <div class="contact">
+                <strong>COMMS</strong>
+                +30-6978303235
             </div>
 
-            <div class="stat">
-                <small>LEVEL</small>
-                <strong>SR. ASSOCIATE</strong>
+            <div class="contact">
+                <strong>EMAIL</strong>
+                tillisvasileios@gmail.com
             </div>
 
-            <div class="stat">
-                <small>DOMAIN</small>
-                <strong>PHARMA</strong>
+            <div class="contact">
+                <strong>LINKEDIN</strong>
+                linkedin.com/in/vasilis-tillis-858233223
+            </div>
+
+            <div class="contact">
+                <strong>HQ</strong>
+                Artemida, Attica, Greece
+            </div>
+
+            <div class="contact">
+                <strong>NETWORK</strong>
+                vtillis.github.io
+            </div>
+
+            <div class="contact">
+                <strong>STATUS</strong>
+                ACTIVE
             </div>
 
         </div>
@@ -1825,18 +2410,18 @@ body::after {
 
 <section id="profile">
 
-    <div class="section-header">
+    <div class="section-heading">
 
         <span class="section-number">
-            01
+            01 //
         </span>
 
         <h2 class="section-title">
-            CHARACTER PROFILE
+            Personnel Profile
         </h2>
 
         <span class="section-jp">
-            キャラクター
+            人事記録
         </span>
 
     </div>
@@ -1846,20 +2431,27 @@ body::after {
         <div class="panel">
 
             <h3>
-                // MISSION PROFILE
+                INTELLIGENCE SUMMARY
             </h3>
 
             <p>
+
                 MSc in Data Science with professional experience
                 across pharmaceutical and airline industries.
-                Specialized in statistical data science,
-                analytics, automation and data-driven problem
-                solving.
+
+                Proficient in Python, R, SQL and SAS, with
+                additional experience in Power BI, statistical
+                modelling, machine learning and data
+                visualization.
+
                 <br><br>
-                Experienced in leading technical initiatives,
-                mentoring colleagues and independently delivering
-                high-quality analytical outputs in complex
+
+                Demonstrated ability to independently deliver
+                high-quality analytical work, lead technical
+                initiatives, mentor colleagues and operate
+                effectively in complex cross-functional
                 environments.
+
             </p>
 
         </div>
@@ -1867,38 +2459,38 @@ body::after {
         <div class="panel">
 
             <h3>
-                // ATTRIBUTES
+                PERSONNEL ATTRIBUTES
             </h3>
 
             <div class="attributes">
 
                 <div class="attribute">
-                    <span>LOCATION</span>
-                    <span>GREECE</span>
+                    <span>CURRENT UNIT</span>
+                    <span>PFIZER</span>
                 </div>
 
                 <div class="attribute">
-                    <span>ROLE</span>
-                    <span>STATISTICAL DATA SCIENTIST</span>
+                    <span>RANK</span>
+                    <span>SENIOR ASSOCIATE</span>
                 </div>
 
                 <div class="attribute">
-                    <span>INDUSTRY</span>
+                    <span>SPECIALIZATION</span>
+                    <span>STATISTICAL DATA SCIENCE</span>
+                </div>
+
+                <div class="attribute">
+                    <span>DOMAIN</span>
                     <span>PHARMACEUTICAL</span>
                 </div>
 
                 <div class="attribute">
-                    <span>EDUCATION</span>
-                    <span>MSc DATA SCIENCE</span>
-                </div>
-
-                <div class="attribute">
-                    <span>PRIMARY WEAPON</span>
+                    <span>PRIMARY SYSTEM</span>
                     <span>PYTHON</span>
                 </div>
 
                 <div class="attribute">
-                    <span>CORE TRAIT</span>
+                    <span>CORE ATTRIBUTE</span>
                     <span>PROBLEM SOLVING</span>
                 </div>
 
@@ -1916,18 +2508,18 @@ body::after {
 
 <section id="career">
 
-    <div class="section-header">
+    <div class="section-heading">
 
         <span class="section-number">
-            02
+            02 //
         </span>
 
         <h2 class="section-title">
-            CAREER ARC
+            Service Record
         </h2>
 
         <span class="section-jp">
-            キャリア
+            戦歴
         </span>
 
     </div>
@@ -1939,7 +2531,7 @@ body::after {
         <div class="job active">
 
             <div class="job-date">
-                JUN 2026 — PRESENT
+                JUN 2026 — PRESENT // ACTIVE DUTY
             </div>
 
             <h3>
@@ -1959,13 +2551,14 @@ body::after {
 
                 <li>
                     Support statistical data science activities
-                    in a pharmaceutical / clinical development
-                    environment.
+                    within a pharmaceutical / clinical
+                    development environment.
                 </li>
 
                 <li>
                     Drive high-quality analytical delivery and
-                    contribute to process improvement.
+                    contribute to cross-functional reporting
+                    and process improvement.
                 </li>
 
                 <li>
@@ -1996,21 +2589,24 @@ body::after {
             <ul>
 
                 <li>
-                    Led SMEs during transition to a new statistical
-                    reporting platform for clinical trials.
+                    Led a team of SMEs during transition to a
+                    new statistical reporting platform for
+                    clinical trials.
                 </li>
 
                 <li>
-                    Mentored junior colleagues to full independence.
+                    Mentored junior colleagues toward full
+                    independence.
                 </li>
 
                 <li>
-                    Acted as buddy for new hires.
+                    Acted as buddy for new hires and supported
+                    onboarding.
                 </li>
 
                 <li>
-                    Ensured quality and continuity during team
-                    transitions.
+                    Ensured quality and continuity during
+                    team transitions.
                 </li>
 
                 <li>
@@ -2019,8 +2615,8 @@ body::after {
                 </li>
 
                 <li>
-                    Independently delivered high-quality ARs and
-                    IBs across multiple clinical projects.
+                    Independently delivered high-quality ARs
+                    and IBs across multiple clinical projects.
                 </li>
 
             </ul>
@@ -2051,16 +2647,18 @@ body::after {
                 </li>
 
                 <li>
-                    Developed automated processes.
+                    Developed automated processes and conducted
+                    data analysis using Power BI.
                 </li>
 
                 <li>
-                    Conducted data analysis using Power BI.
+                    Collaborated with teams to meet business
+                    and IT requirements.
                 </li>
 
                 <li>
-                    Collaborated with teams to improve business
-                    and IT processes.
+                    Improved operational efficiency through
+                    data-driven solutions.
                 </li>
 
             </ul>
@@ -2086,12 +2684,13 @@ body::after {
             <ul>
 
                 <li>
-                    Analyzed defense data and created dashboards.
+                    Analyzed defense-related datasets and
+                    developed dashboards.
                 </li>
 
                 <li>
-                    Supported development of performance analysis
-                    tools.
+                    Supported development of performance
+                    analysis tools.
                 </li>
 
             </ul>
@@ -2117,7 +2716,7 @@ body::after {
             <ul>
 
                 <li>
-                    Monitored telecom fraud systems.
+                    Monitored telecommunications fraud systems.
                 </li>
 
                 <li>
@@ -2139,14 +2738,14 @@ body::after {
 
 <section id="education">
 
-    <div class="section-header">
+    <div class="section-heading">
 
         <span class="section-number">
-            03
+            03 //
         </span>
 
         <h2 class="section-title">
-            ACADEMIC ARC
+            Academy Record
         </h2>
 
         <span class="section-jp">
@@ -2159,7 +2758,7 @@ body::after {
 
         <div class="education">
 
-            <div class="icon">
+            <div class="education-icon">
                 🎓
             </div>
 
@@ -2172,19 +2771,24 @@ body::after {
             </div>
 
             <p>
+
                 University of East London
+
                 <br><br>
-                Thesis:
+
+                <strong>Thesis Focus:</strong>
+
                 Algorithmic identification of toxic language
                 patterns within distributed networks via
                 Natural Language Processing architectures.
+
             </p>
 
         </div>
 
         <div class="education">
 
-            <div class="icon">
+            <div class="education-icon">
                 🛰️
             </div>
 
@@ -2197,11 +2801,16 @@ body::after {
             </div>
 
             <p>
+
                 University of Peloponnese
+
                 <br><br>
-                Thesis:
+
+                <strong>Thesis Focus:</strong>
+
                 High-Volume Data Systems Architectures and
                 Cloud Computing Infrastructure Topologies.
+
             </p>
 
         </div>
@@ -2216,18 +2825,18 @@ body::after {
 
 <section id="skills">
 
-    <div class="section-header">
+    <div class="section-heading">
 
         <span class="section-number">
-            04
+            04 //
         </span>
 
         <h2 class="section-title">
-            ABILITY SYSTEM
+            Tactical Abilities
         </h2>
 
         <span class="section-jp">
-            能力
+            能力値
         </span>
 
     </div>
@@ -2239,13 +2848,14 @@ body::after {
         <div class="skill-card">
 
             <h3>
-                ⚡ PROGRAMMING ARSENAL
+                PROGRAMMING SYSTEMS
             </h3>
 
             <div class="skill">
+
                 <div class="skill-top">
                     <span>PYTHON</span>
-                    <span>95%</span>
+                    <span>95</span>
                 </div>
 
                 <div class="skill-bar">
@@ -2254,12 +2864,14 @@ body::after {
                         data-width="95%"
                     ></div>
                 </div>
+
             </div>
 
             <div class="skill">
+
                 <div class="skill-top">
                     <span>R</span>
-                    <span>90%</span>
+                    <span>90</span>
                 </div>
 
                 <div class="skill-bar">
@@ -2268,12 +2880,14 @@ body::after {
                         data-width="90%"
                     ></div>
                 </div>
+
             </div>
 
             <div class="skill">
+
                 <div class="skill-top">
                     <span>SQL</span>
-                    <span>90%</span>
+                    <span>90</span>
                 </div>
 
                 <div class="skill-bar">
@@ -2282,12 +2896,14 @@ body::after {
                         data-width="90%"
                     ></div>
                 </div>
+
             </div>
 
             <div class="skill">
+
                 <div class="skill-top">
                     <span>SAS</span>
-                    <span>90%</span>
+                    <span>90</span>
                 </div>
 
                 <div class="skill-bar">
@@ -2296,12 +2912,14 @@ body::after {
                         data-width="90%"
                     ></div>
                 </div>
+
             </div>
 
             <div class="skill">
+
                 <div class="skill-top">
                     <span>POWER BI</span>
-                    <span>85%</span>
+                    <span>85</span>
                 </div>
 
                 <div class="skill-bar">
@@ -2310,6 +2928,7 @@ body::after {
                         data-width="85%"
                     ></div>
                 </div>
+
             </div>
 
         </div>
@@ -2319,14 +2938,14 @@ body::after {
         <div class="skill-card">
 
             <h3>
-                🧠 ANALYTICAL ABILITIES
+                ANALYTICAL SYSTEMS
             </h3>
 
             <div class="skill">
 
                 <div class="skill-top">
                     <span>DATA CLEANSING / ETL</span>
-                    <span>90%</span>
+                    <span>90</span>
                 </div>
 
                 <div class="skill-bar">
@@ -2342,7 +2961,7 @@ body::after {
 
                 <div class="skill-top">
                     <span>DATA MINING</span>
-                    <span>85%</span>
+                    <span>85</span>
                 </div>
 
                 <div class="skill-bar">
@@ -2358,7 +2977,7 @@ body::after {
 
                 <div class="skill-top">
                     <span>VISUALIZATION</span>
-                    <span>90%</span>
+                    <span>90</span>
                 </div>
 
                 <div class="skill-bar">
@@ -2374,7 +2993,7 @@ body::after {
 
                 <div class="skill-top">
                     <span>MACHINE LEARNING</span>
-                    <span>85%</span>
+                    <span>85</span>
                 </div>
 
                 <div class="skill-bar">
@@ -2390,7 +3009,7 @@ body::after {
 
                 <div class="skill-top">
                     <span>STATISTICAL MODELING</span>
-                    <span>90%</span>
+                    <span>90</span>
                 </div>
 
                 <div class="skill-bar">
@@ -2409,14 +3028,14 @@ body::after {
         <div class="skill-card">
 
             <h3>
-                👑 LEADERSHIP ABILITIES
+                COMMAND ABILITIES
             </h3>
 
             <div class="skill">
 
                 <div class="skill-top">
                     <span>PROJECT MANAGEMENT</span>
-                    <span>90%</span>
+                    <span>90</span>
                 </div>
 
                 <div class="skill-bar">
@@ -2432,7 +3051,7 @@ body::after {
 
                 <div class="skill-top">
                     <span>TECHNICAL TRANSLATION</span>
-                    <span>90%</span>
+                    <span>90</span>
                 </div>
 
                 <div class="skill-bar">
@@ -2448,7 +3067,7 @@ body::after {
 
                 <div class="skill-top">
                     <span>PROBLEM SOLVING</span>
-                    <span>95%</span>
+                    <span>95</span>
                 </div>
 
                 <div class="skill-bar">
@@ -2464,7 +3083,7 @@ body::after {
 
                 <div class="skill-top">
                     <span>TEAM LEADERSHIP</span>
-                    <span>95%</span>
+                    <span>95</span>
                 </div>
 
                 <div class="skill-bar">
@@ -2479,8 +3098,8 @@ body::after {
             <div class="skill">
 
                 <div class="skill-top">
-                    <span>MENTORING</span>
-                    <span>95%</span>
+                    <span>TECHNICAL MENTORING</span>
+                    <span>95</span>
                 </div>
 
                 <div class="skill-bar">
@@ -2504,14 +3123,14 @@ body::after {
 
 <section id="certifications">
 
-    <div class="section-header">
+    <div class="section-heading">
 
         <span class="section-number">
-            05
+            05 //
         </span>
 
         <h2 class="section-title">
-            UNLOCKED ACHIEVEMENTS
+            Verified Achievements
         </h2>
 
         <span class="section-jp">
@@ -2525,7 +3144,7 @@ body::after {
         <div class="cert">
 
             <div class="cert-icon">
-                🏆
+                🏅
             </div>
 
             <h3>
@@ -2571,18 +3190,18 @@ body::after {
 
 <section id="languages">
 
-    <div class="section-header">
+    <div class="section-heading">
 
         <span class="section-number">
-            06
+            06 //
         </span>
 
         <h2 class="section-title">
-            LANGUAGE SYSTEM
+            Language Proficiency
         </h2>
 
         <span class="section-jp">
-            言語
+            言語能力
         </span>
 
     </div>
@@ -2642,20 +3261,47 @@ body::after {
 </section>
 
 <!-- ======================================================
+     FINAL
+     ====================================================== -->
+
+<div class="final-message">
+
+    <div class="classification">
+        PERSONNEL STATUS // ACTIVE
+    </div>
+
+    <h2>
+        READY FOR THE NEXT MISSION
+    </h2>
+
+    <p>
+        Statistical Data Science • Pharmaceutical Analytics
+        • Leadership • Problem Solving
+    </p>
+
+</div>
+
+<!-- ======================================================
      FOOTER
      ====================================================== -->
 
 <footer>
 
     <p>
-        SYSTEM STATUS:
-        <strong>ONLINE</strong>
+        PERSONNEL DOSSIER // VASILEIOS TILLIS
     </p>
 
     <br>
 
     <p>
-        VASILEIOS TILLIS © 2026
+        SYSTEM STATUS:
+        <strong>ACTIVE</strong>
+    </p>
+
+    <br>
+
+    <p>
+        © 2026
     </p>
 
 </footer>
@@ -2673,10 +3319,6 @@ body::after {
     ↑
 </div>
 
-<!-- ======================================================
-     JAVASCRIPT
-     ====================================================== -->
-
 <script>
 
 /* =========================================================
@@ -2687,28 +3329,29 @@ document
     .querySelectorAll(".nav button")
     .forEach(button => {
 
-        button.addEventListener("click", () => {
+        button.addEventListener(
+            "click",
+            () => {
 
-            const target =
-                document.getElementById(
-                    button.dataset.target
-                );
+                const target =
+                    document.getElementById(
+                        button.dataset.target
+                    );
 
-            if (!target) return;
+                if (!target) return;
 
-            const offset = 80;
+                window.scrollTo({
 
-            window.scrollTo({
+                    top:
+                        target.offsetTop - 75,
 
-                top:
-                    target.offsetTop - offset,
+                    behavior:
+                        "smooth"
 
-                behavior:
-                    "smooth"
+                });
 
-            });
-
-        });
+            }
+        );
 
     });
 
@@ -2718,9 +3361,11 @@ document
    ========================================================= */
 
 const sections =
-    document.querySelectorAll("main section");
+    document.querySelectorAll(
+        "main section"
+    );
 
-const sectionObserver =
+const observer =
     new IntersectionObserver(
 
         entries => {
@@ -2749,9 +3394,11 @@ const sectionObserver =
 
 sections.forEach(section => {
 
-    if (section.id !== "home") {
+    if (
+        section.id !== "home"
+    ) {
 
-        sectionObserver.observe(
+        observer.observe(
             section
         );
 
@@ -2761,8 +3408,13 @@ sections.forEach(section => {
 
 
 /* =========================================================
-   SKILL BAR ANIMATION
+   SKILL ANIMATION
    ========================================================= */
+
+const skillSection =
+    document.getElementById(
+        "skills"
+    );
 
 const skillObserver =
     new IntersectionObserver(
@@ -2776,10 +3428,10 @@ const skillObserver =
                 ) {
 
                     const bars =
-                        entry.target
-                            .querySelectorAll(
-                                ".skill-fill"
-                            );
+                        skillSection
+                        .querySelectorAll(
+                            ".skill-fill"
+                        );
 
                     bars.forEach(bar => {
 
@@ -2789,7 +3441,7 @@ const skillObserver =
                     });
 
                     skillObserver.unobserve(
-                        entry.target
+                        skillSection
                     );
 
                 }
@@ -2799,49 +3451,44 @@ const skillObserver =
         },
 
         {
-            threshold: .25
+            threshold: .2
         }
 
     );
 
-const skillsSection =
-    document.getElementById("skills");
-
 skillObserver.observe(
-    skillsSection
+    skillSection
 );
 
 
 /* =========================================================
-   PARTICLE ENGINE
+   DUST PARTICLES
    ========================================================= */
 
-const particleContainer =
-    document.getElementById("particles");
+const dust =
+    document.getElementById(
+        "dust"
+    );
 
 for (
     let i = 0;
-    i < 55;
+    i < 60;
     i++
 ) {
 
     const particle =
-        document.createElement("div");
-
-    particle.className =
-        "particle";
+        document.createElement(
+            "span"
+        );
 
     particle.style.left =
         Math.random() * 100 + "%";
 
     particle.style.animationDuration =
-        (5 + Math.random() * 10) + "s";
+        6 + Math.random() * 12 + "s";
 
     particle.style.animationDelay =
-        (-Math.random() * 10) + "s";
-
-    particle.style.opacity =
-        Math.random();
+        -Math.random() * 12 + "s";
 
     const size =
         1 + Math.random() * 3;
@@ -2852,7 +3499,7 @@ for (
     particle.style.height =
         size + "px";
 
-    particleContainer.appendChild(
+    dust.appendChild(
         particle
     );
 
@@ -2906,12 +3553,12 @@ scrollTop.addEventListener(
 
 
 /* =========================================================
-   MOUSE PARALLAX
+   PARALLAX EMBLEM
    ========================================================= */
 
-const character =
+const emblem =
     document.querySelector(
-        ".character-card"
+        ".emblem"
     );
 
 document.addEventListener(
@@ -2919,59 +3566,57 @@ document.addEventListener(
     event => {
 
         if (
-            window.innerWidth < 850
+            window.innerWidth < 900
         ) return;
 
         const x =
             (event.clientX /
                 window.innerWidth -
-                .5) * 8;
+                .5) * 5;
 
         const y =
             (event.clientY /
                 window.innerHeight -
-                .5) * 8;
+                .5) * 5;
 
-        character.style.transform =
+        emblem.style.transform =
             `rotateY(${x}deg)
              rotateX(${-y}deg)`;
 
     }
 );
 
-document.addEventListener(
-    "mouseleave",
-    () => {
-
-        character.style.transform =
-            "rotateY(0) rotateX(0)";
-
-    }
-);
-
 
 /* =========================================================
-   RANDOM GLITCH EVENTS
+   RANDOM "RADIO" GLITCH
    ========================================================= */
 
-const glitch =
+const heroTitle =
     document.querySelector(
-        ".glitch"
+        ".hero h1"
     );
 
-setInterval(() => {
+setInterval(
+    () => {
 
-    glitch.style.transform =
-        `translateX(${Math.random() * 2 - 1}px)`;
+        heroTitle.style.transform =
+            `translateX(
+                ${Math.random() * 2 - 1}px
+            )`;
 
-    setTimeout(() => {
+        setTimeout(
+            () => {
 
-        glitch.style.transform =
-            "translateX(0)";
+                heroTitle.style.transform =
+                    "translateX(0)";
 
-    }, 100);
+            },
+            80
+        );
 
-}, 4000);
+    },
+    5000
+);
 
 </script>
 
